@@ -260,6 +260,14 @@
       "settings": {
         "heading": "Preguntas frecuentes"
       }
+    },
+    "17735003308726751e": {
+      "type": "apps",
+      "settings": {}
+    },
+    "177350034795b0e5ea": {
+      "type": "apps",
+      "settings": {}
     }
   },
   "order": [
@@ -271,6 +279,8 @@
     "how-it-works",
     "available-in",
     "brand-banner",
-    "faq"
+    "faq",
+    "17735003308726751e",
+    "177350034795b0e5ea"
   ]
 }
