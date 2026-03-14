@@ -1,12 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
-      "settings": {}
+      "settings": {
+        "heading_line_1": "La fiesta sigue.",
+        "heading_line_2": "La cruda no.",
+        "subheading": "Bienestar post-fiesta. Celebra hoy.<br>Conquista mañana.",
+        "cta_text": "Comprar ahora",
+        "trust_text": "Envío gratis y 30 días de garantía.<br>Si no te funciona, te reembolsamos tu dinero."
+      }
     },
     "product-showcase": {
       "type": "product-showcase",
-      "settings": {},
       "blocks": {
         "dropdown-usage": {
           "type": "dropdown",
@@ -30,11 +44,20 @@
           }
         }
       },
-      "block_order": ["dropdown-usage", "dropdown-ingredients", "dropdown-shipping"]
+      "block_order": [
+        "dropdown-usage",
+        "dropdown-ingredients",
+        "dropdown-shipping"
+      ],
+      "settings": {
+        "product": "buenacopa-5-sobres-copy",
+        "tagline": "Bienestar Post-Fiesta",
+        "amazon_url": "",
+        "mercadolibre_url": ""
+      }
     },
     "formula": {
       "type": "formula",
-      "settings": {},
       "blocks": {
         "dhm": {
           "type": "ingredient",
@@ -53,57 +76,77 @@
           }
         }
       },
-      "block_order": ["dhm", "lcisteina"]
+      "block_order": [
+        "dhm",
+        "lcisteina"
+      ],
+      "settings": {
+        "heading": "La fórmula que previene la cruda",
+        "tagline": "Doble ataque, una sola misión: Que la cruda no llegue, y amanezcas bien."
+      }
     },
     "ugc": {
       "type": "ugc-testimonials",
-      "settings": {},
       "blocks": {
         "gustavo": {
           "type": "testimonial",
           "settings": {
             "name": "Gustavo",
-            "quote": "Funciona increíble, lo recomiendo al 100%"
+            "quote": "Funciona increíble, lo recomiendo al 100%",
+            "video_url": ""
           }
         },
         "gerardo": {
           "type": "testimonial",
           "settings": {
             "name": "Gerardo",
-            "quote": "Le regalé a mis amigos y ya todos lo usan"
+            "quote": "Le regalé a mis amigos y ya todos lo usan",
+            "video_url": ""
           }
         },
         "nortena": {
           "type": "testimonial",
           "settings": {
             "name": "La Norteña",
-            "quote": "Amanecí como si no hubiera tomado nada"
+            "quote": "Amanecí como si no hubiera tomado nada",
+            "video_url": ""
           }
         },
         "viri": {
           "type": "testimonial",
           "settings": {
             "name": "Viri",
-            "quote": "No salgo de fiesta sin mi Buenacopa"
+            "quote": "No salgo de fiesta sin mi Buenacopa",
+            "video_url": ""
           }
         }
       },
-      "block_order": ["gustavo", "gerardo", "nortena", "viri"]
+      "block_order": [
+        "gustavo",
+        "gerardo",
+        "nortena",
+        "viri"
+      ],
+      "settings": {
+        "heading_line_1": "Lo que dicen quienes ya lo probaron",
+        "heading_line_2": "(y no tuvieron cruda)"
+      }
     },
     "reviews": {
       "type": "judgeme-reviews",
       "settings": {
-        "enabled": true
+        "enabled": true,
+        "product_id": "7970084028605",
+        "product_title": "Buenacopa"
       }
     },
     "how-it-works": {
       "type": "how-it-works",
-      "settings": {},
       "blocks": {
         "step-1": {
           "type": "step",
           "settings": {
-            "number": "01",
+            "number": "1",
             "title": "Celebra tu noche",
             "description": "Disfruta de forma responsable. Buenacopa está diseñado para acompañar tus mejores noches."
           }
@@ -111,7 +154,7 @@
         "step-2": {
           "type": "step",
           "settings": {
-            "number": "02",
+            "number": "2",
             "title": "Toma tus 3 cápsulas antes de dormir",
             "description": "Con un vaso de agua, después de tu última copa. Buenacopa actúa mientras duermes."
           }
@@ -119,22 +162,29 @@
         "step-3": {
           "type": "step",
           "settings": {
-            "number": "03",
+            "number": "3",
             "title": "Despierta y conquista tu día",
             "description": "Sin cruda, sin náuseas, sin dolor de cabeza. Tu mañana es tuya."
           }
         }
       },
-      "block_order": ["step-1", "step-2", "step-3"]
+      "block_order": [
+        "step-1",
+        "step-2",
+        "step-3"
+      ],
+      "settings": {
+        "heading": "Tu ritual en 3 pasos"
+      }
     },
     "available-in": {
       "type": "available-in",
-      "settings": {},
       "blocks": {
         "amazon": {
           "type": "marketplace",
           "settings": {
             "label": "Amazon",
+            "logo": "shopify://shop_images/Group_42.png",
             "url": "https://www.amazon.com.mx/stores/page/FDB18C6D-10B7-43A2-AA75-D935DEF10C38?channel=BOTONSITIOWEB"
           }
         },
@@ -142,19 +192,27 @@
           "type": "marketplace",
           "settings": {
             "label": "Mercado Libre",
+            "logo": "shopify://shop_images/Group_43.png",
             "url": "https://www.mercadolibre.com.mx/tienda/buenacopa"
           }
         }
       },
-      "block_order": ["amazon", "mercadolibre"]
+      "block_order": [
+        "amazon",
+        "mercadolibre"
+      ],
+      "settings": {
+        "heading": "También disponible en:"
+      }
     },
     "brand-banner": {
       "type": "brand-banner",
-      "settings": {}
+      "settings": {
+        "alt_text": "BUENACOPA"
+      }
     },
     "faq": {
       "type": "faq",
-      "settings": {},
       "blocks": {
         "faq-1": {
           "type": "faq_item",
@@ -192,7 +250,16 @@
           }
         }
       },
-      "block_order": ["faq-1", "faq-2", "faq-3", "faq-4", "faq-5"]
+      "block_order": [
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5"
+      ],
+      "settings": {
+        "heading": "Preguntas frecuentes"
+      }
     }
   },
   "order": [
