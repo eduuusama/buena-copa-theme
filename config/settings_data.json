@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_background": "#071D40",
@@ -5,6 +14,73 @@
     "color_accent": "#00AB43",
     "color_text": "#FFFFFF",
     "social_instagram": "https://www.instagram.com/bebuenacopa/?hl=en",
-    "social_facebook": "https://www.facebook.com/p/Be-Buenacopa-61575659698116/"
+    "social_facebook": "https://www.facebook.com/p/Be-Buenacopa-61575659698116/",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "cta_text": "Comprar"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "tagline": "Bienestar post-fiesta. Celebra hoy, conquista mañana.",
+          "instagram_url": "",
+          "facebook_url": ""
+        }
+      }
+    },
+    "content_for_index": [],
+    "blocks": {
+      "2461320892803247993": {
+        "type": "shopify://apps/coco-whatsapp-ai-cart-recovery/blocks/coco_bubble/b8c5208f-c3e1-45c9-82ae-fc9678081de8",
+        "disabled": false,
+        "settings": {
+          "button_one": "I need some advice",
+          "button_two": "How to use your product",
+          "button_three": "I want a discount code",
+          "delay": 0,
+          "show_mobile_only": false,
+          "show_notification_bubble": true,
+          "disable_breathe": false,
+          "show_ai_mention": false,
+          "bubble_color": "#25d366",
+          "whatsapp_message": "Hello, I'm online!",
+          "text_color": "white",
+          "text_color_background": "black",
+          "cross_notification_color": "white",
+          "shop_pic": "https://my-coco.ai/wp-content/uploads/2024/08/coco-profil-pic.png",
+          "shop_name": "",
+          "status": "Online",
+          "status_color": "green",
+          "cross_color": "white",
+          "header_color": "black",
+          "buttons_color": "black",
+          "whatsapp_message_inside": "Hello",
+          "pre_message_input": "Write your message",
+          "tooltip_position": "full-coco-right",
+          "custom_css": "",
+          "path_filter": ""
+        }
+      },
+      "14060646107696862457": {
+        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {}
+      },
+      "12120936241911852800": {
+        "type": "shopify://apps/judge-me-reviews/blocks/reviews_tab/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": true,
+        "settings": {
+          "position": "right"
+        }
+      },
+      "15181020662106344915": {
+        "type": "shopify://apps/judge-me-reviews/blocks/popup_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {}
+      }
+    }
   }
 }
