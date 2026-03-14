@@ -1,0 +1,66 @@
+<section class="py-10 md:py-14 lg:py-16 px-4 sm:px-6 md:px-8 bg-background">
+  <div class="container-custom text-center">
+    <h2 class="text-2xl md:text-3xl lg:text-5xl font-display font-black text-foreground mb-12 lg:mb-16">
+      {{ section.settings.heading | default: 'También disponible en:' }}
+    </h2>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-12">
+      {% for block in section.blocks %}
+        {% if block.type == 'marketplace' %}
+          <a href="{{ block.settings.url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-52 h-16 md:w-64 md:h-20 lg:w-72 lg:h-24 hover:opacity-80 transition-opacity" {{ block.shopify_attributes }}>
+            {% if block.settings.logo %}
+              <img src="{{ block.settings.logo | image_url: width: 576 }}" alt="{{ block.settings.label }}" class="max-h-full max-w-full object-contain rounded-2xl" loading="lazy" width="288" height="96">
+            {% else %}
+              <span class="text-foreground font-bold">{{ block.settings.label }}</span>
+            {% endif %}
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Available In",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "También disponible en:"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "marketplace",
+      "name": "Marketplace",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Available In",
+      "blocks": [
+        { "type": "marketplace", "settings": { "label": "Amazon", "url": "https://www.amazon.com.mx/stores/page/FDB18C6D-10B7-43A2-AA75-D935DEF10C38?channel=BOTONSITIOWEB" } },
+        { "type": "marketplace", "settings": { "label": "Mercado Libre", "url": "https://www.mercadolibre.com.mx/tienda/buenacopa" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,47 @@
+<section class="w-full overflow-hidden">
+  {% if section.settings.image %}
+    <img
+      src="{{ section.settings.image | image_url: width: 3840 }}"
+      alt="{{ section.settings.alt_text | default: shop.name }}"
+      class="w-full h-auto object-cover"
+      width="1920"
+      height="1081"
+      sizes="100vw"
+      loading="lazy"
+    >
+  {% else %}
+    <img
+      src="{{ 'banner-buenacopa.png' | asset_url }}"
+      alt="{{ shop.name }}"
+      class="w-full h-auto object-cover"
+      width="1920"
+      height="1081"
+      sizes="100vw"
+      loading="lazy"
+    >
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Brand Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "alt_text",
+      "label": "Alt Text",
+      "default": "BUENACOPA"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Banner"
+    }
+  ]
+}
+{% endschema %}

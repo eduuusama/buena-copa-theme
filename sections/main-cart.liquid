@@ -1,0 +1,50 @@
+<section class="section-padding bg-background">
+  <div class="container-custom max-w-3xl">
+    <h1 class="text-3xl md:text-4xl font-display font-black text-foreground mb-8">Carrito</h1>
+
+    {% if cart.item_count == 0 %}
+      <div class="text-center py-16">
+        <div class="text-muted-foreground mb-4">
+          {% render 'icon-cart', size: 48 %}
+        </div>
+        <p class="text-muted-foreground text-lg mb-6">Tu carrito está vacío</p>
+        <a href="/" class="btn-cta">Ir a comprar</a>
+      </div>
+    {% else %}
+      <div class="space-y-4 mb-8">
+        {% for item in cart.items %}
+          <div class="flex gap-4 p-4 border border-border/30 rounded-2xl bg-background/30">
+            {% if item.image %}
+              <div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title }}" class="w-full h-full object-cover">
+              </div>
+            {% endif %}
+            <div class="flex-1">
+              <h3 class="font-bold text-foreground">{{ item.title }}</h3>
+              <p class="text-muted-foreground text-sm">{{ item.variant.title }}</p>
+              <p class="font-semibold text-foreground mt-1">{{ item.price | money }}</p>
+            </div>
+            <div class="text-center">
+              <span class="text-foreground font-bold">{{ item.quantity }}</span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="border-t border-border pt-6">
+        <div class="flex justify-between items-center mb-6">
+          <span class="text-xl font-bold text-foreground">Total</span>
+          <span class="text-2xl font-black text-foreground">{{ cart.total_price | money }}</span>
+        </div>
+        <a href="/checkout" class="btn-cta w-full text-center block text-lg py-4">Checkout</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": []
+}
+{% endschema %}

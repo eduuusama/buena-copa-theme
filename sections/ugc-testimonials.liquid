@@ -1,0 +1,138 @@
+<section class="section-padding bg-accent overflow-hidden" id="ugc-section">
+  <div class="text-center mb-10 md:mb-14 container-custom">
+    <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-primary">
+      {{ section.settings.heading_line_1 | default: 'Lo que dicen quienes ya lo probaron' }}
+    </h2>
+    <p class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-white">
+      {{ section.settings.heading_line_2 | default: '(y no tuvieron cruda)' }}
+    </p>
+  </div>
+
+  <!-- Desktop: static centered grid -->
+  <div class="hidden lg:flex justify-center gap-5 container-custom">
+    {% for block in section.blocks %}
+      {% if block.type == 'testimonial' %}
+        <div class="flex-shrink-0 w-[260px]" {{ block.shopify_attributes }}>
+          <div
+            class="video-card aspect-[9/16] rounded-2xl relative flex items-center justify-center group cursor-pointer overflow-hidden bg-muted"
+            data-video-src="{{ block.settings.video_url }}"
+            role="button"
+            aria-label="Reproducir video de {{ block.settings.name }}"
+          >
+            {% if block.settings.video_url != blank %}
+              <video
+                class="absolute inset-0 w-full h-full object-cover"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                src="{{ block.settings.video_url }}"
+              ></video>
+            {% endif %}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-[1]"></div>
+            <div class="video-play-btn w-14 h-14 rounded-full bg-white/20 border-2 border-white/60 flex items-center justify-center group-hover:scale-110 transition-all duration-300 z-10">
+              <span class="play-icon">{% render 'icon-play', size: 24 %}</span>
+              <span class="pause-icon" style="display:none;">{% render 'icon-pause', size: 24 %}</span>
+            </div>
+          </div>
+          <div class="mt-3 px-1">
+            <p class="font-bold text-accent-foreground text-sm">{{ block.settings.name }}</p>
+            <p class="text-accent-foreground text-sm mt-0.5">"{{ block.settings.quote }}"</p>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- Mobile: horizontal scroll -->
+  <div class="lg:hidden overflow-x-auto scrollbar-hide snap-x snap-mandatory px-4">
+    <div class="flex gap-4 w-max">
+      {% for block in section.blocks %}
+        {% if block.type == 'testimonial' %}
+          <div class="flex-shrink-0 w-[55vw] sm:w-[40vw] snap-center" {{ block.shopify_attributes }}>
+            <div
+              class="video-card aspect-[9/16] rounded-2xl relative flex items-center justify-center group cursor-pointer overflow-hidden bg-muted"
+              data-video-src="{{ block.settings.video_url }}"
+              role="button"
+              aria-label="Reproducir video de {{ block.settings.name }}"
+            >
+              {% if block.settings.video_url != blank %}
+                <video
+                  class="absolute inset-0 w-full h-full object-cover"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  src="{{ block.settings.video_url }}"
+                ></video>
+              {% endif %}
+              <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-[1]"></div>
+              <div class="video-play-btn w-14 h-14 rounded-full bg-white/20 border-2 border-white/60 flex items-center justify-center group-hover:scale-110 transition-all duration-300 z-10">
+                <span class="play-icon">{% render 'icon-play', size: 24 %}</span>
+                <span class="pause-icon" style="display:none;">{% render 'icon-pause', size: 24 %}</span>
+              </div>
+            </div>
+            <div class="mt-3 px-1">
+              <p class="font-bold text-accent-foreground text-sm">{{ block.settings.name }}</p>
+              <p class="text-accent-foreground text-sm mt-0.5">"{{ block.settings.quote }}"</p>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "UGC Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Heading Line 1",
+      "default": "Lo que dicen quienes ya lo probaron"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading Line 2",
+      "default": "(y no tuvieron cruda)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "text",
+          "id": "quote",
+          "label": "Quote"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL (from Shopify Files)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "UGC Testimonials",
+      "blocks": [
+        { "type": "testimonial", "settings": { "name": "Gustavo", "quote": "Funciona increíble, lo recomiendo al 100%" } },
+        { "type": "testimonial", "settings": { "name": "Gerardo", "quote": "Le regalé a mis amigos y ya todos lo usan" } },
+        { "type": "testimonial", "settings": { "name": "La Norteña", "quote": "Amanecí como si no hubiera tomado nada" } },
+        { "type": "testimonial", "settings": { "name": "Viri", "quote": "No salgo de fiesta sin mi Buenacopa" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

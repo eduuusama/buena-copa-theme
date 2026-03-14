@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-showcase",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

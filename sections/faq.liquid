@@ -1,0 +1,78 @@
+<section id="faq" class="section-padding bg-secondary overflow-hidden">
+  <div class="container-custom">
+    <div class="text-center mb-12 md:mb-16">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-foreground">
+        {{ section.settings.heading | default: 'Preguntas frecuentes' }}
+      </h2>
+    </div>
+
+    <div class="max-w-3xl mx-auto space-y-3">
+      {% for block in section.blocks %}
+        {% if block.type == 'faq_item' %}
+          <div class="border border-border/30 rounded-2xl overflow-hidden bg-background/30 faq-item" {{ block.shopify_attributes }}>
+            <button
+              onclick="toggleFaq(this)"
+              class="w-full flex items-center justify-between p-5 md:p-6 text-left hover:bg-white/[0.03] transition-colors"
+            >
+              <span class="text-foreground font-bold pr-4">{{ block.settings.question }}</span>
+              <span class="text-accent flex-shrink-0 transition-transform duration-300 faq-chevron">
+                {% render 'icon-chevron-down', size: 20 %}
+              </span>
+            </button>
+            <div class="faq-content">
+              <div>
+                <div class="px-5 md:px-6 pb-5 md:pb-6">
+                  <p class="text-foreground leading-relaxed">{{ block.settings.answer }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Preguntas frecuentes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "faq_item", "settings": { "question": "¿Cómo funciona Buenacopa?", "answer": "Buenacopa combina DHM y L-Cisteína para acelerar el metabolismo del alcohol y neutralizar toxinas mientras duermes. Toma 3 cápsulas antes de dormir y despierta sin cruda." } },
+        { "type": "faq_item", "settings": { "question": "¿Cuándo debo tomarlo?", "answer": "Toma las 3 cápsulas con un vaso de agua después de tu última copa, antes de dormir." } },
+        { "type": "faq_item", "settings": { "question": "¿Tiene efectos secundarios?", "answer": "No. Buenacopa es un suplemento alimenticio con ingredientes naturales. No contiene cafeína, azúcar ni estimulantes. Es seguro para uso nocturno." } },
+        { "type": "faq_item", "settings": { "question": "¿Cuántas cápsulas trae cada sachet?", "answer": "Cada sachet contiene 1 dosis completa de 3 cápsulas de 750mg cada una (2.25g total)." } },
+        { "type": "faq_item", "settings": { "question": "¿Si no me funciona?", "answer": "Si no sientes la diferencia, te devolvemos tu dinero. Sin preguntas." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

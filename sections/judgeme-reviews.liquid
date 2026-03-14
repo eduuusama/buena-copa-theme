@@ -1,0 +1,42 @@
+{% if section.settings.enabled %}
+<section class="section-padding bg-accent">
+  <div class="container-custom space-y-6">
+    <div
+      class="jdgm-widget jdgm-review-widget jdgm-outside-widget"
+      data-id="{{ section.settings.product_id | default: '7970084028605' }}"
+      data-product-title="{{ section.settings.product_title | default: 'Buenacopa' }}"
+    ></div>
+  </div>
+</section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Judge.me Reviews",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Enable Reviews Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "product_id",
+      "label": "Product ID",
+      "default": "7970084028605"
+    },
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Product Title",
+      "default": "Buenacopa"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Judge.me Reviews"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,37 @@
+<!-- Cart Drawer Overlay -->
+<div class="cart-drawer-overlay" id="cart-overlay" onclick="CartDrawer.close()"></div>
+
+<!-- Cart Drawer -->
+<div class="cart-drawer" id="cart-drawer">
+  <div class="flex items-center justify-between p-5 border-b border-border flex-shrink-0">
+    <h2 class="text-lg font-bold text-foreground">Carrito</h2>
+    <button onclick="CartDrawer.close()" aria-label="Cerrar carrito" class="text-muted-foreground hover:text-foreground transition-colors">
+      {% render 'icon-x', size: 20 %}
+    </button>
+  </div>
+
+  <div id="cart-items" class="flex-1 overflow-y-auto p-5 min-h-0">
+    <!-- Items rendered by JS -->
+  </div>
+
+  <!-- Empty state -->
+  <div id="cart-empty" class="flex-1 flex items-center justify-center p-5">
+    <div class="text-center">
+      <div class="text-muted-foreground mx-auto mb-4">
+        {% render 'icon-cart', size: 48 %}
+      </div>
+      <p class="text-muted-foreground">Tu carrito está vacío</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="cart-footer" class="flex-shrink-0 p-5 border-t border-border bg-background" style="display:none;">
+    <div class="flex justify-between items-center mb-4">
+      <span class="text-lg font-semibold text-foreground">Total</span>
+      <span id="cart-total" class="text-xl font-bold text-foreground">$0 MXN</span>
+    </div>
+    <button onclick="CartDrawer.checkout()" class="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold py-3 rounded-lg transition-colors">
+      Checkout
+    </button>
+  </div>
+</div>

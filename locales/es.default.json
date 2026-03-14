@@ -1,0 +1,67 @@
+{
+  "general": {
+    "cart": {
+      "title": "Carrito",
+      "empty": "Tu carrito está vacío",
+      "checkout": "Checkout",
+      "total": "Total",
+      "add_to_cart": "Agregar al carrito",
+      "buy_now": "Pagar",
+      "sold_out": "Agotado",
+      "quantity": "Cantidad",
+      "remove": "Eliminar"
+    },
+    "navigation": {
+      "menu": "Menú",
+      "close": "Cerrar"
+    },
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook"
+    }
+  },
+  "sections": {
+    "header": {
+      "buy_cta": "Comprar"
+    },
+    "hero": {
+      "heading_1": "La fiesta sigue.",
+      "heading_2": "La cruda no.",
+      "subheading": "Bienestar post-fiesta. Celebra hoy. Conquista mañana.",
+      "cta": "Comprar ahora",
+      "trust": "Envío gratis y 30 días de garantía. Si no te funciona, te reembolsamos tu dinero."
+    },
+    "product": {
+      "tagline": "Bienestar Post-Fiesta",
+      "rating_text": "10,000+ mañanas sin cruda",
+      "benefit_natural": "Ingredientes naturales",
+      "benefit_caffeine": "Sin cafeína ni azúcar",
+      "benefit_shipping": "Envíos a todo México",
+      "most_popular": "Más popular",
+      "best_price": "Mejor precio"
+    },
+    "formula": {
+      "heading": "La fórmula que previene la cruda",
+      "tagline": "Doble ataque, una sola misión: Que la cruda no llegue, y amanezcas bien."
+    },
+    "ugc": {
+      "heading_1": "Lo que dicen quienes ya lo probaron",
+      "heading_2": "(y no tuvieron cruda)"
+    },
+    "how_it_works": {
+      "heading": "Tu ritual en 3 pasos"
+    },
+    "available_in": {
+      "heading": "También disponible en:"
+    },
+    "faq": {
+      "heading": "Preguntas frecuentes"
+    }
+  },
+  "footer": {
+    "copyright": "Todos los derechos reservados. Este producto no está destinado a diagnosticar, tratar, curar o prevenir ninguna enfermedad.",
+    "product": "Producto",
+    "support": "Soporte",
+    "legal": "Legal"
+  }
+}

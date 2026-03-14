@@ -1,0 +1,291 @@
+{%- assign product = section.settings.product -%}
+{%- if product == blank -%}
+  {%- assign product = collections.all.products.first -%}
+{%- endif -%}
+
+<section id="comprar" class="bg-white overflow-hidden">
+  <div class="py-8 md:py-16 lg:py-28 px-4 sm:px-6 md:px-8">
+    <div class="container-custom">
+      <div class="grid lg:grid-cols-2 gap-6 lg:gap-14 items-start">
+
+        <!-- Product Images + Thumbnails -->
+        <div class="space-y-3">
+          <div class="rounded-2xl lg:rounded-3xl overflow-hidden aspect-square">
+            <img
+              id="main-product-image"
+              src="{{ product.featured_image | image_url: width: 1200 }}"
+              alt="{{ product.featured_image.alt | default: product.title }}"
+              class="w-full h-full object-cover"
+              loading="lazy"
+              width="600"
+              height="600"
+            >
+          </div>
+          <div class="flex gap-1.5 sm:gap-3" id="product-thumbnails">
+            {%- for image in product.images limit: 5 -%}
+              <button
+                onclick="ProductForm.selectImage('{{ image | image_url: width: 1200 }}', this)"
+                aria-label="Ver imagen {{ forloop.index }}"
+                class="product-thumbnail flex-1 aspect-square max-w-[72px] sm:max-w-[80px] rounded-lg sm:rounded-xl overflow-hidden border-2 transition-all {% if forloop.first %}border-accent{% else %}border-background/10 hover:border-background/25{% endif %}"
+              >
+                <img src="{{ image | image_url: width: 160 }}" alt="Vista {{ forloop.index }}" class="w-full h-full object-cover" loading="lazy" width="80" height="80">
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="space-y-4 pb-28 lg:pb-0" id="product-form-container" data-product-id="{{ product.id }}">
+          <div>
+            {% if section.settings.product_logo %}
+              <img src="{{ section.settings.product_logo | image_url: width: 320 }}" alt="{{ product.title }}" class="h-10 md:h-12 w-auto" width="160" height="48">
+            {% else %}
+              <img src="{{ 'logo-azul-oscuro.png' | asset_url }}" alt="{{ product.title }}" class="h-10 md:h-12 w-auto" width="160" height="48">
+            {% endif %}
+            <p class="text-accent-contrast font-display font-bold text-lg mt-2">{{ section.settings.tagline | default: 'Bienestar Post-Fiesta' }}</p>
+          </div>
+
+          <!-- Rating -->
+          <div class="flex items-center gap-3">
+            <div class="flex gap-0.5">
+              {% for s in (1..5) %}
+                {% render 'icon-star', size: 20, fill: '#facc15', stroke: '#facc15' %}
+              {% endfor %}
+            </div>
+            <span class="text-background/50 text-sm font-medium">10,000+ mañanas sin cruda</span>
+          </div>
+
+          <p class="text-background/60 leading-relaxed text-sm">
+            {{ product.description | default: 'Buenacopa ayuda a atacar la cruda de raíz previniendo sus síntomas para que despiertes listo para tener un gran día.' }}
+          </p>
+
+          <!-- Benefits -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            <div class="flex items-center gap-2">
+              <span class="text-accent shrink-0">{% render 'icon-leaf', size: 20 %}</span>
+              <span class="text-background/70 text-sm font-medium">Ingredientes naturales</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-accent shrink-0">{% render 'icon-coffee', size: 20 %}</span>
+              <span class="text-background/70 text-sm font-medium">Sin cafeína ni azúcar</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-accent shrink-0">{% render 'icon-truck', size: 20 %}</span>
+              <span class="text-background/70 text-sm font-medium">Envíos a todo México</span>
+            </div>
+          </div>
+
+          <!-- Variant Selector -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 pt-2" id="variant-selector">
+            {%- for variant in product.variants -%}
+              <button
+                type="button"
+                onclick="ProductForm.selectVariant({{ variant.id }}, this)"
+                data-variant-id="{{ variant.id }}"
+                data-variant-price="{{ variant.price }}"
+                data-variant-compare-price="{{ variant.compare_at_price }}"
+                data-variant-available="{{ variant.available }}"
+                class="variant-btn relative px-5 py-4 rounded-2xl border-2 transition-all duration-200 lg:flex lg:flex-col lg:items-start lg:justify-start {% if forloop.first %}border-accent bg-accent/10 selected{% else %}border-background/15 bg-background/5 hover:border-background/25{% endif %} {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
+                {% unless variant.available %}disabled{% endunless %}
+              >
+                {% unless variant.available %}
+                  <span class="absolute -top-0 left-3 text-[10px] font-bold uppercase tracking-wide px-2.5 py-0.5 rounded-b-lg bg-destructive/15 text-destructive">Agotado</span>
+                {% endunless %}
+                {% if variant.available and forloop.index == 2 %}
+                  <span class="absolute -top-0 right-3 text-[10px] font-bold uppercase tracking-wide px-2.5 py-0.5 rounded-b-lg bg-accent/15 text-accent">Más popular</span>
+                {% endif %}
+                {% if variant.available and forloop.index == 3 %}
+                  <span class="absolute -top-0 right-3 text-[10px] font-bold uppercase tracking-wide px-2.5 py-0.5 rounded-b-lg bg-primary/15 text-primary">Mejor precio</span>
+                {% endif %}
+                <div class="flex items-start justify-between gap-3 w-full">
+                  <div class="flex items-center gap-3 min-w-0 shrink">
+                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 {% if forloop.first %}border-accent{% else %}border-background/30{% endif %}">
+                      {% if forloop.first %}<div class="w-2.5 h-2.5 rounded-full bg-accent"></div>{% endif %}
+                    </div>
+                    <span class="font-bold text-background text-sm">{{ variant.title }}</span>
+                  </div>
+                  <div class="lg:hidden flex items-baseline gap-2 shrink-0">
+                    {% if variant.compare_at_price > variant.price %}
+                      <span class="text-background/40 line-through text-sm">{{ variant.compare_at_price | money_without_trailing_zeros }}</span>
+                    {% endif %}
+                    <span class="font-display font-black text-lg text-background">{{ variant.price | money_without_trailing_zeros }}</span>
+                  </div>
+                </div>
+                <!-- Desktop price -->
+                <div class="hidden lg:flex lg:pl-8 lg:mt-2 items-center gap-2">
+                  {% if variant.compare_at_price > variant.price %}
+                    <span class="text-background/40 line-through text-sm">{{ variant.compare_at_price | money_without_trailing_zeros }}</span>
+                  {% endif %}
+                  <span class="font-display font-black text-lg text-background">{{ variant.price | money_without_trailing_zeros }}</span>
+                </div>
+              </button>
+            {%- endfor -%}
+          </div>
+
+          <!-- Quantity + Add to Cart -->
+          <div class="flex items-center gap-4 pt-1">
+            <span class="text-sm font-semibold text-background/50 uppercase tracking-wider shrink-0">Cantidad</span>
+            <div class="flex flex-1 lg:flex-none items-center border-2 border-background/15 rounded-xl overflow-hidden">
+              <button onclick="ProductForm.decrementQty()" aria-label="Reducir cantidad" class="flex-1 lg:flex-none px-3 py-2 text-background/60 hover:bg-background/5 transition-colors flex items-center justify-center">
+                {% render 'icon-minus' %}
+              </button>
+              <span id="product-quantity" class="flex-1 lg:flex-none px-4 py-2 font-bold text-background min-w-[40px] text-center">1</span>
+              <button onclick="ProductForm.incrementQty()" aria-label="Aumentar cantidad" class="flex-1 lg:flex-none px-3 py-2 text-background/60 hover:bg-background/5 transition-colors flex items-center justify-center">
+                {% render 'icon-plus' %}
+              </button>
+            </div>
+            <!-- Desktop CTA -->
+            <button
+              id="add-to-cart-desktop"
+              onclick="ProductForm.addToCart()"
+              class="hidden lg:flex flex-1 btn-cta text-base py-3 items-center justify-center gap-2.5 disabled:opacity-50"
+            >
+              <span class="inline-flex">{% render 'icon-cart', size: 20 %}</span>
+              Agregar al carrito
+            </button>
+          </div>
+
+          <!-- Buy Now -->
+          <button
+            onclick="ProductForm.buyNow()"
+            class="w-full flex items-center justify-center gap-2.5 bg-[#004AB2] text-white font-bold text-base py-3.5 rounded-xl hover:bg-[#003d94] transition-colors disabled:opacity-50"
+          >
+            Pagar
+          </button>
+
+          <!-- Marketplace buttons - Desktop -->
+          <div class="hidden lg:grid grid-cols-2 gap-3">
+            <a href="{{ section.settings.amazon_url | default: 'https://www.amazon.com.mx/stores/page/FDB18C6D-10B7-43A2-AA75-D935DEF10C38?channel=BOTONSITIOWEB' }}" target="_blank" rel="noopener noreferrer" class="block hover:opacity-90 transition-opacity">
+              <img src="{{ 'boton-amazon.png' | asset_url }}" alt="Comprar en Amazon" class="w-full h-auto rounded-xl" loading="lazy" width="300" height="60">
+            </a>
+            <a href="{{ section.settings.mercadolibre_url | default: 'https://www.mercadolibre.com.mx/tienda/buenacopa' }}" target="_blank" rel="noopener noreferrer" class="block hover:opacity-90 transition-opacity">
+              <img src="{{ 'boton-mercadolibre.png' | asset_url }}" alt="Comprar en Mercado Libre" class="w-full h-auto rounded-xl" loading="lazy" width="300" height="60">
+            </a>
+          </div>
+
+          <!-- Marketplace buttons - Mobile -->
+          <div class="lg:hidden grid grid-cols-2 gap-3">
+            <a href="{{ section.settings.amazon_url | default: 'https://www.amazon.com.mx/stores/page/FDB18C6D-10B7-43A2-AA75-D935DEF10C38?channel=BOTONSITIOWEB' }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-12 hover:opacity-90 transition-opacity">
+              <img src="{{ 'boton-amazon-mobile.png' | asset_url }}" alt="Comprar en Amazon" class="h-full w-auto rounded-lg" loading="lazy" width="150" height="48">
+            </a>
+            <a href="{{ section.settings.mercadolibre_url | default: 'https://www.mercadolibre.com.mx/tienda/buenacopa' }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-12 hover:opacity-90 transition-opacity">
+              <img src="{{ 'boton-mercadolibre-mobile.png' | asset_url }}" alt="Comprar en Mercado Libre" class="h-full w-auto rounded-lg" loading="lazy" width="150" height="48">
+            </a>
+          </div>
+
+          <!-- Dropdowns -->
+          <div>
+            {% for block in section.blocks %}
+              {% if block.type == 'dropdown' %}
+                <div class="dropdown-section">
+                  <button onclick="ProductForm.toggleDropdown(this)" class="w-full flex items-center justify-between py-4 border-t border-background/10 text-left">
+                    <span class="font-bold text-background text-sm">{{ block.settings.title }}</span>
+                    <span class="text-background/50 transition-transform duration-200 dropdown-chevron">{% render 'icon-chevron-down', size: 16 %}</span>
+                  </button>
+                  <div class="dropdown-content">
+                    <div>
+                      <div class="pb-4 text-background/60 text-sm leading-relaxed">
+                        {{ block.settings.content }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mobile Sticky CTA -->
+<div id="mobile-sticky-cta" class="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-accent px-4 pt-2 pb-3 shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
+  <button
+    onclick="ProductForm.addToCart()"
+    class="w-full flex items-center justify-center gap-2 text-white font-bold text-base py-3 rounded-xl disabled:opacity-50"
+  >
+    <span class="inline-flex">{% render 'icon-cart', size: 20 %}</span>
+    <span id="mobile-cta-text">Agregar al carrito – {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}</span>
+  </button>
+</div>
+
+{% schema %}
+{
+  "name": "Product Showcase",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_logo",
+      "label": "Product Logo"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Product Tagline",
+      "default": "Bienestar Post-Fiesta"
+    },
+    {
+      "type": "url",
+      "id": "amazon_url",
+      "label": "Amazon URL"
+    },
+    {
+      "type": "url",
+      "id": "mercadolibre_url",
+      "label": "Mercado Libre URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "dropdown",
+      "name": "Info Dropdown",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Showcase",
+      "blocks": [
+        {
+          "type": "dropdown",
+          "settings": {
+            "title": "Modo de uso",
+            "content": "<ul><li>Toma 1 dosis (3 cápsulas) después de tu última copa</li><li>Hidrátate con un vaso grande de agua</li><li>Descansa y despierta listo para disfrutar tu día</li></ul>"
+          }
+        },
+        {
+          "type": "dropdown",
+          "settings": {
+            "title": "Ingredientes",
+            "content": "<ul><li><strong>DHM:</strong> Acelera el metabolismo del alcohol y equilibra tus neurotransmisores</li><li><strong>L-Cisteína:</strong> Neutraliza las toxinas del alcohol y protege tu hígado</li><li><strong>Vitamina C:</strong> Antioxidante que combate el estrés en tus células</li><li><strong>Cúrcuma:</strong> Ayuda a disminuir la inflamación</li></ul>"
+          }
+        },
+        {
+          "type": "dropdown",
+          "settings": {
+            "title": "Información de envío",
+            "content": "<p>Para que estés preparado cuando llegue la próxima celebración</p><p><strong>Envío Express (2-3 días):</strong> GRATIS por tiempo limitado</p><p><strong>Procesamiento el mismo día.</strong> Realiza tu pedido antes de la 1:00 p.m. (hora CDMX) y lo enviamos el mismo día.</p><p><em>Aplica únicamente en días hábiles.</em></p><p><strong>BUENACOPA. BUENOS DÍAS.</strong></p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
