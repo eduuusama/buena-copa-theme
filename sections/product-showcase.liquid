@@ -36,13 +36,17 @@
 
         <!-- Product Info -->
         <div class="space-y-4 pb-28 lg:pb-0" id="product-form-container" data-product-id="{{ product.id }}">
+
+          <!-- Logo + Tagline -->
           <div>
             {% if section.settings.product_logo %}
               <img src="{{ section.settings.product_logo | image_url: width: 320 }}" alt="{{ product.title }}" class="h-10 md:h-12 w-auto" width="160" height="48">
             {% else %}
               <img src="{{ 'logo-azul-oscuro.png' | asset_url }}" alt="{{ product.title }}" class="h-10 md:h-12 w-auto" width="160" height="48">
             {% endif %}
-            <p class="text-accent-contrast font-display font-bold text-lg mt-2">{{ section.settings.tagline | default: 'Bienestar Post-Fiesta' }}</p>
+            {% if section.settings.tagline != blank %}
+              <p class="text-accent-contrast font-display font-bold text-lg mt-2">{{ section.settings.tagline }}</p>
+            {% endif %}
           </div>
 
           <!-- Rating -->
@@ -52,12 +56,15 @@
                 {% render 'icon-star', size: 20, fill: '#facc15', stroke: '#facc15' %}
               {% endfor %}
             </div>
-            <span class="text-background/50 text-sm font-medium">10,000+ mañanas sin cruda</span>
+            <span class="text-background/50 text-sm font-medium">{{ section.settings.review_label | default: '10,000+ mañanas sin cruda' }}</span>
           </div>
 
-          <p class="text-background/60 leading-relaxed text-sm">
-            {{ product.description | default: 'Buenacopa ayuda a atacar la cruda de raíz previniendo sus síntomas para que despiertes listo para tener un gran día.' }}
-          </p>
+          <!-- Description — always from the product itself -->
+          {% if product.description != blank %}
+            <div class="text-background/60 leading-relaxed text-sm product-description">
+              {{ product.description }}
+            </div>
+          {% endif %}
 
           <!-- Benefits -->
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
@@ -85,7 +92,7 @@
                 data-variant-price="{{ variant.price }}"
                 data-variant-compare-price="{{ variant.compare_at_price }}"
                 data-variant-available="{{ variant.available }}"
-                class="variant-btn relative px-5 py-4 rounded-2xl border-2 transition-all duration-200 lg:flex lg:flex-col lg:items-start lg:justify-start {% if forloop.first %}border-accent bg-accent/10 selected{% else %}border-background/15 bg-background/5 hover:border-background/25{% endif %} {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
+                class="variant-btn relative px-4 py-3.5 rounded-2xl border-2 transition-all duration-200 text-left {% if forloop.first %}border-accent bg-accent/10 selected{% else %}border-background/15 bg-background/5 hover:border-background/25{% endif %} {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
                 {% unless variant.available %}disabled{% endunless %}
               >
                 {% unless variant.available %}
@@ -97,13 +104,18 @@
                 {% if variant.available and forloop.index == 3 %}
                   <span class="absolute -top-0 right-3 text-[10px] font-bold uppercase tracking-wide px-2.5 py-0.5 rounded-b-lg bg-primary/15 text-primary">Mejor precio</span>
                 {% endif %}
-                <div class="flex items-start justify-between gap-3 w-full">
+
+                <!-- Radio + Title row -->
+                <div class="flex items-center justify-between gap-3 w-full">
                   <div class="flex items-center gap-3 min-w-0 shrink">
                     <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 {% if forloop.first %}border-accent{% else %}border-background/30{% endif %}">
-                      {% if forloop.first %}<div class="w-2.5 h-2.5 rounded-full bg-accent"></div>{% endif %}
+                      {% if forloop.first %}
+                        <div class="w-2.5 h-2.5 rounded-full bg-accent"></div>
+                      {% endif %}
                     </div>
-                    <span class="font-bold text-background text-sm">{{ variant.title }}</span>
+                    <span class="font-bold text-background text-sm leading-snug">{{ variant.title }}</span>
                   </div>
+                  <!-- Price mobile -->
                   <div class="lg:hidden flex items-baseline gap-2 shrink-0">
                     {% if variant.compare_at_price > variant.price %}
                       <span class="text-background/40 line-through text-sm">{{ variant.compare_at_price | money_without_trailing_zeros }}</span>
@@ -111,8 +123,9 @@
                     <span class="font-display font-black text-lg text-background">{{ variant.price | money_without_trailing_zeros }}</span>
                   </div>
                 </div>
-                <!-- Desktop price -->
-                <div class="hidden lg:flex lg:pl-8 lg:mt-2 items-center gap-2">
+
+                <!-- Price desktop -->
+                <div class="hidden lg:flex lg:pl-8 lg:mt-1.5 items-baseline gap-2">
                   {% if variant.compare_at_price > variant.price %}
                     <span class="text-background/40 line-through text-sm">{{ variant.compare_at_price | money_without_trailing_zeros }}</span>
                   {% endif %}
@@ -193,6 +206,7 @@
               {% endif %}
             {% endfor %}
           </div>
+
         </div>
       </div>
     </div>
@@ -229,6 +243,12 @@
       "id": "tagline",
       "label": "Product Tagline",
       "default": "Bienestar Post-Fiesta"
+    },
+    {
+      "type": "text",
+      "id": "review_label",
+      "label": "Review Label",
+      "default": "10,000+ mañanas sin cruda"
     },
     {
       "type": "url",
