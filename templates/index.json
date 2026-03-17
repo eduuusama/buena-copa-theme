@@ -90,49 +90,23 @@
     },
     "ugc": {
       "type": "ugc-testimonials",
-      "blocks": {
-        "gustavo": {
-          "type": "testimonial",
-          "settings": {
-            "name": "Gustavo",
-            "quote": "Funciona increíble, lo recomiendo al 100%",
-            "video_url": ""
-          }
-        },
-        "gerardo": {
-          "type": "testimonial",
-          "settings": {
-            "name": "Gerardo",
-            "quote": "Le regalé a mis amigos y ya todos lo usan",
-            "video_url": ""
-          }
-        },
-        "nortena": {
-          "type": "testimonial",
-          "settings": {
-            "name": "La Norteña",
-            "quote": "Amanecí como si no hubiera tomado nada",
-            "video_url": ""
-          }
-        },
-        "viri": {
-          "type": "testimonial",
-          "settings": {
-            "name": "Viri",
-            "quote": "No salgo de fiesta sin mi Buenacopa",
-            "video_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "gustavo",
-        "gerardo",
-        "nortena",
-        "viri"
-      ],
       "settings": {
         "heading_line_1": "Lo que dicen quienes ya lo probaron",
-        "heading_line_2": "(y no tuvieron cruda)"
+        "heading_line_2": "(y no tuvieron cruda)",
+        "video_1": "shopify://files/videos/Ad_Conversion_Sept_Gustavo (1).mp4",
+        "name_1": "Gustavo",
+        "quote_1": "Funciona increíble, lo recomiendo al 100%",
+        "video_2": "shopify://files/videos/Reel Gerardo H_sutitulos.mp4",
+        "name_2": "Gerardo",
+        "quote_2": "Le regalé a mis amigos y ya todos lo usan",
+        "video_3": "shopify://files/videos/Ad Reel _Testimonio Norteña_.mp4",
+        "name_3": "La Norteña",
+        "quote_3": "Amanecí como si no hubiera tomado nada",
+        "video_4": "shopify://files/videos/Reel Testimonio Viri.mp4",
+        "name_4": "Viri",
+        "quote_4": "No salgo de fiesta sin mi Buenacopa",
+        "name_5": "",
+        "quote_5": ""
       }
     },
     "how-it-works": {
