@@ -18,6 +18,18 @@
     "sections": {
       "header": {
         "type": "header",
+        "blocks": {
+          "nav_link_tqyDYB": {
+            "type": "nav_link",
+            "settings": {
+              "label": "",
+              "url": ""
+            }
+          }
+        },
+        "block_order": [
+          "nav_link_tqyDYB"
+        ],
         "settings": {
           "cta_text": "Comprar"
         }
