@@ -58,37 +58,6 @@
     },
     "content_for_index": [],
     "blocks": {
-      "2461320892803247993": {
-        "type": "shopify://apps/coco-whatsapp-ai-cart-recovery/blocks/coco_bubble/b8c5208f-c3e1-45c9-82ae-fc9678081de8",
-        "disabled": false,
-        "settings": {
-          "button_one": "I need some advice",
-          "button_two": "How to use your product",
-          "button_three": "I want a discount code",
-          "delay": 0,
-          "show_mobile_only": false,
-          "show_notification_bubble": true,
-          "disable_breathe": false,
-          "show_ai_mention": false,
-          "bubble_color": "#25d366",
-          "whatsapp_message": "Hello, I'm online!",
-          "text_color": "white",
-          "text_color_background": "black",
-          "cross_notification_color": "white",
-          "shop_pic": "https://my-coco.ai/wp-content/uploads/2024/08/coco-profil-pic.png",
-          "shop_name": "",
-          "status": "Online",
-          "status_color": "green",
-          "cross_color": "white",
-          "header_color": "black",
-          "buttons_color": "black",
-          "whatsapp_message_inside": "Hello",
-          "pre_message_input": "Write your message",
-          "tooltip_position": "full-coco-right",
-          "custom_css": "",
-          "path_filter": ""
-        }
-      },
       "14060646107696862457": {
         "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
         "disabled": false,
@@ -100,11 +69,6 @@
         "settings": {
           "position": "right"
         }
-      },
-      "15181020662106344915": {
-        "type": "shopify://apps/judge-me-reviews/blocks/popup_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-        "disabled": false,
-        "settings": {}
       },
       "855628211100114053": {
         "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
@@ -131,6 +95,47 @@
           "cards_background": "#FFFFFF",
           "cards_border_color": "rgba(0,0,0,0)"
         }
+      },
+      "2461320892803247993": {
+        "type": "shopify://apps/coco-whatsapp-ai-cart-recovery/blocks/coco_bubble/b8c5208f-c3e1-45c9-82ae-fc9678081de8",
+        "disabled": false,
+        "settings": {
+          "button_one": "¿Cómo funciona Buenacopa?",
+          "button_two": "¿Cuándo y cómo lo tomo?",
+          "button_three": "Quiero un descuento",
+          "delay": 2,
+          "show_mobile_only": false,
+          "show_notification_bubble": true,
+          "disable_breathe": false,
+          "show_ai_mention": false,
+          "bubble_color": "#25d366",
+          "whatsapp_message": "¡Hola! Te ayudo con Buenacopa 🥂",
+          "text_color": "white",
+          "text_color_background": "#071D40",
+          "cross_notification_color": "white",
+          "shop_pic": "https://cdn.shopify.com/s/files/1/0689/2568/5949/files/WhatsApp_Image_2025-06-02_at_4.48.00_PM.jpg?v=1753225757",
+          "shop_name": "",
+          "status": "En línea",
+          "status_color": "green",
+          "cross_color": "white",
+          "header_color": "#071D40",
+          "buttons_color": "#071D40",
+          "whatsapp_message_inside": "¡Hey! 👋   Disfrutar sin cruda ya es posible 😎  ¿En qué te ayudo? 🌅",
+          "pre_message_input": "Escribe tu pregunta aquí...",
+          "tooltip_position": "full-coco-right",
+          "custom_css": "",
+          "path_filter": ""
+        }
+      },
+      "15181020662106344915": {
+        "type": "shopify://apps/judge-me-reviews/blocks/popup_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": true,
+        "settings": {}
+      },
+      "4113930173634242220": {
+        "type": "shopify://apps/referral-program-shopjar/blocks/app-shopjar/bf205236-47cf-42ff-acf9-5de1b0804e4d",
+        "disabled": false,
+        "settings": {}
       }
     }
   }
