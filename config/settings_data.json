@@ -24,10 +24,23 @@
       },
       "footer": {
         "type": "footer",
+        "blocks": {
+          "link_group_nNFVhC": {
+            "type": "link_group",
+            "settings": {
+              "heading": "Mas Informacion",
+              "menu": "footer"
+            }
+          }
+        },
+        "block_order": [
+          "link_group_nNFVhC"
+        ],
         "settings": {
           "tagline": "Bienestar post-fiesta. Celebra hoy, conquista mañana.",
-          "instagram_url": "",
-          "facebook_url": ""
+          "payment_enable": true,
+          "show_policy": false,
+          "copyright_text": "Todos los derechos reservados."
         }
       }
     },
