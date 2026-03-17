@@ -8,11 +8,254 @@
     "theme_support_url": "https://buena-copa-mx.myshopify.com"
   },
   {
-    "name": "Social media",
+    "name": "Marca",
     "settings": [
       {
         "type": "header",
-        "content": "Social media accounts"
+        "content": "Identidad de marca"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logotipo"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "text",
+        "id": "brand_tagline",
+        "label": "Eslogan de marca",
+        "default": "Bienestar post-fiesta. Celebra hoy, conquista mañana."
+      }
+    ]
+  },
+  {
+    "name": "Colores",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Colores base"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Fondo principal",
+        "default": "#071D40"
+      },
+      {
+        "type": "color",
+        "id": "color_foreground",
+        "label": "Texto principal",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Texto secundario / muted",
+        "default": "#94A3B8"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Bordes",
+        "default": "#1E3A5F"
+      },
+      {
+        "type": "header",
+        "content": "Colores de acento"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Color primario",
+        "default": "#004AB2"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Color secundario",
+        "default": "#0A2A5E"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Color acento",
+        "default": "#00AB43"
+      },
+      {
+        "type": "color",
+        "id": "color_cta_green",
+        "label": "Verde CTA (botón de compra)",
+        "default": "#00AB43"
+      },
+      {
+        "type": "header",
+        "content": "Colores de secciones"
+      },
+      {
+        "type": "color",
+        "id": "color_header_bg",
+        "label": "Fondo del encabezado",
+        "default": "#071D40"
+      },
+      {
+        "type": "color",
+        "id": "color_hero_bg",
+        "label": "Fondo del hero",
+        "default": "#071D40"
+      },
+      {
+        "type": "color",
+        "id": "color_section_alt",
+        "label": "Fondo de sección alternativa",
+        "default": "#0A2A5E"
+      }
+    ]
+  },
+  {
+    "name": "Tipografía",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Fuentes"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_sans",
+        "label": "Fuente principal (sans-serif)",
+        "default": "inter_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_display",
+        "label": "Fuente de display / títulos",
+        "default": "oswald_n7"
+      },
+      {
+        "type": "header",
+        "content": "Tamaño de texto"
+      },
+      {
+        "type": "range",
+        "id": "font_size_base",
+        "label": "Tamaño base de fuente (px)",
+        "min": 12,
+        "max": 20,
+        "step": 1,
+        "default": 16,
+        "unit": "px"
+      }
+    ]
+  },
+  {
+    "name": "Diseño",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Ancho y espaciado"
+      },
+      {
+        "type": "range",
+        "id": "layout_max_width",
+        "label": "Ancho máximo del contenido (px)",
+        "min": 960,
+        "max": 1600,
+        "step": 40,
+        "default": 1280,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "layout_section_spacing",
+        "label": "Espaciado entre secciones (px)",
+        "min": 24,
+        "max": 120,
+        "step": 4,
+        "default": 64,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Bordes redondeados"
+      },
+      {
+        "type": "range",
+        "id": "layout_border_radius",
+        "label": "Radio de borde (px)",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "default": 8,
+        "unit": "px"
+      }
+    ]
+  },
+  {
+    "name": "Barra de anuncios",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "announcement_enable",
+        "label": "Activar barra de anuncios",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Texto del anuncio",
+        "default": "¡Envío gratis en pedidos mayores a $500 MXN!"
+      },
+      {
+        "type": "url",
+        "id": "announcement_link",
+        "label": "Enlace del anuncio"
+      },
+      {
+        "type": "color",
+        "id": "announcement_bg_color",
+        "label": "Color de fondo de la barra",
+        "default": "#00AB43"
+      },
+      {
+        "type": "color",
+        "id": "announcement_text_color",
+        "label": "Color de texto de la barra",
+        "default": "#FFFFFF"
+      }
+    ]
+  },
+  {
+    "name": "Carrito",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_enable",
+        "label": "Activar carrito lateral (drawer)",
+        "default": true,
+        "info": "Si está desactivado, el carrito abrirá en una página separada."
+      }
+    ]
+  },
+  {
+    "name": "Pie de página",
+    "settings": [
+      {
+        "type": "text",
+        "id": "footer_copyright_text",
+        "label": "Texto de derechos de autor",
+        "default": "Todos los derechos reservados."
+      }
+    ]
+  },
+  {
+    "name": "Redes sociales",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Cuentas de redes sociales"
       },
       {
         "type": "url",
@@ -28,6 +271,22 @@
         "type": "url",
         "id": "social_tiktok_link",
         "label": "TikTok"
+      },
+      {
+        "type": "url",
+        "id": "social_twitter_link",
+        "label": "Twitter / X"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube_link",
+        "label": "YouTube"
+      },
+      {
+        "type": "url",
+        "id": "social_whatsapp_link",
+        "label": "WhatsApp",
+        "info": "Usa el formato: https://wa.me/521XXXXXXXXXX"
       }
     ]
   }
