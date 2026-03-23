@@ -1,6 +1,6 @@
 /**
  * Buenacopa Theme - Video Section
- * Handles: play/pause, single-video-at-a-time, lazy loading
+ * Handles: play/pause, single-video-at-a-time, click-to-load (no preload)
  */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -15,6 +15,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!video) return;
 
     card.addEventListener('click', function () {
+      // Load video src on first click if not yet loaded
+      if (!video.src && video.dataset.src) {
+        video.src = video.dataset.src;
+        video.removeAttribute('data-src');
+      }
+
       if (video.paused) {
         // Pause any currently playing video
         if (activeVideo && activeVideo !== video) {
@@ -52,22 +58,4 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   });
-
-  // Lazy load videos with IntersectionObserver
-  var ugcSection = document.getElementById('ugc-section');
-  if (ugcSection) {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var videos = ugcSection.querySelectorAll('video[data-src]');
-          videos.forEach(function (video) {
-            video.src = video.dataset.src;
-            video.removeAttribute('data-src');
-          });
-          observer.disconnect();
-        }
-      });
-    }, { rootMargin: '200px' });
-    observer.observe(ugcSection);
-  }
 });
