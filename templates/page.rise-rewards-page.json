@@ -20,22 +20,22 @@
         "rise_ai_gift_cards_loyalty_rise_rewards_page_hero_extension_XqXFGB": {
           "type": "shopify://apps/rise-gift-cards-store-credit/blocks/rise-rewards-page-hero-extension/d837f9d0-9f22-491a-94b6-f32b41864892",
           "settings": {
-            "background_image": "shopify://shop_images/rise-hero-background-image.png",
-            "title": "Our Rewards",
-            "subtitle": "Simple ways to earn store credit",
-            "background_color": "#E6E6E6",
-            "text_color": "#000000",
+            "background_image": "shopify://shop_images/DTS_Banquet_Daniel_Faro_Photos_ID5390.jpg",
+            "title": "Nuestras Recompensas",
+            "subtitle": "Grana crédito en tus próximas compras",
+            "background_color": "#e6e6e6",
+            "text_color": "#004ab2",
             "show_text_container": true,
-            "container_color": "#FFFFFF"
+            "container_color": "#ffffff"
           }
         },
         "rise_ai_gift_cards_loyalty_rise_store_credit_banner_extension_iqt4kT": {
           "type": "shopify://apps/rise-gift-cards-store-credit/blocks/rise-store-credit-banner-extension/d837f9d0-9f22-491a-94b6-f32b41864892",
           "settings": {
-            "backgroundColor": "#000000",
+            "backgroundColor": "#00ab43",
             "textColor": "#ffffff",
-            "with_credit_text": "Your store credit balance:",
-            "with_credit_button_label": "Apply Store Credit",
+            "with_credit_text": "Tu saldo de crédito:",
+            "with_credit_button_label": "Usar mi crédito",
             "preview_state": "with_credit",
             "show_without_credit": false,
             "no_credit_text": "No credit yet. Shop and earn store credit",
@@ -49,42 +49,42 @@
         "rise_ai_gift_cards_loyalty_rise_rewards_page_section_extension_pgPLTY": {
           "type": "shopify://apps/rise-gift-cards-store-credit/blocks/rise-rewards-page-section-extension/d837f9d0-9f22-491a-94b6-f32b41864892",
           "settings": {
-            "title": "How to earn store credit",
-            "background_color": "#FFFFFF",
-            "text_color": "#000000",
+            "title": "Cómo ganar crédito",
+            "background_color": "#ffffff",
+            "text_color": "#071d40",
             "show_column_container": false,
-            "container_color": "#EEEEEE",
-            "column1_image": "shopify://shop_images/rise-first-purchase-image.png",
-            "column1_title": "Place your first order",
-            "column1_subtitle": "Get $5 credit",
-            "column2_image": "shopify://shop_images/rise-referrals-image.png",
-            "column2_title": "Refer a friend",
-            "column2_subtitle": "Give $5 credit, get $5 credit",
-            "column3_image": "shopify://shop_images/rise-cashback-image.png",
-            "column3_title": "Shop $100+",
-            "column3_subtitle": "Get $5 credit per $100 spent"
+            "container_color": "#eeeeee",
+            "column1_image": "shopify://shop_images/ChatGPT_Image_29_ene_2026_01_23_46_p.m..png",
+            "column1_title": "Invita a celebrar mejor",
+            "column1_subtitle": "Comparte tu link personalizado",
+            "column2_image": "shopify://shop_images/ChatGPT_Image_29_ene_2026_01_09_57_p.m..png",
+            "column2_title": "Gana 100, regala 100",
+            "column2_subtitle": "Cuando tu amigo compra, ambos reciben 100 MXN de crédito",
+            "column3_image": "shopify://shop_images/ChatGPT_Image_29_ene_2026_01_12_26_p.m..png",
+            "column3_title": "Úsalo en tus compras",
+            "column3_subtitle": "Tu crédito es acumulable y no expira"
           }
         },
         "rise_ai_gift_cards_loyalty_rise_referrals_extension_bjBjwa": {
           "type": "shopify://apps/rise-gift-cards-store-credit/blocks/rise-referrals-extension/d837f9d0-9f22-491a-94b6-f32b41864892",
           "settings": {
             "preview_state": "logged_in",
-            "backgroundColor": "#f3f3f3",
-            "contentColor": "#000000",
+            "backgroundColor": "#edf1f2",
+            "contentColor": "#071d40",
             "contentAlignment": "center",
             "buttonWidth": "stretched",
-            "caption": "Refer a friend",
-            "title": "Give $10 Get $10",
-            "subtitle": "Refer a friend - they’ll receive $10 off their first order, and you’ll earn $10 in return.",
-            "button_text": "Get your link",
-            "login_button_text": "Log in",
+            "caption": "COMPARTE BUENACOPA",
+            "title": "Da 100, Recibe 100",
+            "subtitle": "Comparte Buenacopa. Tus amigos reciben $100 de crédito y tú también ganas $100 cuando hacen su compra.",
+            "button_text": "Obtener mi link",
+            "login_button_text": "Inicia sesión y gana $100",
             "enable_facebook": true,
             "enable_twitter": true,
             "enable_whatsapp": true,
             "enable_email": true,
             "enable_messenger": true,
             "enable_imessage": true,
-            "preset_message": "Check out this store and get a reward on your first purchase!"
+            "preset_message": "Descubrí la mejor forma de prevenir la cruda. Te comparto $100 para que lo pruebes tú también. Vale la pena ✨"
           }
         },
         "rise_ai_gift_cards_loyalty_rise_rewards_page_faq_extension_UDYWD9": {
@@ -92,7 +92,7 @@
           "settings": {
             "caption": "FAQ",
             "title": "Everything you need to know",
-            "background_color": "#FFFFFF",
+            "background_color": "#ffffff",
             "text_color": "#000000",
             "row1_question": "Where can I see my store credit?",
             "row1_answer": "Write your answer here",
@@ -110,6 +110,7 @@
         "rise_ai_gift_cards_loyalty_rise_referrals_extension_bjBjwa",
         "rise_ai_gift_cards_loyalty_rise_rewards_page_faq_extension_UDYWD9"
       ],
+      "custom_css": [],
       "settings": {}
     }
   },
