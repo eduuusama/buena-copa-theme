@@ -138,6 +138,30 @@
         "type": "shopify://apps/referral-program-shopjar/blocks/app-shopjar/bf205236-47cf-42ff-acf9-5de1b0804e4d",
         "disabled": false,
         "settings": {}
+      },
+      "5061340767713251008": {
+        "type": "shopify://apps/rise-gift-cards-store-credit/blocks/rise-referrals-reward-extension/d837f9d0-9f22-491a-94b6-f32b41864892",
+        "disabled": true,
+        "settings": {
+          "preview_state": "button_only",
+          "position": "bottom-middle",
+          "button_background_color": "#FFFFFF",
+          "button_text_color": "#000000",
+          "floating_button_text": "Claim $10 Referral Reward",
+          "rewardModal_background_color": "#FFFFFF",
+          "rewardModal_text_color": "#000000",
+          "rewardModal_button_color": "#000000",
+          "rewardModal_button_text_color": "#FFFFFF",
+          "rewardModal_button_width": "fit",
+          "error_color": "#FF0000",
+          "rewardModal_title": "Your friend sent you $10 for your first purchase",
+          "rewardModal_subtitle": "Enter your email to get your reward",
+          "rewardModal_button_text": "Get Reward",
+          "success_title": "You're all set!",
+          "success_subtitle": "Your credit will be available at checkout once you log in. You can also find the details in your inbox.",
+          "success_button_text": "Start Shopping",
+          "success_button_link": "shopify://collections/all"
+        }
       }
     }
   }

@@ -241,6 +241,36 @@
     },
     "17735003308726751e": {
       "type": "apps",
+      "blocks": {
+        "rise_gift_cards_store_credit_rise_referrals_extension_CdEjLz": {
+          "type": "shopify://apps/rise-gift-cards-store-credit/blocks/rise-referrals-extension/d837f9d0-9f22-491a-94b6-f32b41864892",
+          "settings": {
+            "preview_state": "logged_in",
+            "backgroundColor": "#FFFFFF",
+            "contentColor": "#004ab2",
+            "contentAlignment": "center",
+            "buttonWidth": "stretched",
+            "caption": "BUENACOPA 100/100",
+            "title": "Da $100, Recibe $100",
+            "subtitle": "Si Buenacopa te funcionó, pásalo. Ambos reciben $100.",
+            "button_text": "Obtener mi link",
+            "login_button_text": "Inicia sesión y gana $100",
+            "enable_facebook": true,
+            "enable_twitter": true,
+            "enable_whatsapp": true,
+            "enable_email": true,
+            "enable_messenger": true,
+            "enable_imessage": true,
+            "preset_message": "Check out this store and get a reward on your first purchase!"
+          }
+        }
+      },
+      "block_order": [
+        "rise_gift_cards_store_credit_rise_referrals_extension_CdEjLz"
+      ],
+      "custom_css": [
+        "button,a,input{background:#08b43c!important;color:#fff!important;border:none!important;border-radius:999px!important;box-shadow:none!important;font-weight:700!important;}"
+      ],
       "settings": {}
     },
     "177350034795b0e5ea": {
