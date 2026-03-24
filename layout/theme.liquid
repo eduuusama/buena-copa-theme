@@ -12,29 +12,20 @@
 
   {{ content_for_header }}
 
-  <!-- Preconnect (only critical origins) -->
+  <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.judge.me">
 
-  <!-- Preload LCP hero image for fastest paint -->
+  <!-- Preload LCP hero image -->
   <link rel="preload" as="image" href="{{ 'hero-sachet.jpg' | asset_url }}" fetchpriority="high">
 
-  <!-- Critical CSS (inline above-the-fold font declarations) -->
-  <style>
-    @font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v18/UcCo3FwrK3iLTcviYwY.woff2) format('woff2')}
-    @font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v18/UcCo3FwrK3iLTcviYwY.woff2) format('woff2')}
-    @font-face{font-family:'Inter';font-style:normal;font-weight:700;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v18/UcCo3FwrK3iLTcviYwY.woff2) format('woff2')}
-    @font-face{font-family:'Nunito';font-style:normal;font-weight:700;font-display:swap;src:url(https://fonts.gstatic.com/s/nunito/v26/XRXI3I6Li01BKofiOc5wtlZ2di8HDIkhdTQ3j6zbXWjgevT5.woff2) format('woff2')}
-    @font-face{font-family:'Nunito';font-style:normal;font-weight:800;font-display:swap;src:url(https://fonts.gstatic.com/s/nunito/v26/XRXI3I6Li01BKofiOc5wtlZ2di8HDIkhdTQ3j6zbXWjgevT5.woff2) format('woff2')}
-    @font-face{font-family:'Nunito';font-style:normal;font-weight:900;font-display:swap;src:url(https://fonts.gstatic.com/s/nunito/v26/XRXI3I6Li01BKofiOc5wtlZ2di8HDIkhdTQ3j6zbXWjgevT5.woff2) format('woff2')}
-  </style>
-
-  <!-- Load Google Fonts async (non-render-blocking) -->
+  <!-- Fonts (non-render-blocking) -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;700;800;900&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"></noscript>
 
-  <!-- Tailwind (compiled & purged) -->
+  <!-- Tailwind (compiled & purged — replaces CDN) -->
   {{ 'tailwind.min.css' | asset_url | stylesheet_tag }}
 
   <!-- Theme CSS -->
@@ -72,29 +63,9 @@
 
   {% render 'cart-drawer' %}
 
-  <!-- Theme JS (all deferred) -->
   <script src="{{ 'theme.min.js' | asset_url }}" defer></script>
   <script src="{{ 'cart-drawer.min.js' | asset_url }}" defer></script>
   <script src="{{ 'product-form.min.js' | asset_url }}" defer></script>
   <script src="{{ 'video-section.min.js' | asset_url }}" defer></script>
-
-  <!-- Defer 3rd-party scripts until after user interaction -->
-  <script>
-    (function(){
-      var loaded = false;
-      function loadThirdParty(){
-        if(loaded) return;
-        loaded = true;
-        var jm = document.createElement('script');
-        jm.src = 'https://cdn.judge.me/widget_preloader.js';
-        jm.async = true;
-        document.body.appendChild(jm);
-      }
-      ['scroll','click','touchstart','mousemove','keydown'].forEach(function(evt){
-        document.addEventListener(evt, loadThirdParty, {once:true, passive:true});
-      });
-      setTimeout(loadThirdParty, 5000);
-    })();
-  </script>
 </body>
 </html>
