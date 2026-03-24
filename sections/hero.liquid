@@ -31,6 +31,8 @@
         {% if section.settings.hero_image %}
           <img
             src="{{ section.settings.hero_image | image_url: width: 1152 }}"
+            srcset="{{ section.settings.hero_image | image_url: width: 400 }} 400w, {{ section.settings.hero_image | image_url: width: 800 }} 800w, {{ section.settings.hero_image | image_url: width: 1152 }} 1152w"
+            sizes="(max-width: 768px) 320px, (max-width: 1024px) 50vw, 576px"
             alt="Buenacopa - Sachet con cápsulas"
             class="w-full max-w-xs lg:max-w-xl object-contain"
             width="576"
@@ -40,6 +42,8 @@
         {% else %}
           <img
             src="{{ 'hero-sachet.jpg' | asset_url }}"
+            srcset="{{ 'hero-sachet.jpg' | asset_url }} 576w"
+            sizes="(max-width: 768px) 320px, (max-width: 1024px) 50vw, 576px"
             alt="Buenacopa - Sachet con cápsulas"
             class="w-full max-w-xs lg:max-w-xl object-contain"
             width="576"
