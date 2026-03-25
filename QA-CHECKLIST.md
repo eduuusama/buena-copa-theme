@@ -72,6 +72,14 @@ The original Be Yours theme images are no longer in Shopify Files. Upload new im
 - [ ] All product images load correctly on homepage product showcase
 - [ ] Product thumbnails are clickable and change main image
 
+### Payment Methods (Footer)
+Currently only PayPal icon shows in footer "Métodos de pago". This is controlled by **Settings > Payments** in Shopify Admin, not the theme.
+
+- [ ] Verify credit/debit card payments are enabled (Visa, Mastercard, Amex will auto-show icons)
+- [ ] Verify MercadoPago is configured as a payment provider (icon will auto-appear)
+- [ ] Check **Settings > Payments** to see all active providers
+- [ ] After enabling, payment icons automatically render in the footer via `shop.enabled_payment_types`
+
 ---
 
 ## 3. PAGE-BY-PAGE QA
