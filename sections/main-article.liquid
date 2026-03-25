@@ -1,0 +1,54 @@
+<article class="section-padding bg-background overflow-hidden">
+  <div class="container-custom">
+    <div class="max-w-3xl mx-auto">
+      <a href="{{ blog.url }}" class="text-accent text-sm font-medium hover:underline mb-4 inline-block">&larr; {{ blog.title }}</a>
+
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-foreground mb-4">
+        {{ article.title }}
+      </h1>
+
+      <div class="flex items-center gap-3 text-muted-foreground text-sm mb-8">
+        <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%d %b %Y' }}</time>
+        {%- if article.author -%}
+          <span>&middot;</span>
+          <span>{{ article.author }}</span>
+        {%- endif -%}
+      </div>
+
+      {%- if article.image -%}
+        <div class="aspect-video rounded-2xl overflow-hidden bg-secondary mb-10">
+          <img
+            src="{{ article.image | image_url: width: 1200 }}"
+            srcset="{{ article.image | image_url: width: 600 }} 600w, {{ article.image | image_url: width: 1200 }} 1200w"
+            sizes="(max-width: 768px) 100vw, 768px"
+            alt="{{ article.image.alt | default: article.title }}"
+            class="w-full h-full object-cover"
+            width="768"
+            height="432"
+          >
+        </div>
+      {%- endif -%}
+
+      <div class="text-foreground/80 leading-relaxed space-y-4 article-content">
+        {{ article.content }}
+      </div>
+
+      {%- if article.tags.size > 0 -%}
+        <div class="mt-10 pt-6 border-t border-border flex flex-wrap gap-2">
+          {%- for tag in article.tags -%}
+            <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="text-xs font-medium px-3 py-1 rounded-full bg-secondary text-muted-foreground hover:text-foreground transition-colors">
+              {{ tag }}
+            </a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Artículo",
+  "settings": []
+}
+{% endschema %}

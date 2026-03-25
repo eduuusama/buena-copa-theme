@@ -76,7 +76,7 @@
 
       {% if section.settings.payment_enable %}
         <div class="footer__payment">
-          <span class="visually-hidden">Métodos de pago</span>
+          <span class="visually-hidden">{{ 'footer.payment_methods' | t }}</span>
           <ul class="list list-payment flex flex-wrap gap-1" role="list">
             {% for type in shop.enabled_payment_types %}
               <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>

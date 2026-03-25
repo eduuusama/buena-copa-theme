@@ -1,0 +1,61 @@
+{%- paginate blog.articles by 12 -%}
+<section class="section-padding bg-background overflow-hidden">
+  <div class="container-custom">
+    <h1 class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-foreground mb-10">
+      {{ blog.title }}
+    </h1>
+
+    {%- if blog.articles.size > 0 -%}
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        {%- for article in blog.articles -%}
+          <article class="group">
+            {%- if article.image -%}
+              <a href="{{ article.url }}" class="block aspect-[16/10] rounded-xl overflow-hidden bg-secondary mb-4">
+                <img
+                  src="{{ article.image | image_url: width: 800 }}"
+                  srcset="{{ article.image | image_url: width: 400 }} 400w, {{ article.image | image_url: width: 800 }} 800w"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  alt="{{ article.image.alt | default: article.title }}"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                  width="400"
+                  height="250"
+                >
+              </a>
+            {%- endif -%}
+            <time class="text-muted-foreground text-xs uppercase tracking-wider" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+              {{ article.published_at | date: '%d %b %Y' }}
+            </time>
+            <h2 class="font-bold text-foreground text-lg mt-1 mb-2 group-hover:text-accent transition-colors">
+              <a href="{{ article.url }}">{{ article.title }}</a>
+            </h2>
+            <p class="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+              {{ article.excerpt_or_content | strip_html | truncate: 150 }}
+            </p>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="mt-12 flex justify-center gap-3" aria-label="{{ 'blog.pagination_aria' | t }}">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="btn-secondary text-sm">&laquo; {{ 'general.pagination.previous' | t }}</a>
+          {%- endif -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="btn-secondary text-sm">{{ 'general.pagination.next' | t }} &raquo;</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <p class="text-muted-foreground text-center py-12">{{ 'blog.empty' | t }}</p>
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": []
+}
+{% endschema %}

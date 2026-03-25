@@ -20,7 +20,7 @@
       {% endfor %}
 
       <!-- Cart Button -->
-      <button onclick="CartDrawer.open()" class="relative text-foreground hover:text-accent transition-colors" aria-label="Carrito">
+      <button onclick="CartDrawer.open()" class="relative text-foreground hover:text-accent transition-colors" aria-label="{{ 'sections.header.cart_aria' | t }}">
         {% render 'icon-cart', size: 20 %}
         <span id="cart-count-desktop" class="absolute -top-2 -right-2 h-4 w-4 rounded-full flex items-center justify-center text-[10px] bg-accent text-accent-foreground border-0" style="display:none;">0</span>
       </button>
@@ -32,11 +32,11 @@
 
     <!-- Mobile -->
     <div class="flex items-center gap-3 md:hidden">
-      <button onclick="CartDrawer.open()" class="relative text-foreground hover:text-accent transition-colors" aria-label="Carrito">
+      <button onclick="CartDrawer.open()" class="relative text-foreground hover:text-accent transition-colors" aria-label="{{ 'sections.header.cart_aria' | t }}">
         {% render 'icon-cart', size: 20 %}
         <span id="cart-count-mobile" class="absolute -top-2 -right-2 h-4 w-4 rounded-full flex items-center justify-center text-[10px] bg-accent text-accent-foreground border-0" style="display:none;">0</span>
       </button>
-      <button id="mobile-menu-toggle" aria-label="Menú" class="text-foreground">
+      <button id="mobile-menu-toggle" aria-label="{{ 'sections.header.menu_aria' | t }}" aria-expanded="false" class="text-foreground">
         <span id="menu-icon-open">{% render 'icon-menu', size: 24 %}</span>
         <span id="menu-icon-close" style="display:none;">{% render 'icon-x', size: 24 %}</span>
       </button>

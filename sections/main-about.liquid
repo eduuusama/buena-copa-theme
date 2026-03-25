@@ -1,0 +1,98 @@
+<section class="section-padding bg-background overflow-hidden">
+  <div class="container-custom">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-foreground mb-6">
+        {{ page.title }}
+      </h1>
+
+      {%- if page.content != blank -%}
+        <div class="text-muted-foreground leading-relaxed space-y-4 prose-invert">
+          {{ page.content }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%}Founder video placeholder — ready for Natalia's content{%- endcomment -%}
+    {%- if section.settings.video != blank -%}
+      <div class="max-w-3xl mx-auto mt-12">
+        <div class="aspect-video rounded-2xl overflow-hidden bg-muted">
+          <video
+            class="w-full h-full object-cover"
+            controls
+            playsinline
+            preload="metadata"
+            {% if section.settings.video.preview_image %}poster="{{ section.settings.video.preview_image | image_url: width: 1200 }}"{% endif %}
+          >
+            {%- for source in section.settings.video.sources -%}
+              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {%- endfor -%}
+          </video>
+        </div>
+        {%- if section.settings.video_caption != blank -%}
+          <p class="text-muted-foreground text-sm mt-3 text-center">{{ section.settings.video_caption }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%}Team / Values section{%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="max-w-4xl mx-auto mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {%- for block in section.blocks -%}
+          <div class="text-center" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}
+              <img src="{{ block.settings.icon | image_url: width: 80 }}" alt="" class="w-10 h-10 mx-auto mb-4" loading="lazy" width="40" height="40">
+            {%- endif -%}
+            <h3 class="font-bold text-foreground text-lg mb-2">{{ block.settings.title }}</h3>
+            <p class="text-muted-foreground text-sm leading-relaxed">{{ block.settings.description }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sobre Nosotros",
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video del fundador"
+    },
+    {
+      "type": "text",
+      "id": "video_caption",
+      "label": "Video caption"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Valor",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icono"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Descripción"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sobre Nosotros"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-about",
+      "blocks": {
+        "value-1": {
+          "type": "value",
+          "settings": {
+            "title": "Hecho en México",
+            "description": "Fabricado en instalaciones reguladas por COFEPRIS con Buenas Prácticas de Manufactura (GMP)."
+          }
+        },
+        "value-2": {
+          "type": "value",
+          "settings": {
+            "title": "Ingredientes Naturales",
+            "description": "Sin colorantes artificiales, sin cafeína, sin taurina, sin azúcar. Apto para vegetarianos y libre de gluten."
+          }
+        },
+        "value-3": {
+          "type": "value",
+          "settings": {
+            "title": "Ciencia Respaldada",
+            "description": "Fórmula basada en DHM y L-Cisteína, ingredientes con evidencia científica para el metabolismo del alcohol."
+          }
+        }
+      },
+      "block_order": ["value-1", "value-2", "value-3"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

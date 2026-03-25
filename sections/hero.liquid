@@ -33,7 +33,7 @@
             src="{{ section.settings.hero_image | image_url: width: 1152 }}"
             srcset="{{ section.settings.hero_image | image_url: width: 400 }} 400w, {{ section.settings.hero_image | image_url: width: 800 }} 800w, {{ section.settings.hero_image | image_url: width: 1152 }} 1152w"
             sizes="(max-width: 768px) 320px, (max-width: 1024px) 50vw, 576px"
-            alt="Buenacopa - Sachet con cápsulas"
+            alt="{{ 'sections.hero.hero_image_alt' | t }}"
             class="w-full max-w-xs lg:max-w-xl object-contain"
             width="576"
             height="576"
@@ -44,7 +44,7 @@
             src="{{ 'hero-sachet.jpg' | asset_url }}"
             srcset="{{ 'hero-sachet.jpg' | asset_url }} 576w"
             sizes="(max-width: 768px) 320px, (max-width: 1024px) 50vw, 576px"
-            alt="Buenacopa - Sachet con cápsulas"
+            alt="{{ 'sections.hero.hero_image_alt' | t }}"
             class="w-full max-w-xs lg:max-w-xl object-contain"
             width="576"
             height="576"
@@ -65,7 +65,7 @@
             <div class="flex items-center gap-2.5 px-6">
               <span class="text-yellow-400 shrink-0">{% render 'icon-users', size: 20 %}</span>
               <span class="text-white font-bold">10,000+</span>
-              <span class="text-white font-bold text-sm">Mañanas sin cruda</span>
+              <span class="text-white font-bold text-sm">{{ 'sections.hero.social_proof_mornings' | t }}</span>
             </div>
             <div class="flex items-center gap-2.5 px-6">
               <div class="flex shrink-0">
@@ -74,12 +74,12 @@
                 {% endfor %}
               </div>
               <span class="text-white font-bold">4.8/5</span>
-              <span class="text-white font-bold text-sm">Rating promedio</span>
+              <span class="text-white font-bold text-sm">{{ 'sections.hero.social_proof_rating' | t }}</span>
             </div>
             <div class="flex items-center gap-2.5 px-6">
               <span class="text-yellow-400 shrink-0">{% render 'icon-leaf', size: 20 %}</span>
-              <span class="text-white font-bold">✓ Ingredientes</span>
-              <span class="text-white font-bold text-sm">seguros y probados</span>
+              <span class="text-white font-bold">✓ {{ 'sections.hero.social_proof_ingredients' | t }}</span>
+              <span class="text-white font-bold text-sm">{{ 'sections.hero.social_proof_safe' | t }}</span>
             </div>
           </div>
         {% endfor %}
@@ -93,7 +93,7 @@
           <span class="text-yellow-400">{% render 'icon-users', size: 24 %}</span>
           <div>
             <p class="text-white font-bold text-lg">10,000+</p>
-            <p class="text-white/80 font-bold text-sm">Mañanas sin cruda</p>
+            <p class="text-white/80 font-bold text-sm">{{ 'sections.hero.social_proof_mornings' | t }}</p>
           </div>
         </div>
         <div class="flex items-center justify-center gap-3">
@@ -104,14 +104,14 @@
           </div>
           <div>
             <p class="text-white font-bold text-lg">4.8/5</p>
-            <p class="text-white/80 font-bold text-sm">Rating promedio</p>
+            <p class="text-white/80 font-bold text-sm">{{ 'sections.hero.social_proof_rating' | t }}</p>
           </div>
         </div>
         <div class="flex items-center justify-center gap-3">
           <span class="text-yellow-400">{% render 'icon-leaf', size: 24 %}</span>
           <div>
-            <p class="text-white font-bold text-lg">✓ Ingredientes</p>
-            <p class="text-white/80 font-bold text-sm">seguros y probados</p>
+            <p class="text-white font-bold text-lg">✓ {{ 'sections.hero.social_proof_ingredients' | t }}</p>
+            <p class="text-white/80 font-bold text-sm">{{ 'sections.hero.social_proof_safe' | t }}</p>
           </div>
         </div>
       </div>

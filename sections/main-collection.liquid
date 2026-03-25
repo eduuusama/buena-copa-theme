@@ -1,0 +1,64 @@
+{%- assign collection = collection -%}
+
+<section class="section-padding bg-background">
+  <div class="container-custom">
+    <h1 class="text-3xl md:text-4xl font-display font-black text-foreground mb-4">
+      {{ collection.title }}
+    </h1>
+
+    {%- if collection.description != blank -%}
+      <div class="text-muted-foreground mb-8 max-w-2xl">
+        {{ collection.description }}
+      </div>
+    {%- endif -%}
+
+    {%- if collection.products.size > 0 -%}
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        {%- for product in collection.products -%}
+          <a href="{{ product.url }}" class="group block">
+            <div class="aspect-square rounded-xl overflow-hidden bg-secondary mb-3">
+              {%- if product.featured_image -%}
+                <img
+                  src="{{ product.featured_image | image_url: width: 600 }}"
+                  srcset="{{ product.featured_image | image_url: width: 300 }} 300w, {{ product.featured_image | image_url: width: 600 }} 600w"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  alt="{{ product.featured_image.alt | default: product.title }}"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                  width="300"
+                  height="300"
+                >
+              {%- else -%}
+                <div class="w-full h-full flex items-center justify-center text-muted-foreground">
+                  {{ 'product-1' | placeholder_svg_tag: 'w-24 h-24 opacity-50' }}
+                </div>
+              {%- endif -%}
+            </div>
+            <h2 class="font-bold text-foreground text-sm group-hover:text-accent transition-colors">{{ product.title }}</h2>
+            <p class="text-muted-foreground text-sm mt-1">{{ product.price | money_without_trailing_zeros }}</p>
+          </a>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="mt-12 flex justify-center gap-2" aria-label="{{ 'collection.pagination_aria' | t }}">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="btn-secondary text-sm">&laquo; {{ 'general.pagination.previous' | t }}</a>
+          {%- endif -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="btn-secondary text-sm">{{ 'general.pagination.next' | t }} &raquo;</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <p class="text-muted-foreground">{{ 'collection.empty' | t }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Colección",
+  "settings": []
+}
+{% endschema %}

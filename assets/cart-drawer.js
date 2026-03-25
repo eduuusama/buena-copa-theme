@@ -4,6 +4,10 @@
  */
 
 var CartDrawer = {
+  t: function (key) {
+    return (window.theme && window.theme.strings && window.theme.strings[key]) || key;
+  },
+
   open: function () {
     document.getElementById('cart-drawer').classList.add('active');
     document.getElementById('cart-overlay').classList.add('active');
@@ -21,7 +25,9 @@ var CartDrawer = {
     fetch('/cart.js')
       .then(function (r) { return r.json(); })
       .then(function (cart) { CartDrawer.render(cart); })
-      .catch(function () {});
+      .catch(function () {
+        CartDrawer.showError(CartDrawer.t('cartLoad'));
+      });
   },
 
   render: function (cart) {
@@ -40,35 +46,39 @@ var CartDrawer = {
       itemsContainer.style.display = 'block';
       footer.style.display = 'block';
 
+      var t = CartDrawer.t;
       var html = '';
       cart.items.forEach(function (item) {
+        var escapedTitle = item.title.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        var escapedKey = item.key.replace(/'/g, "\\'");
+
         html += '<div class="flex gap-4 p-2 border-b border-border" data-key="' + item.key + '">';
         if (item.image) {
           html += '<div class="w-16 h-16 rounded-md overflow-hidden flex-shrink-0 bg-muted">';
-          html += '<img src="' + item.image + '" alt="' + item.title + '" class="w-full h-full object-cover" width="64" height="64">';
+          html += '<img src="' + item.image + '" alt="' + escapedTitle + '" class="w-full h-full object-cover" width="64" height="64">';
           html += '</div>';
         }
         html += '<div class="flex-1 min-w-0">';
-        html += '<h4 class="font-medium text-sm truncate text-foreground">' + item.title + '</h4>';
-        html += '<p class="font-semibold text-sm mt-1 text-foreground">$' + (item.price / 100).toLocaleString() + ' MXN</p>';
+        html += '<h4 class="font-medium text-sm truncate text-foreground">' + escapedTitle + '</h4>';
+        html += '<p class="font-semibold text-sm mt-1 text-foreground">' + Shopify.formatMoney(item.price) + '</p>';
         html += '</div>';
         html += '<div class="flex flex-col items-end gap-2 flex-shrink-0">';
-        html += '<button onclick="CartDrawer.removeItem(\'' + item.key + '\')" class="text-muted-foreground hover:text-foreground p-1" aria-label="Eliminar">';
-        html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>';
+        html += '<button onclick="CartDrawer.removeItem(\'' + escapedKey + '\')" class="text-muted-foreground hover:text-foreground p-1" aria-label="' + t('removeAria') + ' ' + escapedTitle + '">';
+        html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>';
         html += '</button>';
         html += '<div class="flex items-center gap-1">';
-        html += '<button onclick="CartDrawer.updateQty(\'' + item.key + '\',' + (item.quantity - 1) + ')" class="w-6 h-6 border border-border rounded flex items-center justify-center text-foreground hover:bg-white/5" aria-label="Reducir">';
-        html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>';
+        html += '<button onclick="CartDrawer.updateQty(\'' + escapedKey + '\',' + (item.quantity - 1) + ')" class="w-6 h-6 border border-border rounded flex items-center justify-center text-foreground hover:bg-white/5" aria-label="' + t('decreaseQty') + '">';
+        html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/></svg>';
         html += '</button>';
-        html += '<span class="w-8 text-center text-sm text-foreground">' + item.quantity + '</span>';
-        html += '<button onclick="CartDrawer.updateQty(\'' + item.key + '\',' + (item.quantity + 1) + ')" class="w-6 h-6 border border-border rounded flex items-center justify-center text-foreground hover:bg-white/5" aria-label="Aumentar">';
-        html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>';
+        html += '<span class="w-8 text-center text-sm text-foreground" aria-label="' + t('quantityAria') + '">' + item.quantity + '</span>';
+        html += '<button onclick="CartDrawer.updateQty(\'' + escapedKey + '\',' + (item.quantity + 1) + ')" class="w-6 h-6 border border-border rounded flex items-center justify-center text-foreground hover:bg-white/5" aria-label="' + t('increaseQty') + '">';
+        html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>';
         html += '</button>';
         html += '</div></div></div>';
       });
 
       itemsContainer.innerHTML = html;
-      totalEl.textContent = '$' + (cart.total_price / 100).toLocaleString() + ' MXN';
+      totalEl.textContent = Shopify.formatMoney(cart.total_price);
     }
 
     updateCartCount();
@@ -80,10 +90,20 @@ var CartDrawer = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: variantId, quantity: quantity || 1 })
     })
-    .then(function (r) { return r.json(); })
+    .then(function (r) {
+      if (!r.ok) {
+        return r.json().then(function (data) {
+          throw new Error(data.description || CartDrawer.t('cartAdd'));
+        });
+      }
+      return r.json();
+    })
     .then(function (item) {
       CartDrawer.open();
       return item;
+    })
+    .catch(function (err) {
+      CartDrawer.showError(err.message || CartDrawer.t('cartAdd'));
     });
   },
 
@@ -96,8 +116,15 @@ var CartDrawer = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: key, quantity: quantity })
     })
-    .then(function (r) { return r.json(); })
-    .then(function (cart) { CartDrawer.render(cart); });
+    .then(function (r) {
+      if (!r.ok) throw new Error(CartDrawer.t('cartUpdate'));
+      return r.json();
+    })
+    .then(function (cart) { CartDrawer.render(cart); })
+    .catch(function () {
+      CartDrawer.showError(CartDrawer.t('cartUpdate'));
+      CartDrawer.refresh();
+    });
   },
 
   removeItem: function (key) {
@@ -106,11 +133,45 @@ var CartDrawer = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: key, quantity: 0 })
     })
-    .then(function (r) { return r.json(); })
-    .then(function (cart) { CartDrawer.render(cart); });
+    .then(function (r) {
+      if (!r.ok) throw new Error(CartDrawer.t('cartRemove'));
+      return r.json();
+    })
+    .then(function (cart) { CartDrawer.render(cart); })
+    .catch(function () {
+      CartDrawer.showError(CartDrawer.t('cartRemove'));
+      CartDrawer.refresh();
+    });
   },
 
   checkout: function () {
     window.location.href = '/checkout';
+  },
+
+  showError: function (message) {
+    var footer = document.getElementById('cart-footer');
+    if (!footer) return;
+    var existing = footer.querySelector('.cart-error');
+    if (existing) existing.remove();
+    var errorEl = document.createElement('p');
+    errorEl.className = 'cart-error text-sm text-center py-2';
+    errorEl.style.color = 'hsl(0 84% 60%)';
+    errorEl.textContent = message;
+    errorEl.setAttribute('role', 'alert');
+    footer.prepend(errorEl);
+    setTimeout(function () { errorEl.remove(); }, 4000);
   }
 };
+
+/**
+ * Shopify money formatting helper
+ */
+if (typeof Shopify === 'undefined') { var Shopify = {}; }
+if (!Shopify.formatMoney) {
+  Shopify.formatMoney = function (cents) {
+    if (typeof cents === 'string') cents = cents.replace('.', '');
+    var value = (parseInt(cents, 10) / 100);
+    var lang = document.documentElement.lang || 'es';
+    return '$' + value.toLocaleString(lang, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' MXN';
+  };
+}
