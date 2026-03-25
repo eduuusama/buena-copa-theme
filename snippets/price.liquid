@@ -1,0 +1,10 @@
+{%- comment -%}
+  Renders a price: shows decimals only when they're non-zero.
+  Usage: {% render 'price', amount: variant.price %}
+{%- endcomment -%}
+{%- assign price_cents = amount | modulo: 100 -%}
+{%- if price_cents == 0 -%}
+  {{- amount | money_without_trailing_zeros -}}
+{%- else -%}
+  {{- amount | money -}}
+{%- endif -%}
