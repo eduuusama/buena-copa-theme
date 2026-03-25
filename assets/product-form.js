@@ -7,9 +7,9 @@ var ProductForm = {
   selectedVariantId: null,
   selectedPrice: 0,
   quantity: 1,
+  isSubmitting: false,
 
   init: function () {
-    // Select the first available variant
     var firstBtn = document.querySelector('.variant-btn.selected');
     if (firstBtn) {
       this.selectedVariantId = parseInt(firstBtn.dataset.variantId);
@@ -21,7 +21,6 @@ var ProductForm = {
     this.selectedVariantId = variantId;
     this.selectedPrice = parseInt(button.dataset.variantPrice);
 
-    // Update visual selection
     document.querySelectorAll('.variant-btn').forEach(function (btn) {
       btn.classList.remove('selected', 'border-accent', 'bg-accent/10');
       btn.classList.add('border-background/15', 'bg-background/5');
@@ -47,15 +46,16 @@ var ProductForm = {
       }
     }
 
-    // Update mobile CTA text
     this.updateMobileCTA();
   },
 
   selectImage: function (src, button) {
     var mainImg = document.getElementById('main-product-image');
-    if (mainImg) mainImg.src = src;
+    if (mainImg) {
+      mainImg.removeAttribute('srcset');
+      mainImg.src = src;
+    }
 
-    // Update thumbnail borders
     document.querySelectorAll('.product-thumbnail').forEach(function (thumb) {
       thumb.classList.remove('border-accent');
       thumb.classList.add('border-background/10');
@@ -86,24 +86,69 @@ var ProductForm = {
     var ctaText = document.getElementById('mobile-cta-text');
     if (ctaText && this.selectedPrice) {
       var total = (this.selectedPrice / 100) * this.quantity;
-      ctaText.textContent = 'Agregar al carrito – $' + total.toLocaleString();
+      var hasDecimals = total % 1 !== 0;
+      var lang = document.documentElement.lang || 'es';
+      var addToCartText = (window.theme && window.theme.strings && window.theme.strings.addToCart) || 'Agregar al carrito';
+      ctaText.textContent = addToCartText + ' – $' + total.toLocaleString(lang, { minimumFractionDigits: hasDecimals ? 2 : 0, maximumFractionDigits: 2 });
     }
   },
 
+  setButtonLoading: function (loading) {
+    var buttons = [
+      document.getElementById('add-to-cart-desktop'),
+      document.querySelector('#mobile-sticky-cta button')
+    ];
+    buttons.forEach(function (btn) {
+      if (!btn) return;
+      if (loading) {
+        btn.disabled = true;
+        btn.dataset.originalText = btn.textContent;
+        btn.style.opacity = '0.7';
+      } else {
+        btn.disabled = false;
+        btn.style.opacity = '';
+      }
+    });
+  },
+
   addToCart: function () {
-    if (!this.selectedVariantId) return;
-    CartDrawer.addItem(this.selectedVariantId, this.quantity);
+    if (!this.selectedVariantId || this.isSubmitting) return;
+    this.isSubmitting = true;
+    this.setButtonLoading(true);
+
+    CartDrawer.addItem(this.selectedVariantId, this.quantity)
+      .finally(function () {
+        ProductForm.isSubmitting = false;
+        ProductForm.setButtonLoading(false);
+      });
   },
 
   buyNow: function () {
-    if (!this.selectedVariantId) return;
+    if (!this.selectedVariantId || this.isSubmitting) return;
+    this.isSubmitting = true;
+
+    var buyBtn = document.querySelector('[onclick="ProductForm.buyNow()"]');
+    if (buyBtn) {
+      buyBtn.disabled = true;
+      buyBtn.style.opacity = '0.7';
+    }
+
     fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: this.selectedVariantId, quantity: this.quantity })
     })
-    .then(function () {
+    .then(function (r) {
+      if (!r.ok) throw new Error((window.theme && window.theme.strings && window.theme.strings.processError) || 'Error');
       window.location.href = '/checkout';
+    })
+    .catch(function () {
+      ProductForm.isSubmitting = false;
+      if (buyBtn) {
+        buyBtn.disabled = false;
+        buyBtn.style.opacity = '';
+      }
+      CartDrawer.showError((window.theme && window.theme.strings && window.theme.strings.processError) || 'Error');
     });
   },
 
@@ -115,9 +160,11 @@ var ProductForm = {
 
     if (isOpen) {
       content.classList.remove('open');
+      button.setAttribute('aria-expanded', 'false');
       if (chevron) chevron.style.transform = '';
     } else {
       content.classList.add('open');
+      button.setAttribute('aria-expanded', 'true');
       if (chevron) chevron.style.transform = 'rotate(180deg)';
     }
   }

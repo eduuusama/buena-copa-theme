@@ -9,17 +9,20 @@
     <div class="max-w-3xl mx-auto space-y-3">
       {% for block in section.blocks %}
         {% if block.type == 'faq_item' %}
+          {%- assign faq_id = 'faq-answer-' | append: forloop.index -%}
           <div class="border border-border/30 rounded-2xl overflow-hidden bg-background/30 faq-item" {{ block.shopify_attributes }}>
             <button
               onclick="toggleFaq(this)"
+              aria-expanded="false"
+              aria-controls="{{ faq_id }}"
               class="w-full flex items-center justify-between p-5 md:p-6 text-left hover:bg-white/[0.03] transition-colors"
             >
               <span class="text-foreground font-bold pr-4">{{ block.settings.question }}</span>
-              <span class="text-accent flex-shrink-0 transition-transform duration-300 faq-chevron">
+              <span class="text-accent flex-shrink-0 transition-transform duration-300 faq-chevron" aria-hidden="true">
                 {% render 'icon-chevron-down', size: 20 %}
               </span>
             </button>
-            <div class="faq-content">
+            <div class="faq-content" id="{{ faq_id }}" role="region" aria-labelledby="faq-btn-{{ forloop.index }}">
               <div>
                 <div class="px-5 md:px-6 pb-5 md:pb-6">
                   <p class="text-foreground leading-relaxed">{{ block.settings.answer }}</p>
