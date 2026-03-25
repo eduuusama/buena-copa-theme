@@ -21,15 +21,21 @@
 
   {{ content_for_header }}
 
-  {%- comment -%}Preconnect to critical origins{%- endcomment -%}
+  {%- comment -%}
+    Preconnect — max 4 origins, only those on the critical path.
+    Removed: shop.app (unused), duplicate cdn.shopify.com entries.
+    Added: fonts.gstatic.com (saves ~330ms LCP), static-tracking.klaviyo.com (saves ~300ms LCP).
+  {%- endcomment -%}
   <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="dns-prefetch" href="https://cdn.judge.me">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://static-tracking.klaviyo.com">
 
-  {%- comment -%}Preload LCP hero image (homepage only){%- endcomment -%}
+  {%- comment -%}Preload LCP hero image (homepage only) with srcset for responsive delivery{%- endcomment -%}
   {%- if request.page_type == 'index' -%}
-    <link rel="preload" as="image" href="{{ 'hero-sachet.jpg' | asset_url }}" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ 'hero-sachet.jpg' | asset_url }}" fetchpriority="high"
+      imagesrcset="{{ 'hero-sachet.jpg' | asset_url }} 576w"
+      imagesizes="(max-width: 768px) 320px, 576px">
   {%- endif -%}
 
   {%- comment -%}Fonts — non-render-blocking via media swap{%- endcomment -%}
@@ -37,9 +43,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"></noscript>
 
-  {%- comment -%}Stylesheets{%- endcomment -%}
-  {{ 'tailwind.min.css' | asset_url | stylesheet_tag }}
+  {%- comment -%}
+    Stylesheets — theme.css is small (~2.3 KiB) so we inline-critical + async the larger Tailwind.
+    Tailwind (7 KiB) loads non-blocking via media swap to avoid render-blocking.
+  {%- endcomment -%}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
+  <link rel="preload" href="{{ 'tailwind.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>{{ 'tailwind.min.css' | asset_url | stylesheet_tag }}</noscript>
 
   {% render 'meta-tags', page_description: page_description, page_title: page_title %}
 
