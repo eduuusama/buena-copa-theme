@@ -5,7 +5,7 @@
       {% if section.settings.logo %}
         <img src="{{ section.settings.logo | image_url: width: 240 }}" alt="{{ shop.name }}" class="h-6 md:h-8 w-auto" width="120" height="32">
       {% else %}
-        <img src="{{ 'logo-offwhite.png' | asset_url }}" alt="{{ shop.name }}" class="h-6 md:h-8 w-auto" width="120" height="32">
+        <img src="{{ 'logo-offwhite.png' | asset_url }}" alt="{{ shop.name }}" class="h-6 md:h-8 w-auto" width="120" height="32" fetchpriority="high">
       {% endif %}
     </a>
 

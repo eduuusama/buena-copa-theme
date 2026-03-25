@@ -186,23 +186,13 @@
             </div>
           </div>
 
-          <!-- Marketplace buttons - Desktop -->
-          <div class="hidden lg:grid grid-cols-2 gap-3">
+          <!-- Marketplace buttons — single responsive set, no duplicate mobile PNGs -->
+          <div class="grid grid-cols-2 gap-3">
             <a href="{{ section.settings.amazon_url | default: 'https://www.amazon.com.mx/stores/page/FDB18C6D-10B7-43A2-AA75-D935DEF10C38?channel=BOTONSITIOWEB' }}" target="_blank" rel="noopener noreferrer" class="block hover:opacity-90 transition-opacity">
-              <img src="{{ 'boton-amazon.png' | asset_url }}" alt="{{ 'sections.product.buy_amazon_alt' | t }}" class="w-full h-auto rounded-xl" loading="lazy" width="300" height="60">
+              <img src="{{ 'boton-amazon.png' | asset_url }}" alt="{{ 'sections.product.buy_amazon_alt' | t }}" class="w-full h-auto rounded-lg lg:rounded-xl" loading="lazy" decoding="async" width="300" height="82">
             </a>
             <a href="{{ section.settings.mercadolibre_url | default: 'https://www.mercadolibre.com.mx/tienda/buenacopa' }}" target="_blank" rel="noopener noreferrer" class="block hover:opacity-90 transition-opacity">
-              <img src="{{ 'boton-mercadolibre.png' | asset_url }}" alt="{{ 'sections.product.buy_ml_alt' | t }}" class="w-full h-auto rounded-xl" loading="lazy" width="300" height="60">
-            </a>
-          </div>
-
-          <!-- Marketplace buttons - Mobile -->
-          <div class="lg:hidden grid grid-cols-2 gap-3">
-            <a href="{{ section.settings.amazon_url | default: 'https://www.amazon.com.mx/stores/page/FDB18C6D-10B7-43A2-AA75-D935DEF10C38?channel=BOTONSITIOWEB' }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-12 hover:opacity-90 transition-opacity">
-              <img src="{{ 'boton-amazon-mobile.png' | asset_url }}" alt="{{ 'sections.product.buy_amazon_alt' | t }}" class="h-full w-auto rounded-lg" loading="lazy" width="150" height="48">
-            </a>
-            <a href="{{ section.settings.mercadolibre_url | default: 'https://www.mercadolibre.com.mx/tienda/buenacopa' }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-12 hover:opacity-90 transition-opacity">
-              <img src="{{ 'boton-mercadolibre-mobile.png' | asset_url }}" alt="{{ 'sections.product.buy_ml_alt' | t }}" class="h-full w-auto rounded-lg" loading="lazy" width="150" height="48">
+              <img src="{{ 'boton-mercadolibre.png' | asset_url }}" alt="{{ 'sections.product.buy_ml_alt' | t }}" class="w-full h-auto rounded-lg lg:rounded-xl" loading="lazy" decoding="async" width="300" height="82">
             </a>
           </div>
 
