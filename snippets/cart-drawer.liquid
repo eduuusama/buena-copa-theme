@@ -4,8 +4,8 @@
 <!-- Cart Drawer -->
 <div class="cart-drawer" id="cart-drawer">
   <div class="flex items-center justify-between p-5 border-b border-border flex-shrink-0">
-    <h2 class="text-lg font-bold text-foreground">Carrito</h2>
-    <button onclick="CartDrawer.close()" aria-label="Cerrar carrito" class="text-muted-foreground hover:text-foreground transition-colors">
+    <h2 class="text-lg font-bold text-foreground">{{ 'general.cart.title' | t }}</h2>
+    <button onclick="CartDrawer.close()" aria-label="{{ 'general.cart.close' | t }}" class="text-muted-foreground hover:text-foreground transition-colors">
       {% render 'icon-x', size: 20 %}
     </button>
   </div>
@@ -20,18 +20,28 @@
       <div class="text-muted-foreground mx-auto mb-4">
         {% render 'icon-cart', size: 48 %}
       </div>
-      <p class="text-muted-foreground">Tu carrito está vacío</p>
+      <p class="text-muted-foreground">{{ 'general.cart.empty' | t }}</p>
     </div>
   </div>
 
   <!-- Footer -->
   <div id="cart-footer" class="flex-shrink-0 p-5 border-t border-border bg-background" style="display:none;">
     <div class="flex justify-between items-center mb-4">
-      <span class="text-lg font-semibold text-foreground">Total</span>
+      <span class="text-lg font-semibold text-foreground">{{ 'general.cart.total' | t }}</span>
       <span id="cart-total" class="text-xl font-bold text-foreground">$0 MXN</span>
     </div>
     <button onclick="CartDrawer.checkout()" class="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold py-3 rounded-lg transition-colors">
-      Checkout
+      {{ 'general.cart.checkout' | t }}
     </button>
+    <div class="flex items-center justify-center gap-3 mt-3 text-muted-foreground">
+      <div class="flex items-center gap-1 text-[10px] font-medium">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        {{ 'general.security.ssl_short' | t }}
+      </div>
+      <div class="flex items-center gap-1 text-[10px] font-medium">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        {{ 'general.security.guarantee_badge' | t }}
+      </div>
+    </div>
   </div>
 </div>
