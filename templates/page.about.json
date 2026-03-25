@@ -56,13 +56,7 @@
       "settings": {
         "hero_heading": "Sobre Nosotros",
         "hero_subtitle": "La fiesta sigue. La cruda no. Conoce la historia detrás de Buenacopa.",
-        "hero_image": "shopify://shop_images/text_1.jpg",
-        "manifesto_heading": "Nuestro Manifiesto",
-        "manifesto_image": "shopify://shop_images/DTS_Quiet_Glamour_Fanette_Guilloud_Photos_ID8353_1.png",
-        "story_image": "shopify://shop_images/Main_Image.jpg",
-        "commitment_cta_text": "Comprar ahora",
-        "commitment_image_1": "shopify://shop_images/image_4.jpg",
-        "commitment_image_2": "shopify://shop_images/image_5.jpg"
+        "commitment_cta_text": "Comprar ahora"
       }
     }
   },
