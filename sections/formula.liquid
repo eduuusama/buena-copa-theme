@@ -2,14 +2,22 @@
   <!-- Background images - mobile vs desktop -->
   <div class="absolute inset-0 z-0">
     {% if section.settings.bg_mobile %}
-      <img src="{{ section.settings.bg_mobile | image_url: width: 1536 }}" alt="" class="w-full h-full object-cover md:hidden" loading="lazy" width="768" height="1024">
+      <img
+        src="{{ section.settings.bg_mobile | image_url: width: 768 }}"
+        srcset="{{ section.settings.bg_mobile | image_url: width: 480 }} 480w, {{ section.settings.bg_mobile | image_url: width: 768 }} 768w"
+        sizes="100vw"
+        alt="" class="w-full h-full object-cover md:hidden" loading="lazy" width="768" height="1024" decoding="async">
     {% else %}
-      <img src="{{ 'formula-bg-new.jpeg' | asset_url }}" alt="" class="w-full h-full object-cover md:hidden" loading="lazy" width="768" height="1024">
+      <img src="{{ 'formula-bg-new.jpeg' | asset_url }}" alt="" class="w-full h-full object-cover md:hidden" loading="lazy" width="768" height="1024" decoding="async">
     {% endif %}
     {% if section.settings.bg_desktop %}
-      <img src="{{ section.settings.bg_desktop | image_url: width: 3840 }}" alt="" class="w-full h-full object-cover hidden md:block" loading="lazy" width="1920" height="1080">
+      <img
+        src="{{ section.settings.bg_desktop | image_url: width: 1200 }}"
+        srcset="{{ section.settings.bg_desktop | image_url: width: 1200 }} 1200w, {{ section.settings.bg_desktop | image_url: width: 1920 }} 1920w"
+        sizes="100vw"
+        alt="" class="w-full h-full object-cover hidden md:block" loading="lazy" width="1920" height="1080" decoding="async">
     {% else %}
-      <img src="{{ 'formula-bg-desktop-new.jpeg' | asset_url }}" alt="" class="w-full h-full object-cover hidden md:block" loading="lazy" width="1920" height="1080">
+      <img src="{{ 'formula-bg-desktop-new.jpeg' | asset_url }}" alt="" class="w-full h-full object-cover hidden md:block" loading="lazy" width="1920" height="1080" decoding="async">
     {% endif %}
   </div>
 
