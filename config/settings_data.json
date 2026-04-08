@@ -121,11 +121,6 @@
           "custom_css": "",
           "path_filter": ""
         }
-      },
-      "4113930173634242220": {
-        "type": "shopify://apps/referral-program-shopjar/blocks/app-shopjar/bf205236-47cf-42ff-acf9-5de1b0804e4d",
-        "disabled": true,
-        "settings": {}
       }
     }
   }

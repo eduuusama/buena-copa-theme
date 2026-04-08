@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -66,29 +75,25 @@
         "step-1": {
           "type": "usage_step",
           "settings": {
-            "title": "Disfruta tu noche",
-            "description": "<p>Sal, celebra y disfruta de forma responsable.</p>"
+            "title": "Disfruta tu noche"
           }
         },
         "step-2": {
           "type": "usage_step",
           "settings": {
-            "title": "Toma 3 cápsulas",
-            "description": "<p>Después de tu última copa, con un vaso grande de agua.</p>"
+            "title": "Toma 3 cápsulas"
           }
         },
         "step-3": {
           "type": "usage_step",
           "settings": {
-            "title": "Buenacopa trabaja",
-            "description": "<p>Mientras duermes, la fórmula neutraliza toxinas y equilibra tu cuerpo.</p>"
+            "title": "Buenacopa trabaja"
           }
         },
         "step-4": {
           "type": "usage_step",
           "settings": {
-            "title": "Despierta bien",
-            "description": "<p>Sin cruda, sin náuseas, sin dolor de cabeza. Tu mañana es tuya.</p>"
+            "title": "Despierta bien"
           }
         },
         "faq-1": {
