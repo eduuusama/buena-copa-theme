@@ -44,6 +44,63 @@
       </div>
     </div>
 
+    {%- comment -%}Marketplace ratings bar{%- endcomment -%}
+    {%- if section.settings.ml_rating != blank or section.settings.amz_rating != blank -%}
+      <div class="bc-marketplace-bar">
+        {%- if section.settings.ml_rating != blank -%}
+          {%- assign ml_rating = section.settings.ml_rating | plus: 0.0 -%}
+          <a href="{{ section.settings.ml_url | default: '#' }}" target="_blank" rel="noopener" class="bc-marketplace-item">
+            {%- if section.settings.ml_logo != blank -%}
+              <img src="{{ section.settings.ml_logo | image_url: width: 120 }}" alt="Mercado Libre" style="height: 22px; width: auto;" loading="lazy">
+            {%- else -%}
+              <span class="bc-marketplace-name">Mercado Libre</span>
+            {%- endif -%}
+            <div style="display: flex; gap: 2px; align-items: center;">
+              {%- for i in (1..5) -%}
+                {%- assign ml_half = i | minus: 0.5 -%}
+                {%- if ml_rating >= i -%}
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="#FFB800"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z"/></svg>
+                {%- elsif ml_rating >= ml_half -%}
+                  <svg width="14" height="14" viewBox="0 0 20 20"><defs><linearGradient id="ml-half-{{ i }}"><stop offset="50%" stop-color="#FFB800"/><stop offset="50%" stop-color="#D1D5DB"/></linearGradient></defs><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" fill="url(#ml-half-{{ i }})"/></svg>
+                {%- else -%}
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="#D1D5DB"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z"/></svg>
+                {%- endif -%}
+              {%- endfor -%}
+              <span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #071D40; margin-left: 4px;">{{ section.settings.ml_rating }}</span>
+            </div>
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.ml_rating != blank and section.settings.amz_rating != blank -%}
+          <div class="bc-marketplace-divider"></div>
+        {%- endif -%}
+
+        {%- if section.settings.amz_rating != blank -%}
+          {%- assign amz_rating = section.settings.amz_rating | plus: 0.0 -%}
+          <a href="{{ section.settings.amz_url | default: '#' }}" target="_blank" rel="noopener" class="bc-marketplace-item">
+            {%- if section.settings.amz_logo != blank -%}
+              <img src="{{ section.settings.amz_logo | image_url: width: 120 }}" alt="Amazon" style="height: 22px; width: auto;" loading="lazy">
+            {%- else -%}
+              <span class="bc-marketplace-name">Amazon</span>
+            {%- endif -%}
+            <div style="display: flex; gap: 2px; align-items: center;">
+              {%- for i in (1..5) -%}
+                {%- assign amz_half = i | minus: 0.5 -%}
+                {%- if amz_rating >= i -%}
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="#FFB800"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z"/></svg>
+                {%- elsif amz_rating >= amz_half -%}
+                  <svg width="14" height="14" viewBox="0 0 20 20"><defs><linearGradient id="amz-half-{{ i }}"><stop offset="50%" stop-color="#FFB800"/><stop offset="50%" stop-color="#D1D5DB"/></linearGradient></defs><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z" fill="url(#amz-half-{{ i }})"/></svg>
+                {%- else -%}
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="#D1D5DB"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z"/></svg>
+                {%- endif -%}
+              {%- endfor -%}
+              <span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #071D40; margin-left: 4px;">{{ section.settings.amz_rating }}</span>
+            </div>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
     {%- if section.blocks.size > 0 -%}
       {%- comment -%}Desktop: 3-column grid{%- endcomment -%}
       <div class="bc-reviews-grid">
@@ -107,6 +164,43 @@
       height: 36px;
       background: #E5E7EB;
       flex-shrink: 0;
+    }
+
+    /* Marketplace ratings bar */
+    .bc-marketplace-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 2.5rem;
+    }
+    .bc-marketplace-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .bc-marketplace-item:hover {
+      opacity: 0.8;
+    }
+    .bc-marketplace-name {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #071D40;
+    }
+    .bc-marketplace-divider {
+      width: 1px;
+      height: 40px;
+      background: #E5E7EB;
+      flex-shrink: 0;
+    }
+    @media (max-width: 480px) {
+      .bc-marketplace-bar {
+        gap: 16px;
+      }
     }
 
     /* Cards shared style */
@@ -306,6 +400,40 @@
       "label": "% who recommend (e.g. 97)",
       "default": "97"
     },
+    { "type": "header", "content": "Marketplace ratings" },
+    {
+      "type": "image_picker",
+      "id": "ml_logo",
+      "label": "Mercado Libre logo"
+    },
+    {
+      "type": "text",
+      "id": "ml_rating",
+      "label": "Mercado Libre rating (e.g. 5.0)",
+      "default": "5.0"
+    },
+    {
+      "type": "url",
+      "id": "ml_url",
+      "label": "Mercado Libre store URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "amz_logo",
+      "label": "Amazon logo"
+    },
+    {
+      "type": "text",
+      "id": "amz_rating",
+      "label": "Amazon rating (e.g. 4.5)",
+      "default": "4.5"
+    },
+    {
+      "type": "url",
+      "id": "amz_url",
+      "label": "Amazon store URL"
+    },
+    { "type": "header", "content": "CTA" },
     {
       "type": "text",
       "id": "cta_text",

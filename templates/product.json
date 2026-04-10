@@ -122,6 +122,12 @@
         "rating": "4.7",
         "review_count": "33",
         "recommend_pct": "97",
+        "ml_logo": "shopify://shop_images/Group_43.png",
+        "ml_rating": "5.0",
+        "ml_url": "https://www.mercadolibre.com.mx/tienda/buenacopa",
+        "amz_logo": "shopify://shop_images/Group_42.png",
+        "amz_rating": "4.5",
+        "amz_url": "https://www.amazon.com.mx/stores/page/FDB18C6D-10B7-43A2-AA75-D935DEF10C38?channel=BOTONSITIOWEB",
         "cta_text": "Quiero amanecer bien",
         "cta_url": "/products/buenacopa-bienestar-post-fiesta"
       }
