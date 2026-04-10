@@ -64,8 +64,9 @@
 <section id="comprar" class="overflow-hidden bg-white">
   <div class="container-custom" style="padding-top: 16px;">
 
-    {%- comment -%}═══ HEADLINE (spans full width on desktop) ═══{%- endcomment -%}
-    <div class="text-left" style="margin-bottom: 12px;">
+    {%- comment -%}═══ HEADLINE ═══{%- endcomment -%}
+    <div class="text-left" id="hero-headline" style="margin-bottom: 12px;">
+    <style>@media(min-width:1024px) { #hero-headline { max-width: 960px; margin-left: auto; margin-right: auto; } }</style>
       <h1 class="font-display font-black leading-[0.95]" style="font-size: clamp(1.75rem, 4.5vw, 2.75rem);">
         <span class="text-background whitespace-nowrap">{{ section.settings.heading_line_1 | default: 'La fiesta sigue.' }}</span>
         <br>
