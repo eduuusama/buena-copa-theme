@@ -158,15 +158,15 @@
             <div class="grid grid-cols-2" style="margin-top:8px; gap:3px 12px">
               <div style="display:flex; align-items:center; gap:6px">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" aria-hidden="true" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-                <span style="font-size:11px; color:rgba(7,29,64,0.65)"><strong>${{ sub_per_whole }} por toma</strong></span>
+                <span style="font-size:11px; color:rgba(7,29,64,0.65)"><strong>40% off primeros 2 meses</strong></span>
               </div>
               <div style="display:flex; align-items:center; gap:6px">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" aria-hidden="true" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-                <span style="font-size:11px; color:rgba(7,29,64,0.65)"><strong>Ahorra 40%</strong></span>
+                <span style="font-size:11px; color:rgba(7,29,64,0.65)"><strong>15% off de por vida</strong></span>
               </div>
               <div style="display:flex; align-items:center; gap:6px">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" aria-hidden="true" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-                <span style="font-size:11px; color:rgba(7,29,64,0.65)">Sin compromiso</span>
+                <span style="font-size:11px; color:rgba(7,29,64,0.65)">${{ sub_per_whole }} por toma</span>
               </div>
               <div style="display:flex; align-items:center; gap:6px">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" aria-hidden="true" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
@@ -256,6 +256,10 @@
                         {%- assign v_whole = variant.price | divided_by: 100 -%}
                         {%- assign v_cents = variant.price | modulo: 100 -%}
                         {%- capture v_formatted -%}{%- if v_whole >= 1000 -%}{{ v_whole | divided_by: 1000 }},{{ v_whole | modulo: 1000 | prepend: '000' | slice: -3, 3 }}{%- else -%}{{ v_whole }}{%- endif -%}{%- endcapture -%}
+                        {% if variant.compare_at_price > variant.price %}
+                          {%- assign cap_whole = variant.compare_at_price | divided_by: 100 -%}
+                          <span class="text-background/30" style="font-size:11px; text-decoration:line-through">${{ cap_whole }}</span>
+                        {% endif %}
                         <span class="font-display font-black text-background" style="font-size:15px">${{ v_formatted }}</span>
                         {% if per_serving > 0 %}
                           {%- assign ps_whole = per_serving | divided_by: 100 -%}
@@ -436,7 +440,17 @@
 </section>
 
 <!-- Mobile Sticky CTA -->
-<div id="mobile-sticky-cta" class="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-accent px-4 pt-2 pb-3 shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
+<div id="mobile-sticky-cta" class="fixed left-0 right-0 z-50 lg:hidden bg-accent px-4 pt-2 pb-3 shadow-[0_-4px_20px_rgba(0,0,0,0.15)]" style="bottom: 0;">
+<style>
+  @media(max-width:1023px) {
+    /* Ensure WhatsApp widget clears the sticky CTA */
+    iframe[title*="chat"], iframe[src*="coco"],
+    div[class*="widget"][style*="fixed"],
+    div[style*="position: fixed"][style*="bottom"][style*="right"] {
+      bottom: 60px !important;
+    }
+  }
+</style>
   <button
     onclick="ProductForm.addToCart()"
     class="w-full flex items-center justify-center gap-2 text-white font-bold text-base py-3 rounded-xl disabled:opacity-50"
