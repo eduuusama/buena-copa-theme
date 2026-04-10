@@ -309,10 +309,12 @@
         "rev-6"
       ],
       "settings": {
-        "heading": "Reseñas de nuestros clientes",
+        "heading_line_1": "Miles ya despertaron sin cruda",
+        "heading_line_2": "y lo cuentan así",
         "product": "buenacopa-bienestar-post-fiesta",
         "rating": "4.7",
-        "review_count": "33"
+        "review_count": "33",
+        "cta_text": "Quiero amanecer bien"
       }
     }
   },

@@ -1,15 +1,22 @@
 {%- assign current_product = product | default: section.settings.product -%}
-{%- assign rating_value = section.settings.rating | default: '4.7' -%}
+{%- assign rating_value = section.settings.rating | default: '4.7' | plus: 0.0 -%}
 {%- assign review_count = section.settings.review_count | default: '33' -%}
 
-<section class="section-padding overflow-hidden" id="reviews" style="background: #fff;">
+<section class="section-padding overflow-hidden" id="reviews" style="background: #F9FAFB;">
   <div class="container-custom">
-    <h2 class="font-display font-black text-center" style="font-size: clamp(1.5rem, 4vw, 2.25rem); color: #071D40; margin-bottom: 0.5rem;">
-      {{ section.settings.heading | default: 'Reseñas de nuestros clientes' }}
-    </h2>
+
+    {%- comment -%}Two-line heading like other sections{%- endcomment -%}
+    <div style="text-align: center; margin-bottom: 0.75rem;">
+      <h2 class="font-display font-black" style="font-size: clamp(1.5rem, 4vw, 2.25rem); color: #071D40; margin: 0; line-height: 1.2;">
+        {{ section.settings.heading_line_1 | default: 'Miles ya despertaron sin cruda' }}
+      </h2>
+      <h2 class="font-display font-black" style="font-size: clamp(1.5rem, 4vw, 2.25rem); color: #00AB43; margin: 0; line-height: 1.2;">
+        {{ section.settings.heading_line_2 | default: 'y lo cuentan así' }}
+      </h2>
+    </div>
 
     {%- comment -%}Aggregate rating summary{%- endcomment -%}
-    <div style="text-align: center; margin-bottom: 2rem;">
+    <div style="text-align: center; margin-bottom: 2.5rem;">
       <div style="display: inline-flex; align-items: center; gap: 8px;">
         <div style="display: flex; gap: 2px;" aria-label="{{ rating_value }} de 5 estrellas">
           {%- for i in (1..5) -%}
@@ -24,146 +31,169 @@
           {%- endfor -%}
         </div>
         <span style="font-family: 'Inter', sans-serif; font-size: 14px; color: #6B7280;">
-          {{ rating_value }} / 5 &middot; {{ review_count }} reseñas
+          {{ section.settings.rating | default: '4.7' }} / 5 &middot; {{ review_count }} reseñas
         </span>
       </div>
     </div>
 
     {%- if section.blocks.size > 0 -%}
-      {%- comment -%}Desktop: grid of review cards{%- endcomment -%}
+      {%- comment -%}Desktop: 3-column grid{%- endcomment -%}
       <div class="bc-reviews-grid">
         {%- for block in section.blocks -%}
-          <div class="bc-review-card" {{ block.shopify_attributes }}>
-            <div style="display: flex; gap: 2px; margin-bottom: 8px;">
-              {%- assign block_rating = block.settings.rating | default: 5 -%}
-              {%- for i in (1..5) -%}
-                {%- if block_rating >= i -%}
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="#00AB43"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z"/></svg>
-                {%- else -%}
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="#D1D5DB"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z"/></svg>
-                {%- endif -%}
-              {%- endfor -%}
-            </div>
-
-            {%- if block.settings.title != blank -%}
-              <p style="font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px; color: #071D40; margin: 0 0 4px;">
-                {{ block.settings.title }}
-              </p>
-            {%- endif -%}
-
-            <p style="font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; color: #374151; margin: 0 0 12px;">
-              {{ block.settings.body }}
-            </p>
-
-            <div style="display: flex; align-items: center; gap: 8px;">
-              {%- if block.settings.verified -%}
-                <svg width="14" height="14" viewBox="0 0 20 20" fill="#00AB43"><path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm-2 15l-5-5 1.41-1.41L8 12.17l7.59-7.59L17 6l-9 9z"/></svg>
-              {%- endif -%}
-              <span style="font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px; color: #071D40;">
-                {{ block.settings.author }}
-              </span>
-              {%- if block.settings.verified -%}
-                <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #6B7280;">
-                  Compra verificada
-                </span>
-              {%- endif -%}
-            </div>
-          </div>
+          {%- render 'review-card', block: block -%}
         {%- endfor -%}
       </div>
 
       {%- comment -%}Mobile: horizontal scroll{%- endcomment -%}
       <div class="bc-reviews-scroll">
         {%- for block in section.blocks -%}
-          <div class="bc-review-card-mobile" {{ block.shopify_attributes }}>
-            <div style="display: flex; gap: 2px; margin-bottom: 8px;">
-              {%- assign block_rating = block.settings.rating | default: 5 -%}
-              {%- for i in (1..5) -%}
-                {%- if block_rating >= i -%}
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="#00AB43"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z"/></svg>
-                {%- else -%}
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="#D1D5DB"><path d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78L10 1z"/></svg>
-                {%- endif -%}
-              {%- endfor -%}
-            </div>
-
-            {%- if block.settings.title != blank -%}
-              <p style="font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px; color: #071D40; margin: 0 0 4px;">
-                {{ block.settings.title }}
-              </p>
-            {%- endif -%}
-
-            <p style="font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; color: #374151; margin: 0 0 12px;">
-              {{ block.settings.body }}
-            </p>
-
-            <div style="display: flex; align-items: center; gap: 8px;">
-              {%- if block.settings.verified -%}
-                <svg width="14" height="14" viewBox="0 0 20 20" fill="#00AB43"><path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm-2 15l-5-5 1.41-1.41L8 12.17l7.59-7.59L17 6l-9 9z"/></svg>
-              {%- endif -%}
-              <span style="font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px; color: #071D40;">
-                {{ block.settings.author }}
-              </span>
-              {%- if block.settings.verified -%}
-                <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #6B7280;">
-                  Compra verificada
-                </span>
-              {%- endif -%}
-            </div>
-          </div>
+          {%- render 'review-card', block: block, mobile: true -%}
         {%- endfor -%}
       </div>
     {%- endif -%}
 
-    {%- if current_product -%}
-      <div style="text-align: center; margin-top: 2rem;">
-        <a href="{{ current_product.url }}#reviews" style="font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px; color: #00AB43; text-decoration: underline; text-underline-offset: 3px;">
-          Ver todas las {{ review_count }} reseñas &rarr;
-        </a>
-      </div>
-    {%- endif -%}
+    {%- comment -%}CTA button instead of text link{%- endcomment -%}
+    <div style="text-align: center; margin-top: 2.5rem;">
+      <a href="{{ section.settings.cta_url | default: '#product-hero' }}" class="bc-reviews-cta">
+        {{ section.settings.cta_text | default: 'Quiero amanecer bien' }}
+      </a>
+    </div>
   </div>
 
   <style>
-    /* Desktop: 3-column grid */
+    /* Cards shared style */
+    .bc-review-card,
+    .bc-review-card-mobile {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Quote open icon */
+    .bc-review-quote {
+      color: #00AB43;
+      opacity: 0.15;
+      font-size: 48px;
+      line-height: 1;
+      font-family: Georgia, serif;
+      margin: -8px 0 4px;
+    }
+
+    /* Review body fills space, author sticks to bottom */
+    .bc-review-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #374151;
+      margin: 0 0 16px;
+      flex: 1;
+    }
+
+    /* Author row */
+    .bc-review-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid #F3F4F6;
+    }
+    .bc-review-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .bc-review-avatar-placeholder {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00AB43 0%, #009639 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .bc-review-avatar-placeholder span {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+    }
+    .bc-review-author-name {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #071D40;
+    }
+    .bc-review-verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #00AB43;
+      font-weight: 600;
+    }
+
+    /* Image attachment */
+    .bc-review-image {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+    }
+
+    /* CTA button */
+    .bc-reviews-cta {
+      display: inline-block;
+      background: #00AB43;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      padding: 14px 40px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .bc-reviews-cta:hover {
+      background: #009639;
+      transform: translateY(-1px);
+    }
+
+    /* Desktop grid */
     .bc-reviews-grid {
       display: none;
     }
-    .bc-review-card {
-      background: #F9FAFB;
-      border: 1px solid #E5E7EB;
-      border-radius: 16px;
-      padding: 20px;
-    }
 
-    /* Mobile: horizontal scroll */
+    /* Mobile scroll */
     .bc-reviews-scroll {
       display: flex;
       gap: 16px;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
-      padding: 0 16px 8px;
+      padding: 4px 16px 12px;
       scrollbar-width: none;
     }
-    .bc-reviews-scroll::-webkit-scrollbar {
-      display: none;
-    }
-    .bc-review-card-mobile {
+    .bc-reviews-scroll::-webkit-scrollbar { display: none; }
+    .bc-reviews-scroll .bc-review-card-mobile {
       flex-shrink: 0;
-      width: 280px;
+      width: 300px;
       scroll-snap-align: center;
-      background: #F9FAFB;
-      border: 1px solid #E5E7EB;
-      border-radius: 16px;
-      padding: 20px;
     }
 
     @media (min-width: 768px) {
       .bc-reviews-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        gap: 24px;
         max-width: 960px;
         margin: 0 auto;
       }
@@ -180,14 +210,20 @@
   "settings": [
     {
       "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Reseñas de nuestros clientes"
+      "id": "heading_line_1",
+      "label": "Heading Line 1",
+      "default": "Miles ya despertaron sin cruda"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading Line 2 (green)",
+      "default": "y lo cuentan así"
     },
     {
       "type": "product",
       "id": "product",
-      "label": "Product (for 'Ver todas' link)"
+      "label": "Product (for rating data)"
     },
     {
       "type": "text",
@@ -200,6 +236,17 @@
       "id": "review_count",
       "label": "Total review count",
       "default": "33"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA button text",
+      "default": "Quiero amanecer bien"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA button link"
     }
   ],
   "blocks": [
@@ -232,6 +279,16 @@
           "id": "body",
           "label": "Review text",
           "default": "Excelente producto, lo recomiendo."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo (optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Reviewer photo (optional)"
         },
         {
           "type": "checkbox",
@@ -273,36 +330,6 @@
             "rating": 5,
             "title": "El mejor regalo",
             "body": "Le regalé a todo mi grupo de amigos. Ahora todos lo piden antes de cada salida. 100% recomendado.",
-            "verified": true
-          }
-        },
-        {
-          "type": "review",
-          "settings": {
-            "author": "Fernanda G.",
-            "rating": 4,
-            "title": "Muy bueno",
-            "body": "La primera vez no lo tomé correctamente pero ya aprendí — con agua después de la última copa. Desde entonces funciona perfecto.",
-            "verified": true
-          }
-        },
-        {
-          "type": "review",
-          "settings": {
-            "author": "Roberto S.",
-            "rating": 5,
-            "title": "No más crudas",
-            "body": "Soy escéptico por naturaleza pero esto realmente funciona. Lo he probado varias veces y el resultado es consistente.",
-            "verified": true
-          }
-        },
-        {
-          "type": "review",
-          "settings": {
-            "author": "Mariana T.",
-            "rating": 5,
-            "title": "Sorprendente",
-            "body": "Mi novio me lo recomendó y ahora soy yo la que no sale sin sus sobres. Amaneces como si no hubieras tomado.",
             "verified": true
           }
         }
