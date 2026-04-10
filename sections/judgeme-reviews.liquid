@@ -6,37 +6,37 @@
       {{ section.settings.heading | default: 'Reseñas de nuestros clientes' }}
     </h2>
 
-    {%- comment -%}Judge.me Reviews — use carousel on homepage, full widget on product page{%- endcomment -%}
-    {%- if request.page_type == 'product' -%}
+    {%- comment -%}
+      Judge.me Reviews — use the product review widget on ALL pages.
+      The carousel/all-reviews widgets don't populate on non-product pages,
+      but the review widget works anywhere when given a product ID via data-id.
+    {%- endcomment -%}
+    {%- if current_product -%}
       <div
         class="jdgm-widget jdgm-review-widget"
         data-id="{{ current_product.id }}"
         data-product-title="{{ current_product.title | escape }}"
+        data-product-url="{{ current_product.url }}"
       ></div>
     {%- else -%}
-      {%- comment -%}Carousel widget works on any page — doesn't require product context{%- endcomment -%}
-      <div class="jdgm-carousel-wrapper" data-auto-play="false" data-number-of-reviews="6" data-slides-to-show="3" data-slides-to-scroll="1">
-        <div class="jdgm-carousel"></div>
-      </div>
+      {%- comment -%}No product context available — try all-reviews widget as fallback{%- endcomment -%}
+      <div class="jdgm-widget jdgm-all-reviews-page" data-number-of-reviews="6"></div>
+    {%- endif -%}
 
-      {%- comment -%}Fallback: also try the all-reviews widget{%- endcomment -%}
-      <div class="jdgm-widget jdgm-all-reviews-page" data-number-of-reviews="6" style="margin-top: 1rem;"></div>
-
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          // Trigger Judge.me to initialize widgets
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Trigger Judge.me to re-initialize widgets (needed on non-product pages)
+        function initJdgm() {
           if (typeof jdgm !== 'undefined') {
             if (jdgm.customizableWidgets) jdgm.customizableWidgets();
           }
-          // Retry after a delay in case jdgm loads async
-          setTimeout(function() {
-            if (typeof jdgm !== 'undefined' && jdgm.customizableWidgets) {
-              jdgm.customizableWidgets();
-            }
-          }, 3000);
-        });
-      </script>
-    {%- endif -%}
+        }
+        initJdgm();
+        // Retry after Judge.me async load
+        setTimeout(initJdgm, 2000);
+        setTimeout(initJdgm, 5000);
+      });
+    </script>
   </div>
 
   <style>
