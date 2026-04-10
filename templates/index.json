@@ -314,7 +314,8 @@
         "product": "buenacopa-bienestar-post-fiesta",
         "rating": "4.7",
         "review_count": "33",
-        "cta_text": "Quiero amanecer bien"
+        "cta_text": "Quiero amanecer bien",
+        "cta_url": "/products/buenacopa-bienestar-post-fiesta"
       }
     }
   },
