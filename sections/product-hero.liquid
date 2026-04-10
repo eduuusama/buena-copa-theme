@@ -232,14 +232,14 @@
                       {% unless variant.available %}disabled{% endunless %}
                     >
                       <span class="font-bold text-background" style="font-size:13px">{{ variant.title }}</span>
-                      <div class="text-right">
+                      <div style="text-align:right">
                         {%- assign v_whole = variant.price | divided_by: 100 -%}
                         {%- assign v_cents = variant.price | modulo: 100 -%}
                         {%- capture v_formatted -%}{%- if v_whole >= 1000 -%}{{ v_whole | divided_by: 1000 }},{{ v_whole | modulo: 1000 | prepend: '000' | slice: -3, 3 }}{%- else -%}{{ v_whole }}{%- endif -%}{%- endcapture -%}
                         <span class="font-display font-black text-background" style="font-size:15px">${{ v_formatted }}</span>
                         {% if per_serving > 0 %}
                           {%- assign ps_whole = per_serving | divided_by: 100 -%}
-                          <div class="text-background/40" style="font-size:9px">${{ ps_whole }}/toma</div>
+                          <div class="text-background/40" style="font-size:9px; text-align:right">${{ ps_whole }}/toma</div>
                         {% endif %}
                       </div>
                     </button>
