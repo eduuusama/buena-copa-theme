@@ -235,6 +235,13 @@
       "settings": {
         "heading": "Preguntas frecuentes"
       }
+    },
+    "reviews": {
+      "type": "judgeme-reviews",
+      "settings": {
+        "heading": "Reseñas de nuestros clientes",
+        "product": "buenacopa-bienestar-post-fiesta"
+      }
     }
   },
   "order": [
@@ -245,6 +252,7 @@
     "how-it-works",
     "available-in",
     "brand-banner",
-    "faq"
+    "faq",
+    "reviews"
   ]
 }
