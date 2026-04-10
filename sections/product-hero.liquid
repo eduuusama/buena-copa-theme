@@ -106,7 +106,7 @@
       </div>
 
       {%- comment -%}═══ RIGHT COLUMN: Purchase Flow ═══{%- endcomment -%}
-      <div class="space-y-3 pb-20 lg:pb-0" id="product-form-container" data-product-id="{{ product.id }}">
+      <div class="space-y-3 pb-20 lg:pb-0 lg:pt-0" id="product-form-container" data-product-id="{{ product.id }}" style="margin-top: 0;">
         <h2 class="sr-only">{{ product.title }}</h2>
 
         <!-- Shipping badge -->
@@ -120,7 +120,7 @@
           <div
             id="subscription-card"
             class="relative rounded-xl border-2 border-accent cursor-pointer transition-all"
-            style="background: linear-gradient(180deg, rgba(0,171,67,0.06) 0%, rgba(0,171,67,0.02) 100%); padding: 32px 16px 16px;"
+            style="background: linear-gradient(180deg, rgba(0,171,67,0.06) 0%, rgba(0,171,67,0.02) 100%); padding: 24px 16px 14px;"
             onclick="ProductForm.selectSubscription({{ sub_variant.id }}, {{ sub_plan.id }})"
             data-variant-id="{{ sub_variant.id }}"
             data-selling-plan-id="{{ sub_plan.id }}"
@@ -173,7 +173,79 @@
             <div class="flex-1 h-px bg-background/10"></div>
           </div>
 
-          <div class="space-y-2" style="margin-top:8px" id="variant-selector">
+          {%- comment -%}Collect non-subscription variants{%- endcomment -%}
+          {%- assign onetime_variants = '' -%}
+          {%- assign onetime_count = 0 -%}
+          {%- for variant in product.variants -%}
+            {%- liquid
+              assign variant_title_lower = variant.title | downcase
+              assign is_sub_only = false
+              if variant_title_lower contains 'suscripción' or variant_title_lower contains 'suscripcion' or variant_title_lower contains 'subscription'
+                assign is_sub_only = true
+              endif
+            -%}
+            {%- unless is_sub_only -%}
+              {%- assign onetime_count = onetime_count | plus: 1 -%}
+            {%- endunless -%}
+          {%- endfor -%}
+
+          <div id="variant-selector">
+            {%- comment -%}First row: 2-column grid for smaller variants{%- endcomment -%}
+            <div class="grid grid-cols-2 gap-2" style="margin-top:8px">
+              {%- assign rendered = 0 -%}
+              {%- for variant in product.variants -%}
+                {%- liquid
+                  assign variant_title_lower = variant.title | downcase
+                  assign is_sub_only = false
+                  if variant_title_lower contains 'suscripción' or variant_title_lower contains 'suscripcion' or variant_title_lower contains 'subscription'
+                    assign is_sub_only = true
+                  endif
+                  assign servings = 10
+                  if variant_title_lower contains '20'
+                    assign servings = 20
+                  elsif variant_title_lower contains '30'
+                    assign servings = 30
+                  elsif variant_title_lower contains '5 '
+                    assign servings = 5
+                  endif
+                  if variant.price > 0 and servings > 0
+                    assign per_serving = variant.price | divided_by: servings
+                  else
+                    assign per_serving = 0
+                  endif
+                -%}
+                {%- unless is_sub_only -%}
+                  {%- assign rendered = rendered | plus: 1 -%}
+                  {%- if rendered <= 2 -%}
+                    <button
+                      type="button"
+                      onclick="ProductForm.selectOneTime({{ variant.id }}, this)"
+                      aria-label="{{ 'sections.product.select_variant' | t: title: variant.title }}"
+                      data-variant-id="{{ variant.id }}"
+                      data-variant-price="{{ variant.price }}"
+                      data-variant-available="{{ variant.available }}"
+                      class="variant-btn flex flex-col items-center justify-center rounded-xl border-2 transition-all duration-200 border-background/15 bg-background/5 hover:border-background/25 {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
+                      style="padding:10px 8px"
+                      {% unless variant.available %}disabled{% endunless %}
+                    >
+                      <span class="font-bold text-background" style="font-size:12px">{{ variant.title }}</span>
+                      {%- assign v_whole = variant.price | divided_by: 100 -%}
+                      {%- assign v_cents = variant.price | modulo: 100 -%}
+                      {%- capture v_formatted -%}{%- if v_whole >= 1000 -%}{{ v_whole | divided_by: 1000 }},{{ v_whole | modulo: 1000 | prepend: '000' | slice: -3, 3 }}{%- else -%}{{ v_whole }}{%- endif -%}{%- endcapture -%}
+                      <span class="font-display font-black text-background" style="font-size:15px">${{ v_formatted }}</span>
+                      {% if per_serving > 0 %}
+                        {%- assign ps_whole = per_serving | divided_by: 100 -%}
+                        {%- assign ps_cents = per_serving | modulo: 100 -%}
+                        <span class="text-background/40" style="font-size:10px">(${{ ps_whole }}{% if ps_cents > 0 %}.{{ ps_cents }}{% endif %} por toma)</span>
+                      {% endif %}
+                    </button>
+                  {%- endif -%}
+                {%- endunless -%}
+              {%- endfor -%}
+            </div>
+
+            {%- comment -%}Second row: full-width for 20 sobres{%- endcomment -%}
+            {%- assign rendered = 0 -%}
             {%- for variant in product.variants -%}
               {%- liquid
                 assign variant_title_lower = variant.title | downcase
@@ -181,7 +253,6 @@
                 if variant_title_lower contains 'suscripción' or variant_title_lower contains 'suscripcion' or variant_title_lower contains 'subscription'
                   assign is_sub_only = true
                 endif
-
                 assign servings = 10
                 if variant_title_lower contains '20'
                   assign servings = 20
@@ -190,39 +261,40 @@
                 elsif variant_title_lower contains '5 '
                   assign servings = 5
                 endif
-
                 if variant.price > 0 and servings > 0
                   assign per_serving = variant.price | divided_by: servings
                 else
                   assign per_serving = 0
                 endif
               -%}
-
               {%- unless is_sub_only -%}
-                <button
-                  type="button"
-                  onclick="ProductForm.selectOneTime({{ variant.id }}, this)"
-                  aria-label="{{ 'sections.product.select_variant' | t: title: variant.title }}"
-                  data-variant-id="{{ variant.id }}"
-                  data-variant-price="{{ variant.price }}"
-                  data-variant-available="{{ variant.available }}"
-                  class="variant-btn w-full flex items-center justify-between rounded-xl border-2 transition-all duration-200 text-left border-background/15 bg-background/5 hover:border-background/25 {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
-                  style="padding:12px 14px"
-                  {% unless variant.available %}disabled{% endunless %}
-                >
-                  <span class="font-bold text-background" style="font-size:13px">{{ variant.title }}</span>
-                  <div class="flex items-baseline" style="gap:6px">
-                    {%- assign v_whole = variant.price | divided_by: 100 -%}
-                    {%- assign v_cents = variant.price | modulo: 100 -%}
-                    {%- capture v_formatted -%}{%- if v_whole >= 1000 -%}{{ v_whole | divided_by: 1000 }},{{ v_whole | modulo: 1000 | prepend: '000' | slice: -3, 3 }}{%- else -%}{{ v_whole }}{%- endif -%}{%- endcapture -%}
-                    <span class="font-display font-black text-background" style="font-size:16px">${{ v_formatted }}{%- if v_cents > 0 -%}.{{ v_cents }}{%- endif -%}</span>
-                    {% if per_serving > 0 %}
-                      {%- assign ps_whole = per_serving | divided_by: 100 -%}
-                      {%- assign ps_cents = per_serving | modulo: 100 -%}
-                      <span class="text-background/40" style="font-size:11px">(${{ ps_whole }}{% if ps_cents > 0 %}.{{ ps_cents }}{% endif %} por toma)</span>
-                    {% endif %}
-                  </div>
-                </button>
+                {%- assign rendered = rendered | plus: 1 -%}
+                {%- if rendered > 2 -%}
+                  <button
+                    type="button"
+                    onclick="ProductForm.selectOneTime({{ variant.id }}, this)"
+                    aria-label="{{ 'sections.product.select_variant' | t: title: variant.title }}"
+                    data-variant-id="{{ variant.id }}"
+                    data-variant-price="{{ variant.price }}"
+                    data-variant-available="{{ variant.available }}"
+                    class="variant-btn w-full flex items-center justify-between rounded-xl border-2 transition-all duration-200 text-left border-background/15 bg-background/5 hover:border-background/25 {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
+                    style="padding:10px 14px; margin-top:8px"
+                    {% unless variant.available %}disabled{% endunless %}
+                  >
+                    <span class="font-bold text-background" style="font-size:13px">{{ variant.title }}</span>
+                    <div class="flex items-baseline" style="gap:6px">
+                      {%- assign v_whole = variant.price | divided_by: 100 -%}
+                      {%- assign v_cents = variant.price | modulo: 100 -%}
+                      {%- capture v_formatted -%}{%- if v_whole >= 1000 -%}{{ v_whole | divided_by: 1000 }},{{ v_whole | modulo: 1000 | prepend: '000' | slice: -3, 3 }}{%- else -%}{{ v_whole }}{%- endif -%}{%- endcapture -%}
+                      <span class="font-display font-black text-background" style="font-size:15px">${{ v_formatted }}</span>
+                      {% if per_serving > 0 %}
+                        {%- assign ps_whole = per_serving | divided_by: 100 -%}
+                        {%- assign ps_cents = per_serving | modulo: 100 -%}
+                        <span class="text-background/40" style="font-size:10px">(${{ ps_whole }}{% if ps_cents > 0 %}.{{ ps_cents }}{% endif %} por toma)</span>
+                      {% endif %}
+                    </div>
+                  </button>
+                {%- endif -%}
               {%- endunless -%}
             {%- endfor -%}
           </div>
