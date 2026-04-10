@@ -139,7 +139,7 @@
               <p class="font-display font-black text-background" style="white-space:nowrap"><span style="font-size:22px">${{ sub_price_whole }}</span>{%- if sub_price_cents > 0 -%}<span style="font-size:14px">.{{ sub_price_cents }}</span>{%- endif -%}<span style="font-size:11px; color:rgba(7,29,64,0.4); font-weight:600; margin-left:2px">/mes</span></p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2" style="margin-top:8px; gap:3px 12px">
+            <div class="grid grid-cols-2" style="margin-top:8px; gap:3px 12px">
               <div style="display:flex; align-items:center; gap:6px">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" aria-hidden="true" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
                 <span style="font-size:11px; color:rgba(7,29,64,0.65)"><strong>${{ sub_per_whole }} por toma</strong></span>
@@ -227,20 +227,22 @@
                       data-variant-id="{{ variant.id }}"
                       data-variant-price="{{ variant.price }}"
                       data-variant-available="{{ variant.available }}"
-                      class="variant-btn flex flex-col items-center justify-center rounded-xl border-2 transition-all duration-200 border-background/15 bg-background/5 hover:border-background/25 {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
-                      style="padding:10px 8px; min-height:52px"
+                      class="variant-btn flex items-center justify-between rounded-xl border-2 transition-all duration-200 border-background/15 bg-background/5 hover:border-background/25 {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
+                      style="padding:10px 12px; min-height:48px"
                       {% unless variant.available %}disabled{% endunless %}
                     >
                       <span class="font-bold text-background" style="font-size:12px">{{ variant.title }}</span>
-                      {%- assign v_whole = variant.price | divided_by: 100 -%}
-                      {%- assign v_cents = variant.price | modulo: 100 -%}
-                      {%- capture v_formatted -%}{%- if v_whole >= 1000 -%}{{ v_whole | divided_by: 1000 }},{{ v_whole | modulo: 1000 | prepend: '000' | slice: -3, 3 }}{%- else -%}{{ v_whole }}{%- endif -%}{%- endcapture -%}
-                      <span class="font-display font-black text-background" style="font-size:15px">${{ v_formatted }}</span>
-                      {% if per_serving > 0 %}
-                        {%- assign ps_whole = per_serving | divided_by: 100 -%}
-                        {%- assign ps_cents = per_serving | modulo: 100 -%}
-                        <span class="text-background/40" style="font-size:10px">(${{ ps_whole }}{% if ps_cents > 0 %}.{{ ps_cents }}{% endif %} por toma)</span>
-                      {% endif %}
+                      <div class="text-right">
+                        {%- assign v_whole = variant.price | divided_by: 100 -%}
+                        {%- assign v_cents = variant.price | modulo: 100 -%}
+                        {%- capture v_formatted -%}{%- if v_whole >= 1000 -%}{{ v_whole | divided_by: 1000 }},{{ v_whole | modulo: 1000 | prepend: '000' | slice: -3, 3 }}{%- else -%}{{ v_whole }}{%- endif -%}{%- endcapture -%}
+                        <span class="font-display font-black text-background" style="font-size:14px">${{ v_formatted }}</span>
+                        {% if per_serving > 0 %}
+                          {%- assign ps_whole = per_serving | divided_by: 100 -%}
+                          {%- assign ps_cents = per_serving | modulo: 100 -%}
+                          <div class="text-background/40" style="font-size:9px">(${{ ps_whole }}{% if ps_cents > 0 %}.{{ ps_cents }}{% endif %} /toma)</div>
+                        {% endif %}
+                      </div>
                     </button>
                   {%- endif -%}
                 {%- endunless -%}
@@ -281,7 +283,7 @@
                     data-variant-price="{{ variant.price }}"
                     data-variant-available="{{ variant.available }}"
                     class="variant-btn w-full flex items-center justify-between rounded-xl border-2 transition-all duration-200 text-left border-background/15 bg-background/5 hover:border-background/25 {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
-                    style="padding:10px 14px; margin-top:8px; min-height:52px"
+                    style="padding:10px 12px; margin-top:8px; min-height:48px"
                     {% unless variant.available %}disabled{% endunless %}
                   >
                     <span class="font-bold text-background" style="font-size:13px">{{ variant.title }}</span>
