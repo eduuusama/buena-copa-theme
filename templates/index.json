@@ -58,6 +58,10 @@
         "mercadolibre_url": "https://www.mercadolibre.com.mx/tienda/buenacopa"
       }
     },
+    "177578091173f352fa": {
+      "type": "apps",
+      "settings": {}
+    },
     "formula": {
       "type": "formula",
       "blocks": {
@@ -242,6 +246,7 @@
   "order": [
     "hero",
     "product-showcase",
+    "177578091173f352fa",
     "formula",
     "ugc",
     "how-it-works",
