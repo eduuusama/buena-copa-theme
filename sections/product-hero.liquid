@@ -1,0 +1,618 @@
+{%- comment -%}
+  Product Hero — Unified purchase section
+  Mobile: single column (headline → carousel → subscription → variants)
+  Desktop: 2-column (product left, purchase flow right) — subscription above the fold
+{%- endcomment -%}
+
+{%- assign product = section.settings.product -%}
+{%- if product == blank -%}
+  {%- assign product = collections.all.products.first -%}
+{%- endif -%}
+
+{%- liquid
+  assign has_subscription = false
+  assign sub_variant = nil
+  assign sub_plan = nil
+  assign sub_price = 0
+  assign sub_servings = 0
+
+  for group in product.selling_plan_groups
+    if group.selling_plans.size > 0
+      assign has_subscription = true
+      assign sub_plan = group.selling_plans[0]
+      for variant in product.variants
+        for allocation in variant.selling_plan_allocations
+          if allocation.selling_plan.id == sub_plan.id
+            assign sub_variant = variant
+            assign sub_price = allocation.price
+            break
+          endif
+        endfor
+        if sub_variant
+          break
+        endif
+      endfor
+      break
+    endif
+  endfor
+
+  if sub_variant
+    assign sub_title_words = sub_variant.title | split: ' '
+    for word in sub_title_words
+      assign word_num = word | plus: 0
+      if word_num > 0
+        assign sub_servings = word_num
+        break
+      endif
+    endfor
+  endif
+  if sub_servings == 0
+    assign sub_servings = 1
+  endif
+
+  if sub_price > 0 and sub_servings > 0
+    assign sub_per_serving = sub_price | divided_by: sub_servings
+  else
+    assign sub_per_serving = 0
+  endif
+
+  assign sub_price_whole = sub_price | divided_by: 100
+  assign sub_price_cents = sub_price | modulo: 100
+  assign sub_per_whole = sub_per_serving | divided_by: 100
+-%}
+
+<section id="comprar" class="overflow-hidden bg-white">
+  <div class="container-custom" style="padding-top: 16px;">
+
+    {%- comment -%}═══ HEADLINE ═══{%- endcomment -%}
+    <div class="text-left" id="hero-headline" style="margin-bottom: 12px;">
+    <style>@media(min-width:1024px) { #hero-headline { max-width: 960px; margin-left: auto; margin-right: auto; } }</style>
+      <h1 class="font-display font-black leading-[0.95]" style="font-size: clamp(1.75rem, 4.5vw, 2.75rem);">
+        <span class="text-background whitespace-nowrap">{{ section.settings.heading_line_1 | default: 'La fiesta sigue.' }}</span>
+        <br>
+        <span class="text-accent-contrast">{{ section.settings.heading_line_2 | default: 'La cruda no.' }}</span>
+      </h1>
+      <p class="text-background/60 font-semibold" style="font-size: clamp(0.75rem, 1.5vw, 0.95rem); max-width: 24rem; margin-top: 4px; line-height: 1.45;">
+        {{ section.settings.subheading | default: 'Bienestar post-fiesta. Celebra hoy. Conquista mañana.' }}
+      </p>
+
+      <div class="flex items-center gap-2 justify-start" style="margin-top: 6px;">
+        <div class="flex gap-0.5">
+          {% for s in (1..5) %}
+            {% render 'icon-star', size: 14, fill: '#facc15', stroke: '#facc15' %}
+          {% endfor %}
+        </div>
+        <span class="text-background/50" style="font-size: 11px; font-weight: 600;">{{ section.settings.review_label | default: '10,000+ mañanas sin cruda' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-custom" style="padding-top: 16px;">
+    {%- comment -%}═══ 2-COLUMN: Carousel (left) + Purchase (right) ═══{%- endcomment -%}
+    <div class="grid gap-6 items-start" id="hero-grid">
+    <style>#hero-grid { grid-template-columns: 1fr; } @media(min-width:1024px) { #hero-grid { grid-template-columns: 1fr 1fr !important; gap: 20px !important; max-width: 960px; margin: 0 auto; } }</style>
+
+      {%- comment -%}═══ LEFT: Product Carousel ═══{%- endcomment -%}
+      <div>
+        <!-- Product Image Carousel -->
+        <div class="space-y-2">
+          <div class="rounded-2xl overflow-hidden aspect-square lg:aspect-auto" style="max-height: min(55vh, 420px);">
+            <img
+              id="main-product-image"
+              src="{{ product.featured_image | image_url: width: 1200 }}"
+              srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w, {{ product.featured_image | image_url: width: 1200 }} 1200w"
+              sizes="(max-width: 768px) 100vw, 45vw"
+              alt="{{ product.featured_image.alt | default: product.title }}"
+              class="w-full h-full object-cover"
+              loading="eager" decoding="async"
+              width="600" height="600"
+              fetchpriority="high"
+            >
+          </div>
+          <div class="flex gap-1.5 overflow-x-auto scrollbar-hide" id="product-thumbnails">
+            {%- for image in product.images limit: 5 -%}
+              <button
+                onclick="ProductForm.selectImage('{{ image | image_url: width: 1200 }}', this)"
+                aria-label="{{ 'sections.product.view_image' | t: index: forloop.index }}"
+                class="product-thumbnail rounded-lg overflow-hidden border-2 transition-all {% if forloop.first %}border-accent{% else %}border-background/10 hover:border-background/25{% endif %}"
+              >
+                <img src="{{ image | image_url: width: 160 }}" alt="{{ 'sections.product.image_alt' | t: index: forloop.index }}" class="w-full h-full object-cover" loading="lazy" decoding="async" width="80" height="80">
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+
+      </div>
+
+      {%- comment -%}═══ RIGHT COLUMN: Purchase Flow ═══{%- endcomment -%}
+      <div class="space-y-3 pb-20 lg:pb-0" id="product-form-container" data-product-id="{{ product.id }}">
+        <h2 class="sr-only">{{ product.title }}</h2>
+
+        <!-- Shipping badge -->
+        <div class="flex items-center gap-2 text-background/50">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <span style="font-size:12px" class="font-medium">Envíos a todo México</span>
+        </div>
+
+        <!-- ═══ SUBSCRIPTION CARD ═══ -->
+        {% if has_subscription and sub_variant %}
+          <div
+            id="subscription-card"
+            class="relative rounded-xl border-2 border-accent cursor-pointer transition-all"
+            style="background: linear-gradient(180deg, rgba(0,171,67,0.06) 0%, rgba(0,171,67,0.02) 100%); padding: 24px 16px 14px;"
+            onclick="ProductForm.selectSubscription({{ sub_variant.id }}, {{ sub_plan.id }})"
+            data-variant-id="{{ sub_variant.id }}"
+            data-selling-plan-id="{{ sub_plan.id }}"
+            data-price="{{ sub_price }}"
+          >
+            <span class="absolute left-3" style="top:-11px; font-size:11px; letter-spacing:0.05em; display:inline-flex; align-items:center; gap:5px; background:#00AB43; color:#fff; font-weight:700; text-transform:uppercase; padding:3px 10px; border-radius:999px;">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              MEJOR VALOR
+            </span>
+
+            <div class="flex items-baseline justify-between">
+              <p class="font-bold text-background" style="font-size:14px">Suscripción ({{ sub_servings }} sobres)</p>
+              <p class="font-display font-black text-background" style="white-space:nowrap"><span style="font-size:22px">${{ sub_price_whole }}</span>{%- if sub_price_cents > 0 -%}<span style="font-size:14px">.{{ sub_price_cents }}</span>{%- endif -%}<span style="font-size:11px; color:rgba(7,29,64,0.4); font-weight:600; margin-left:2px">/mes</span></p>
+            </div>
+
+            <div class="grid grid-cols-2" style="margin-top:8px; gap:3px 12px">
+              <div style="display:flex; align-items:center; gap:6px">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" aria-hidden="true" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
+                <span style="font-size:11px; color:rgba(7,29,64,0.65)"><strong>40% off primeros 2 meses</strong></span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" aria-hidden="true" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
+                <span style="font-size:11px; color:rgba(7,29,64,0.65)"><strong>15% off de por vida</strong></span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" aria-hidden="true" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
+                <span style="font-size:11px; color:rgba(7,29,64,0.65)">${{ sub_per_whole }} por toma</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3" aria-hidden="true" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
+                <span style="font-size:11px; color:rgba(7,29,64,0.65)">Cancela cuando quieras</span>
+              </div>
+            </div>
+
+            <button
+              onclick="event.stopPropagation(); ProductForm.selectSubscription({{ sub_variant.id }}, {{ sub_plan.id }}); ProductForm.addToCart();"
+              class="w-full btn-cta flex items-center justify-center gap-2"
+              style="margin-top:14px; font-size:14px; padding:10px 0"
+            >
+              Suscribirme ahora
+              <span class="inline-flex">{% render 'icon-arrow-right', size: 16 %}</span>
+            </button>
+          </div>
+        {% endif %}
+
+        <!-- ═══ ONE-TIME PURCHASE ═══ -->
+        <div>
+          <div class="flex items-center gap-3" style="margin-top:4px">
+            <p class="font-bold text-background shrink-0" style="font-size:14px">Compra única</p>
+            <div class="flex-1 h-px bg-background/10"></div>
+          </div>
+
+          {%- comment -%}Collect non-subscription variants{%- endcomment -%}
+          {%- assign onetime_variants = '' -%}
+          {%- assign onetime_count = 0 -%}
+          {%- for variant in product.variants -%}
+            {%- liquid
+              assign variant_title_lower = variant.title | downcase
+              assign is_sub_only = false
+              if variant_title_lower contains 'suscripción' or variant_title_lower contains 'suscripcion' or variant_title_lower contains 'subscription'
+                assign is_sub_only = true
+              endif
+            -%}
+            {%- unless is_sub_only -%}
+              {%- assign onetime_count = onetime_count | plus: 1 -%}
+            {%- endunless -%}
+          {%- endfor -%}
+
+          <div id="variant-selector">
+            {%- comment -%}First row: 2-column grid for smaller variants{%- endcomment -%}
+            <div class="grid grid-cols-2 gap-2" style="margin-top:8px">
+              {%- assign rendered = 0 -%}
+              {%- for variant in product.variants -%}
+                {%- liquid
+                  assign variant_title_lower = variant.title | downcase
+                  assign is_sub_only = false
+                  if variant_title_lower contains 'suscripción' or variant_title_lower contains 'suscripcion' or variant_title_lower contains 'subscription'
+                    assign is_sub_only = true
+                  endif
+                  assign servings = 0
+                  assign title_words = variant.title | split: ' '
+                  for word in title_words
+                    assign word_as_number = word | plus: 0
+                    if word_as_number > 0
+                      assign servings = word_as_number
+                      break
+                    endif
+                  endfor
+                  if servings == 0
+                    assign servings = 1
+                  endif
+                  if variant.price > 0 and servings > 0
+                    assign per_serving = variant.price | divided_by: servings
+                  else
+                    assign per_serving = 0
+                  endif
+                -%}
+                {%- unless is_sub_only -%}
+                  {%- assign rendered = rendered | plus: 1 -%}
+                  {%- if rendered <= 2 -%}
+                    <button
+                      type="button"
+                      onclick="ProductForm.selectOneTime({{ variant.id }}, this)"
+                      aria-label="{{ 'sections.product.select_variant' | t: title: variant.title }}"
+                      data-variant-id="{{ variant.id }}"
+                      data-variant-price="{{ variant.price }}"
+                      data-variant-available="{{ variant.available }}"
+                      class="variant-btn flex items-center justify-between rounded-xl border-2 transition-all duration-200 border-background/15 bg-background/5 hover:border-background/25 {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
+                      style="padding:10px 12px"
+                      {% unless variant.available %}disabled{% endunless %}
+                    >
+                      <span class="font-bold text-background" style="font-size:13px">{{ variant.title }}</span>
+                      <div style="text-align:right">
+                        {%- assign v_whole = variant.price | divided_by: 100 -%}
+                        {%- assign v_cents = variant.price | modulo: 100 -%}
+                        {%- capture v_formatted -%}{%- if v_whole >= 1000 -%}{{ v_whole | divided_by: 1000 }},{{ v_whole | modulo: 1000 | prepend: '000' | slice: -3, 3 }}{%- else -%}{{ v_whole }}{%- endif -%}{%- endcapture -%}
+                        {% if variant.compare_at_price > variant.price %}
+                          {%- assign cap_whole = variant.compare_at_price | divided_by: 100 -%}
+                          <span class="text-background/30" style="font-size:11px; text-decoration:line-through">${{ cap_whole }}</span>
+                        {% endif %}
+                        <span class="font-display font-black text-background" style="font-size:15px">${{ v_formatted }}</span>
+                        {% if per_serving > 0 %}
+                          {%- assign ps_whole = per_serving | divided_by: 100 -%}
+                          <div class="text-background/40" style="font-size:9px; text-align:right">${{ ps_whole }}/toma</div>
+                        {% endif %}
+                      </div>
+                    </button>
+                  {%- endif -%}
+                {%- endunless -%}
+              {%- endfor -%}
+            </div>
+
+            {%- comment -%}Second row: full-width for 20 sobres{%- endcomment -%}
+            {%- assign rendered = 0 -%}
+            {%- for variant in product.variants -%}
+              {%- liquid
+                assign variant_title_lower = variant.title | downcase
+                assign is_sub_only = false
+                if variant_title_lower contains 'suscripción' or variant_title_lower contains 'suscripcion' or variant_title_lower contains 'subscription'
+                  assign is_sub_only = true
+                endif
+                assign servings = 10
+                if variant_title_lower contains '20'
+                  assign servings = 20
+                elsif variant_title_lower contains '30'
+                  assign servings = 30
+                elsif variant_title_lower contains '5 '
+                  assign servings = 5
+                endif
+                if variant.price > 0 and servings > 0
+                  assign per_serving = variant.price | divided_by: servings
+                else
+                  assign per_serving = 0
+                endif
+              -%}
+              {%- unless is_sub_only -%}
+                {%- assign rendered = rendered | plus: 1 -%}
+                {%- if rendered > 2 -%}
+                  <button
+                    type="button"
+                    onclick="ProductForm.selectOneTime({{ variant.id }}, this)"
+                    aria-label="{{ 'sections.product.select_variant' | t: title: variant.title }}"
+                    data-variant-id="{{ variant.id }}"
+                    data-variant-price="{{ variant.price }}"
+                    data-variant-available="{{ variant.available }}"
+                    class="variant-btn w-full flex items-center justify-between rounded-xl border-2 transition-all duration-200 text-left border-background/15 bg-background/5 hover:border-background/25 {% unless variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
+                    style="padding:10px 12px; margin-top:8px; min-height:48px"
+                    {% unless variant.available %}disabled{% endunless %}
+                  >
+                    <span class="font-bold text-background" style="font-size:13px">{{ variant.title }}</span>
+                    <div style="text-align:right">
+                      {%- assign v_whole = variant.price | divided_by: 100 -%}
+                      {%- assign v_cents = variant.price | modulo: 100 -%}
+                      {%- capture v_formatted -%}{%- if v_whole >= 1000 -%}{{ v_whole | divided_by: 1000 }},{{ v_whole | modulo: 1000 | prepend: '000' | slice: -3, 3 }}{%- else -%}{{ v_whole }}{%- endif -%}{%- endcapture -%}
+                      <span class="font-display font-black text-background" style="font-size:15px">${{ v_formatted }}</span>
+                      {% if per_serving > 0 %}
+                        {%- assign ps_whole = per_serving | divided_by: 100 -%}
+                        <div class="text-background/40" style="font-size:9px; text-align:right">${{ ps_whole }}/toma</div>
+                      {% endif %}
+                    </div>
+                  </button>
+                {%- endif -%}
+              {%- endunless -%}
+            {%- endfor -%}
+          </div>
+
+          <!-- One-time CTA -->
+          <button
+            id="add-to-cart-btn"
+            onclick="ProductForm.addToCart()"
+            class="w-full mt-3 flex items-center justify-center gap-2.5 bg-[#004AB2] text-white font-bold text-base py-3.5 rounded-xl hover:bg-[#003d94] transition-colors disabled:opacity-50"
+            style="display: none;"
+          >
+            Finalizar compra
+          </button>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="flex items-center justify-center text-background/50" id="trust-badges" style="gap:12px; padding:8px 0; font-size:10px">
+          <style>@media(min-width:1024px) { #trust-badges { font-size: 12px !important; } #trust-badges svg { width: 14px; height: 14px; } }</style>
+          <div class="flex items-center whitespace-nowrap" style="gap:5px; font-weight:500">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            {{ 'general.security.ssl_badge' | t }}
+          </div>
+          <span class="text-background/20">|</span>
+          <div class="flex items-center whitespace-nowrap" style="gap:5px; font-weight:500">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            {{ 'general.security.free_shipping_badge' | t }}
+          </div>
+          <span class="text-background/20">|</span>
+          <div class="flex items-center whitespace-nowrap" style="gap:5px; font-weight:500">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            {{ 'general.security.guarantee_badge' | t }}
+          </div>
+        </div>
+
+        <!-- Dropdowns -->
+        <div>
+          {% for block in section.blocks %}
+            {% if block.type == 'dropdown' %}
+              <div class="dropdown-section">
+                <button onclick="ProductForm.toggleDropdown(this)" aria-expanded="false" class="w-full flex items-center justify-between py-3 border-t border-background/10 text-left">
+                  <span class="font-bold text-background" style="font-size:13px">{{ block.settings.title }}</span>
+                  <span class="text-background/50 transition-transform duration-200 dropdown-chevron">{% render 'icon-chevron-down', size: 16 %}</span>
+                </button>
+                <div class="dropdown-content">
+                  <div>
+                    <div class="pb-3 text-background/60 leading-relaxed" style="font-size:13px">
+                      {{ block.settings.content }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {%- comment -%}═══ SOCIAL PROOF BAR ═══{%- endcomment -%}
+  <div class="bg-accent overflow-hidden">
+    <!-- Mobile: scrolling marquee -->
+    <div class="py-2" id="social-proof-mobile">
+    <style>@media(min-width:640px) { #social-proof-mobile { display:none !important; } }</style>
+      <div class="flex animate-marquee whitespace-nowrap">
+        {% for i in (1..2) %}
+          <div class="flex shrink-0">
+            <div class="flex items-center gap-2 px-5">
+              <span class="text-yellow-400 shrink-0">{% render 'icon-users', size: 16 %}</span>
+              <span class="text-white font-bold" style="font-size:12px">10,000+</span>
+              <span class="text-white font-bold" style="font-size:11px">{{ 'sections.hero.social_proof_mornings' | t }}</span>
+            </div>
+            <div class="flex items-center gap-2 px-5">
+              <div class="flex shrink-0">
+                {% for s in (1..5) %}
+                  {% render 'icon-star', size: 11, fill: '#facc15', stroke: '#facc15' %}
+                {% endfor %}
+              </div>
+              <span class="text-white font-bold" style="font-size:12px">4.8/5</span>
+              <span class="text-white font-bold" style="font-size:11px">{{ 'sections.hero.social_proof_rating' | t }}</span>
+            </div>
+            <div class="flex items-center gap-2 px-5">
+              <span class="text-yellow-400 shrink-0">{% render 'icon-leaf', size: 16 %}</span>
+              <span class="text-white font-bold" style="font-size:12px">✓ {{ 'sections.hero.social_proof_ingredients' | t }}</span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- Desktop: compact static grid -->
+    <div class="container-custom" id="social-proof-desktop" style="display:none; padding: 10px 0;">
+    <style>@media(min-width:640px) { #social-proof-desktop { display:flex !important; } }</style>
+      <div class="grid grid-cols-3 divide-x divide-white/20 w-full">
+        <div class="flex items-center justify-center gap-2">
+          <span class="text-yellow-400">{% render 'icon-users', size: 18 %}</span>
+          <span class="text-white font-bold" style="font-size:13px">10,000+</span>
+          <span class="text-white/80 font-bold" style="font-size:11px">{{ 'sections.hero.social_proof_mornings' | t }}</span>
+        </div>
+        <div class="flex items-center justify-center gap-2">
+          <div class="flex">
+            {% for s in (1..5) %}
+              {% render 'icon-star', size: 12, fill: '#facc15', stroke: '#facc15' %}
+            {% endfor %}
+          </div>
+          <span class="text-white font-bold" style="font-size:13px">4.8/5</span>
+          <span class="text-white/80 font-bold" style="font-size:11px">{{ 'sections.hero.social_proof_rating' | t }}</span>
+        </div>
+        <div class="flex items-center justify-center gap-2">
+          <span class="text-yellow-400">{% render 'icon-leaf', size: 18 %}</span>
+          <span class="text-white font-bold" style="font-size:13px">✓ {{ 'sections.hero.social_proof_ingredients' | t }}</span>
+          <span class="text-white/80 font-bold" style="font-size:11px">{{ 'sections.hero.social_proof_safe' | t }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mobile Sticky CTA -->
+<div id="mobile-sticky-cta" class="fixed left-0 right-0 z-50 lg:hidden bg-accent px-4 pt-2 pb-3 shadow-[0_-4px_20px_rgba(0,0,0,0.15)]" style="bottom: 0;">
+<style>
+  @media(max-width:1023px) {
+    /* Ensure WhatsApp widget clears the sticky CTA */
+    iframe[title*="chat"], iframe[src*="coco"],
+    div[class*="widget"][style*="fixed"],
+    div[style*="position: fixed"][style*="bottom"][style*="right"] {
+      bottom: 60px !important;
+    }
+  }
+</style>
+  <button
+    onclick="ProductForm.addToCart()"
+    class="w-full flex items-center justify-center gap-2 text-white font-bold text-base py-3 rounded-xl disabled:opacity-50"
+  >
+    <span class="inline-flex">{% render 'icon-cart', size: 20 %}</span>
+    <span id="mobile-cta-text">Suscribirme – {% if sub_price > 0 %}{%- render 'price', amount: sub_price -%}/mes{% else %}{%- render 'price', amount: product.selected_or_first_available_variant.price -%}{% endif %}</span>
+  </button>
+</div>
+
+<!-- Product JSON-LD -->
+{% if product %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "image": "https:{{ product.featured_image | image_url: width: 1200 }}",
+  "description": {{ product.description | strip_html | truncate: 5000 | json }},
+  "brand": {
+    "@type": "Brand",
+    "name": {{ shop.name | json }}
+  },
+  "offers": [
+    {% for variant in product.variants %}
+    {
+      "@type": "Offer",
+      "name": {{ variant.title | json }},
+      "price": "{{ variant.price | money_without_currency | strip }}",
+      "priceCurrency": "{{ cart.currency.iso_code }}",
+      "availability": "{% if variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+      "url": "{{ shop.url }}{{ product.url }}?variant={{ variant.id }}"
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+  {%- assign rating_value = product.metafields.reviews.rating.value | default: product.metafields.judgeme.average -%}
+  {%- assign review_count = product.metafields.reviews.rating_count.value | default: product.metafields.judgeme.review_count -%}
+  {%- if rating_value != blank and review_count != blank -%}
+  ,"aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ rating_value | json }},
+    "bestRating": "5",
+    "reviewCount": {{ review_count | json }}
+  }
+  {%- endif -%}
+}
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Heading Line 1",
+      "default": "La fiesta sigue."
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading Line 2",
+      "default": "La cruda no."
+    },
+    {
+      "type": "html",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Bienestar post-fiesta. Celebra hoy. Conquista mañana."
+    },
+    {
+      "type": "text",
+      "id": "cta_sub_text",
+      "label": "Subscription CTA Text",
+      "default": "Suscríbete y ahorra"
+    },
+    {
+      "type": "text",
+      "id": "cta_onetime_text",
+      "label": "One-Time CTA Text",
+      "default": "Compra única desde $349"
+    },
+    {
+      "type": "html",
+      "id": "trust_text",
+      "label": "Trust Statement",
+      "default": "Envío gratis y 30 días de garantía."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Product Image (Desktop)"
+    },
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_logo",
+      "label": "Product Logo"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Product Tagline",
+      "default": "Bienestar Post-Fiesta"
+    },
+    {
+      "type": "text",
+      "id": "review_label",
+      "label": "Review Label",
+      "default": "10,000+ mañanas sin cruda"
+    },
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Review Count (for Google Schema)",
+      "default": "150"
+    },
+    {
+      "type": "url",
+      "id": "amazon_url",
+      "label": "Amazon URL"
+    },
+    {
+      "type": "url",
+      "id": "mercadolibre_url",
+      "label": "Mercado Libre URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "dropdown",
+      "name": "Info Dropdown",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Hero"
+    }
+  ]
+}
+{% endschema %}
