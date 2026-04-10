@@ -1,8 +1,8 @@
 {%- assign current_product = product | default: section.settings.product -%}
 
-<section class="section-padding bg-secondary overflow-hidden" id="reviews">
+<section class="section-padding overflow-hidden" id="reviews" style="background: #fff;">
   <div class="container-custom">
-    <h2 class="text-3xl md:text-4xl font-display font-black text-foreground text-center mb-10">
+    <h2 class="font-display font-black text-center" style="font-size: clamp(1.5rem, 4vw, 2.25rem); color: #071D40; margin-bottom: 2rem;">
       {{ section.settings.heading | default: 'Reseñas de nuestros clientes' }}
     </h2>
 
@@ -13,6 +13,85 @@
       data-product-title="{{ current_product.title | escape }}"
     ></div>
   </div>
+
+  <style>
+    /* Judge.me overrides — match Buenacopa brand */
+    #reviews .jdgm-widget {
+      font-family: 'Inter', sans-serif !important;
+    }
+
+    /* Ensure widget is visible on all pages */
+    #reviews .jdgm-review-widget,
+    #reviews .jdgm-carousel-wrapper {
+      display: block !important;
+    }
+
+    /* Stars — brand green */
+    #reviews .jdgm-star {
+      color: #00AB43 !important;
+    }
+    #reviews .jdgm-star.jdgm--on {
+      color: #00AB43 !important;
+    }
+
+    /* Primary button — brand green */
+    #reviews .jdgm-write-rev-link,
+    #reviews .jdgm-submit-rev,
+    #reviews a.jdgm-write-rev-link {
+      background-color: #00AB43 !important;
+      border-color: #00AB43 !important;
+      color: #fff !important;
+      border-radius: 12px !important;
+      font-weight: 700 !important;
+      font-family: 'Nunito', sans-serif !important;
+      padding: 10px 24px !important;
+    }
+    #reviews .jdgm-write-rev-link:hover,
+    #reviews .jdgm-submit-rev:hover {
+      background-color: #009639 !important;
+    }
+
+    /* Review cards */
+    #reviews .jdgm-rev {
+      border-color: #e5e7eb !important;
+      padding: 16px 0 !important;
+    }
+
+    /* Reviewer name */
+    #reviews .jdgm-rev__author {
+      font-weight: 700 !important;
+      color: #071D40 !important;
+    }
+
+    /* Review body text */
+    #reviews .jdgm-rev__body {
+      color: #374151 !important;
+      font-size: 14px !important;
+      line-height: 1.6 !important;
+    }
+
+    /* Pagination */
+    #reviews .jdgm-paginate a {
+      color: #071D40 !important;
+    }
+    #reviews .jdgm-paginate a.jdgm--active {
+      background-color: #00AB43 !important;
+      color: #fff !important;
+      border-radius: 8px !important;
+    }
+
+    /* Hide powered by badge */
+    #reviews .jdgm-branding-footer {
+      display: none !important;
+    }
+
+    /* Overall rating summary */
+    #reviews .jdgm-rev-widg__summary-text {
+      font-family: 'Nunito', sans-serif !important;
+      font-weight: 800 !important;
+      color: #071D40 !important;
+    }
+  </style>
 </section>
 
 {% schema %}
