@@ -14,7 +14,7 @@
   assign sub_variant = nil
   assign sub_plan = nil
   assign sub_price = 0
-  assign sub_servings = 10
+  assign sub_servings = 0
 
   for group in product.selling_plan_groups
     if group.selling_plans.size > 0
@@ -35,6 +35,20 @@
       break
     endif
   endfor
+
+  if sub_variant
+    assign sub_title_words = sub_variant.title | split: ' '
+    for word in sub_title_words
+      assign word_num = word | plus: 0
+      if word_num > 0
+        assign sub_servings = word_num
+        break
+      endif
+    endfor
+  endif
+  if sub_servings == 0
+    assign sub_servings = 1
+  endif
 
   if sub_price > 0 and sub_servings > 0
     assign sub_per_serving = sub_price | divided_by: sub_servings
@@ -202,13 +216,17 @@
                   if variant_title_lower contains 'suscripción' or variant_title_lower contains 'suscripcion' or variant_title_lower contains 'subscription'
                     assign is_sub_only = true
                   endif
-                  assign servings = 10
-                  if variant_title_lower contains '20'
-                    assign servings = 20
-                  elsif variant_title_lower contains '30'
-                    assign servings = 30
-                  elsif variant_title_lower contains '5 '
-                    assign servings = 5
+                  assign servings = 0
+                  assign title_words = variant.title | split: ' '
+                  for word in title_words
+                    assign word_as_number = word | plus: 0
+                    if word_as_number > 0
+                      assign servings = word_as_number
+                      break
+                    endif
+                  endfor
+                  if servings == 0
+                    assign servings = 1
                   endif
                   if variant.price > 0 and servings > 0
                     assign per_serving = variant.price | divided_by: servings
