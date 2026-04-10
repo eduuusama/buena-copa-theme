@@ -49,25 +49,25 @@
 
 <section id="comprar" class="overflow-hidden bg-white">
   <div class="container-custom">
-    <div class="grid lg:grid-cols-2 gap-6 lg:gap-10 items-start" style="padding: 20px 0 0;">
+    <div class="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start" style="padding: 16px 0 0;">
 
       {%- comment -%}═══ LEFT COLUMN: Product + Messaging ═══{%- endcomment -%}
       <div>
         <!-- Headline -->
         <div class="text-center lg:text-left" style="margin-bottom: 12px;">
-          <h1 class="font-display font-black leading-[0.95]" style="font-size: clamp(2rem, 6vw, 3.5rem);">
+          <h1 class="font-display font-black leading-[0.95]" style="font-size: clamp(1.75rem, 4.5vw, 2.75rem);">
             <span class="text-background whitespace-nowrap">{{ section.settings.heading_line_1 | default: 'La fiesta sigue.' }}</span>
             <br>
             <span class="text-accent-contrast">{{ section.settings.heading_line_2 | default: 'La cruda no.' }}</span>
           </h1>
-          <p class="text-background/60 font-semibold mx-auto lg:mx-0" style="font-size: clamp(0.8rem, 2vw, 1.15rem); max-width: 28rem; margin-top: 6px; line-height: 1.5;">
+          <p class="text-background/60 font-semibold mx-auto lg:mx-0" style="font-size: clamp(0.75rem, 1.5vw, 0.95rem); max-width: 24rem; margin-top: 4px; line-height: 1.45;">
             {{ section.settings.subheading | default: 'Bienestar post-fiesta. Celebra hoy. Conquista mañana.' }}
           </p>
         </div>
 
         <!-- Product Image Carousel -->
         <div class="space-y-2">
-          <div class="rounded-2xl overflow-hidden aspect-square">
+          <div class="rounded-2xl overflow-hidden aspect-square lg:aspect-auto" style="max-height: min(55vh, 420px);">
             <img
               id="main-product-image"
               src="{{ product.featured_image | image_url: width: 1200 }}"
