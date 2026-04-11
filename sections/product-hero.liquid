@@ -116,26 +116,44 @@
 
       {%- comment -%}═══ LEFT: Product Carousel ═══{%- endcomment -%}
       <div>
-        <!-- Product Image Carousel -->
-        <div class="space-y-2">
-          <div class="rounded-2xl overflow-hidden aspect-square lg:aspect-auto" style="max-height: min(55vh, 420px);">
-            <img
-              id="main-product-image"
-              src="{{ product.featured_image | image_url: width: 1200 }}"
-              srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w, {{ product.featured_image | image_url: width: 1200 }} 1200w"
-              sizes="(max-width: 768px) 100vw, 45vw"
-              alt="{{ product.featured_image.alt | default: product.title }}"
-              class="w-full h-full object-cover"
-              loading="eager" decoding="async"
-              width="600" height="600"
-              fetchpriority="high"
-            >
+        <!-- Product Image Carousel — swipeable with dots + thumbnails -->
+        <div class="bc-gallery">
+          {%- comment -%}Main swipeable image strip{%- endcomment -%}
+          <div class="bc-gallery-viewport rounded-2xl">
+            <div class="bc-gallery-track" id="gallery-track">
+              {%- for image in product.images -%}
+                <div class="bc-gallery-slide">
+                  <img
+                    src="{{ image | image_url: width: 1200 }}"
+                    srcset="{{ image | image_url: width: 400 }} 400w, {{ image | image_url: width: 800 }} 800w, {{ image | image_url: width: 1200 }} 1200w"
+                    sizes="(max-width: 768px) 100vw, 45vw"
+                    alt="{{ image.alt | default: product.title }}"
+                    class="bc-gallery-img"
+                    {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                    decoding="async" width="600" height="600"
+                  >
+                </div>
+              {%- endfor -%}
+            </div>
           </div>
+
+          {%- comment -%}Dot indicators{%- endcomment -%}
+          <div class="bc-gallery-dots" id="gallery-dots">
+            {%- for image in product.images -%}
+              <button
+                class="bc-gallery-dot{% if forloop.first %} active{% endif %}"
+                aria-label="Image {{ forloop.index }}"
+                data-index="{{ forloop.index0 }}"
+              ></button>
+            {%- endfor -%}
+          </div>
+
+          {%- comment -%}Thumbnail strip (desktop){%- endcomment -%}
           <div class="bc-thumb-track-wrap">
             <div class="bc-thumb-track" id="product-thumbnails">
               {%- for image in product.images -%}
                 <button
-                  onclick="ProductForm.selectImage('{{ image | image_url: width: 1200 }}', this)"
+                  data-index="{{ forloop.index0 }}"
                   aria-label="{{ 'sections.product.view_image' | t: index: forloop.index }}"
                   class="product-thumbnail bc-thumb rounded-lg overflow-hidden border-2 transition-all {% if forloop.first %}border-accent{% else %}border-background/10 hover:border-background/25{% endif %}"
                 >
@@ -144,64 +162,210 @@
               {%- endfor -%}
             </div>
           </div>
-          <style>
-            .bc-thumb-track-wrap {
-              position: relative;
-              overflow: hidden;
+        </div>
+
+        <style>
+          /* Gallery viewport */
+          .bc-gallery-viewport {
+            overflow: hidden;
+            position: relative;
+          }
+          .bc-gallery-track {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+          }
+          .bc-gallery-track::-webkit-scrollbar { display: none; }
+          .bc-gallery-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+          }
+          .bc-gallery-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            aspect-ratio: 1/1;
+          }
+          @media (min-width: 1024px) {
+            .bc-gallery-img { aspect-ratio: auto; max-height: 420px; object-fit: contain; }
+          }
+
+          /* Dot indicators */
+          .bc-gallery-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 0 6px;
+          }
+          .bc-gallery-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: none;
+            background: #D1D5DB;
+            padding: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+          }
+          .bc-gallery-dot.active {
+            background: #00AB43;
+            transform: scale(1.25);
+          }
+          /* Hide dots on desktop, show thumbnails instead */
+          @media (min-width: 1024px) {
+            .bc-gallery-dots { display: none; }
+          }
+
+          /* Thumbnail strip — desktop only */
+          .bc-thumb-track-wrap {
+            position: relative;
+            overflow: hidden;
+            display: none;
+          }
+          @media (min-width: 1024px) {
+            .bc-thumb-track-wrap { display: block; }
+          }
+          .bc-thumb-track-wrap::before,
+          .bc-thumb-track-wrap::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 28px;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+          }
+          .bc-thumb-track-wrap::before {
+            left: 0;
+            background: linear-gradient(to right, #fff 0%, transparent 100%);
+          }
+          .bc-thumb-track-wrap::after {
+            right: 0;
+            background: linear-gradient(to left, #fff 0%, transparent 100%);
+          }
+          .bc-thumb-track-wrap.fade-left::before { opacity: 1; }
+          .bc-thumb-track-wrap.fade-right::after { opacity: 1; }
+          .bc-thumb-track {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 2px 0;
+          }
+          .bc-thumb-track::-webkit-scrollbar { display: none; }
+          .bc-thumb {
+            flex-shrink: 0;
+            width: 64px;
+            height: 64px;
+          }
+        </style>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            var track = document.getElementById('gallery-track');
+            var dots = document.querySelectorAll('.bc-gallery-dot');
+            var thumbs = document.querySelectorAll('#product-thumbnails .bc-thumb');
+            var thumbTrack = document.querySelector('.bc-thumb-track');
+            var thumbWrap = document.querySelector('.bc-thumb-track-wrap');
+            if (!track) return;
+
+            var currentIndex = 0;
+            var slideCount = track.children.length;
+
+            function goToSlide(index) {
+              if (index < 0 || index >= slideCount) return;
+              currentIndex = index;
+              var slide = track.children[index];
+              track.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+              updateActive();
             }
-            .bc-thumb-track-wrap::before,
-            .bc-thumb-track-wrap::after {
-              content: '';
-              position: absolute;
-              top: 0;
-              bottom: 0;
-              width: 28px;
-              z-index: 2;
-              pointer-events: none;
-              opacity: 0;
-              transition: opacity 0.2s;
-            }
-            .bc-thumb-track-wrap::before {
-              left: 0;
-              background: linear-gradient(to right, #fff 0%, transparent 100%);
-            }
-            .bc-thumb-track-wrap::after {
-              right: 0;
-              background: linear-gradient(to left, #fff 0%, transparent 100%);
-            }
-            .bc-thumb-track-wrap.fade-left::before { opacity: 1; }
-            .bc-thumb-track-wrap.fade-right::after { opacity: 1; }
-            .bc-thumb-track {
-              display: flex;
-              gap: 6px;
-              overflow-x: auto;
-              scroll-behavior: smooth;
-              -webkit-overflow-scrolling: touch;
-              scrollbar-width: none;
-              padding: 2px 0;
-            }
-            .bc-thumb-track::-webkit-scrollbar { display: none; }
-            .bc-thumb {
-              flex-shrink: 0;
-              width: 64px;
-              height: 64px;
-            }
-          </style>
-          <script>
-            document.addEventListener('DOMContentLoaded', function() {
-              var track = document.querySelector('.bc-thumb-track');
-              var wrap = document.querySelector('.bc-thumb-track-wrap');
-              if (!track || !wrap) return;
-              function updateFades() {
-                wrap.classList.toggle('fade-left', track.scrollLeft > 4);
-                wrap.classList.toggle('fade-right', track.scrollLeft < track.scrollWidth - track.clientWidth - 4);
+
+            function updateActive() {
+              // Dots
+              dots.forEach(function(dot, i) {
+                dot.classList.toggle('active', i === currentIndex);
+              });
+              // Thumbnails
+              thumbs.forEach(function(thumb, i) {
+                if (i === currentIndex) {
+                  thumb.classList.add('border-accent');
+                  thumb.classList.remove('border-background/10');
+                  // Scroll thumb into view
+                  if (thumbTrack) {
+                    var thumbLeft = thumb.offsetLeft - thumbTrack.offsetLeft;
+                    var trackScroll = thumbTrack.scrollLeft;
+                    var trackWidth = thumbTrack.clientWidth;
+                    if (thumbLeft < trackScroll || thumbLeft + thumb.offsetWidth > trackScroll + trackWidth) {
+                      thumbTrack.scrollTo({ left: thumbLeft - trackWidth / 2 + thumb.offsetWidth / 2, behavior: 'smooth' });
+                    }
+                  }
+                } else {
+                  thumb.classList.remove('border-accent');
+                  thumb.classList.add('border-background/10');
+                }
+              });
+              // Update main image reference for ProductForm compatibility
+              var mainImg = document.getElementById('main-product-image');
+              if (mainImg && track.children[currentIndex]) {
+                var img = track.children[currentIndex].querySelector('img');
+                if (img) mainImg = img;
               }
-              track.addEventListener('scroll', updateFades, { passive: true });
-              updateFades();
-              // Re-check after images load
-              setTimeout(updateFades, 500);
+            }
+
+            // Detect swipe via scroll snap
+            var scrollTimeout;
+            track.addEventListener('scroll', function() {
+              clearTimeout(scrollTimeout);
+              scrollTimeout = setTimeout(function() {
+                var scrollLeft = track.scrollLeft;
+                var slideWidth = track.children[0].offsetWidth;
+                var newIndex = Math.round(scrollLeft / slideWidth);
+                if (newIndex !== currentIndex && newIndex >= 0 && newIndex < slideCount) {
+                  currentIndex = newIndex;
+                  updateActive();
+                }
+              }, 60);
+            }, { passive: true });
+
+            // Dot clicks
+            dots.forEach(function(dot) {
+              dot.addEventListener('click', function() {
+                goToSlide(parseInt(this.dataset.index));
+              });
             });
-          </script>
+
+            // Thumbnail clicks
+            thumbs.forEach(function(thumb) {
+              thumb.addEventListener('click', function() {
+                goToSlide(parseInt(this.dataset.index));
+              });
+            });
+
+            // Thumbnail fade edges
+            if (thumbTrack && thumbWrap) {
+              function updateFades() {
+                thumbWrap.classList.toggle('fade-left', thumbTrack.scrollLeft > 4);
+                thumbWrap.classList.toggle('fade-right', thumbTrack.scrollLeft < thumbTrack.scrollWidth - thumbTrack.clientWidth - 4);
+              }
+              thumbTrack.addEventListener('scroll', updateFades, { passive: true });
+              updateFades();
+              setTimeout(updateFades, 500);
+            }
+
+            // Override ProductForm.selectImage to sync with gallery
+            ProductForm.selectImage = function(src, button) {
+              var index = parseInt(button.dataset.index);
+              if (!isNaN(index)) goToSlide(index);
+            };
+          });
+        </script>
         </div>
 
       </div>
