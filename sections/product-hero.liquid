@@ -132,7 +132,7 @@
             >
           </div>
           <div class="flex gap-1.5 overflow-x-auto scrollbar-hide" id="product-thumbnails">
-            {%- for image in product.images limit: 5 -%}
+            {%- for image in product.images -%}
               <button
                 onclick="ProductForm.selectImage('{{ image | image_url: width: 1200 }}', this)"
                 aria-label="{{ 'sections.product.view_image' | t: index: forloop.index }}"
