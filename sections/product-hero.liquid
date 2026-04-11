@@ -131,17 +131,77 @@
               fetchpriority="high"
             >
           </div>
-          <div class="flex gap-1.5 flex-wrap" id="product-thumbnails">
-            {%- for image in product.images -%}
-              <button
-                onclick="ProductForm.selectImage('{{ image | image_url: width: 1200 }}', this)"
-                aria-label="{{ 'sections.product.view_image' | t: index: forloop.index }}"
-                class="product-thumbnail rounded-lg overflow-hidden border-2 transition-all {% if forloop.first %}border-accent{% else %}border-background/10 hover:border-background/25{% endif %}"
-              >
-                <img src="{{ image | image_url: width: 160 }}" alt="{{ 'sections.product.image_alt' | t: index: forloop.index }}" class="w-full h-full object-cover" loading="lazy" decoding="async" width="80" height="80">
-              </button>
-            {%- endfor -%}
+          <div class="bc-thumb-track-wrap">
+            <div class="bc-thumb-track" id="product-thumbnails">
+              {%- for image in product.images -%}
+                <button
+                  onclick="ProductForm.selectImage('{{ image | image_url: width: 1200 }}', this)"
+                  aria-label="{{ 'sections.product.view_image' | t: index: forloop.index }}"
+                  class="product-thumbnail bc-thumb rounded-lg overflow-hidden border-2 transition-all {% if forloop.first %}border-accent{% else %}border-background/10 hover:border-background/25{% endif %}"
+                >
+                  <img src="{{ image | image_url: width: 160 }}" alt="{{ 'sections.product.image_alt' | t: index: forloop.index }}" class="w-full h-full object-cover" loading="lazy" decoding="async" width="80" height="80">
+                </button>
+              {%- endfor -%}
+            </div>
           </div>
+          <style>
+            .bc-thumb-track-wrap {
+              position: relative;
+              overflow: hidden;
+            }
+            .bc-thumb-track-wrap::before,
+            .bc-thumb-track-wrap::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 28px;
+              z-index: 2;
+              pointer-events: none;
+              opacity: 0;
+              transition: opacity 0.2s;
+            }
+            .bc-thumb-track-wrap::before {
+              left: 0;
+              background: linear-gradient(to right, #fff 0%, transparent 100%);
+            }
+            .bc-thumb-track-wrap::after {
+              right: 0;
+              background: linear-gradient(to left, #fff 0%, transparent 100%);
+            }
+            .bc-thumb-track-wrap.fade-left::before { opacity: 1; }
+            .bc-thumb-track-wrap.fade-right::after { opacity: 1; }
+            .bc-thumb-track {
+              display: flex;
+              gap: 6px;
+              overflow-x: auto;
+              scroll-behavior: smooth;
+              -webkit-overflow-scrolling: touch;
+              scrollbar-width: none;
+              padding: 2px 0;
+            }
+            .bc-thumb-track::-webkit-scrollbar { display: none; }
+            .bc-thumb {
+              flex-shrink: 0;
+              width: 64px;
+              height: 64px;
+            }
+          </style>
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              var track = document.querySelector('.bc-thumb-track');
+              var wrap = document.querySelector('.bc-thumb-track-wrap');
+              if (!track || !wrap) return;
+              function updateFades() {
+                wrap.classList.toggle('fade-left', track.scrollLeft > 4);
+                wrap.classList.toggle('fade-right', track.scrollLeft < track.scrollWidth - track.clientWidth - 4);
+              }
+              track.addEventListener('scroll', updateFades, { passive: true });
+              updateFades();
+              // Re-check after images load
+              setTimeout(updateFades, 500);
+            });
+          </script>
         </div>
 
       </div>
