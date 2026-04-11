@@ -131,7 +131,7 @@
               fetchpriority="high"
             >
           </div>
-          <div class="flex gap-1.5 overflow-x-auto scrollbar-hide" id="product-thumbnails">
+          <div class="flex gap-1.5 flex-wrap" id="product-thumbnails">
             {%- for image in product.images -%}
               <button
                 onclick="ProductForm.selectImage('{{ image | image_url: width: 1200 }}', this)"
