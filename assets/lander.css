@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Lander-specific styles
+   Loaded only on product.lander template.
+   Keep minimal — Tailwind utilities handle most styling inline.
+   ========================================================================== */
+
+/* Smooth scroll for the entire lander */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure lander sections respect "one screen per section" on mobile */
+@media (max-width: 767px) {
+  .lander-hero {
+    min-height: calc(100vh - 60px);
+    min-height: calc(100dvh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* Subscription card hover enhancement */
+#lander-subscription-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 171, 67, 0.15);
+}
+
+/* Variant button selection state */
+#lander-product-form .variant-btn.border-\[\#071D40\] {
+  border-color: #071D40 !important;
+  background-color: rgba(7, 29, 64, 0.08);
+}
+
+/* ==========================================================================
+   Reviews section — tighten for lander context
+   ========================================================================== */
+
+/* Replace "bebuenacopa.com" text with logo */
+.bc-ratings-item:first-child .bc-ratings-name {
+  font-size: 0 !important;
+  display: block;
+  width: 120px;
+  height: 22px;
+  background: url('logo-azul-oscuro.png') no-repeat center / contain;
+}
+
+/* Reduce overall section padding */
+#reviews.section-padding {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Tighten ratings bar */
+.bc-ratings-bar {
+  padding: 12px 20px !important;
+  margin-bottom: 1.5rem !important;
+  gap: 16px !important;
+}
+
+/* Compact stats row */
+.bc-reviews-stats {
+  margin-bottom: 1.5rem !important;
+  gap: 20px !important;
+}
+.bc-reviews-stat-number {
+  font-size: 20px !important;
+}
+
+/* Tighter review cards */
+.bc-review-card,
+.bc-review-card-mobile {
+  padding: 18px !important;
+}
+.bc-review-body {
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  margin-bottom: 12px !important;
+}
+.bc-review-author {
+  padding-top: 12px !important;
+}
+
+/* Compact mobile scroll cards */
+.bc-reviews-scroll .bc-review-card-mobile {
+  width: 270px !important;
+}

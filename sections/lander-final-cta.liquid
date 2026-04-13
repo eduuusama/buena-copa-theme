@@ -1,0 +1,90 @@
+{%- comment -%}
+  Lander Final CTA — Last chance for anyone who scrolled the whole page.
+  Full image visible above the CTA copy. Emotional close.
+{%- endcomment -%}
+
+<section class="overflow-hidden" style="background-color: #071D40;">
+
+  {%- comment -%}Full image — visible, not cropped behind overlay{%- endcomment -%}
+  {% if section.settings.bg_image %}
+    <img
+      src="{{ section.settings.bg_image | image_url: width: 1200 }}"
+      srcset="{{ section.settings.bg_image | image_url: width: 600 }} 600w, {{ section.settings.bg_image | image_url: width: 1200 }} 1200w"
+      sizes="100vw"
+      alt=""
+      class="w-full h-auto"
+      loading="lazy"
+      decoding="async"
+    >
+  {% else %}
+    <img
+      src="{{ 'banner-buenacopa.png' | asset_url }}"
+      alt=""
+      class="w-full h-auto"
+      loading="lazy"
+      decoding="async"
+    >
+  {% endif %}
+
+  {%- comment -%}CTA copy below the image{%- endcomment -%}
+  <div class="container-custom text-center" style="padding: 2.5rem 1rem 3rem;">
+    <h2 class="font-display font-black text-white" style="font-size: clamp(1.5rem, 5vw, 2.5rem); line-height: 1.1; max-width: 520px; margin: 0 auto;">
+      {{ section.settings.heading | default: 'Tu próxima mañana ya está decidida.' }}
+    </h2>
+
+    {% if section.settings.subheading != blank %}
+      <p class="text-white/60 font-semibold" style="font-size: clamp(0.875rem, 2vw, 1.125rem); margin-top: 10px; max-width: 400px; margin-left: auto; margin-right: auto;">
+        {{ section.settings.subheading }}
+      </p>
+    {% endif %}
+
+    <div style="margin-top: 24px;">
+      <a
+        href="#lander-buy-box"
+        class="inline-flex items-center justify-center gap-2 text-white font-bold rounded-xl transition-all"
+        style="background-color: #00AB43; padding: 16px 40px; font-size: 16px; text-decoration: none; min-width: 260px;"
+        onmouseover="this.style.backgroundColor='#009639'"
+        onmouseout="this.style.backgroundColor='#00AB43'"
+        onclick="event.preventDefault(); document.getElementById('lander-subscription-card').scrollIntoView({behavior:'smooth', block:'start'});"
+      >
+        {{ section.settings.cta_text | default: 'Quiero mis mañanas →' }}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lander Final CTA",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Tu próxima mañana ya está decidida."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "La pregunta es si vas a estar bien o no."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Quiero mis mañanas →"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lander Final CTA"
+    }
+  ]
+}
+{% endschema %}

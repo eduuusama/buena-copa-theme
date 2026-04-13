@@ -1,0 +1,53 @@
+{%- comment -%}
+  Lander Guarantee — "Not a bullet point. A badge, a box."
+  Designed to stop the scroll and eliminate the last objection before purchase.
+{%- endcomment -%}
+
+<section class="overflow-hidden" style="padding: 3rem 0; background-color: #FAF7F2;">
+  <div class="container-custom">
+    <div class="mx-auto text-center rounded-2xl" style="max-width: 480px; padding: 32px 24px; background: linear-gradient(180deg, rgba(0,171,67,0.08) 0%, rgba(0,171,67,0.03) 100%); border: 2px solid rgba(0,171,67,0.15);">
+
+      {%- comment -%}Shield icon{%- endcomment -%}
+      <div class="mx-auto flex items-center justify-center rounded-full" style="width: 56px; height: 56px; background-color: rgba(0,171,67,0.12); margin-bottom: 16px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00AB43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <polyline points="9 12 11 14 15 10"/>
+        </svg>
+      </div>
+
+      {%- comment -%}Promise{%- endcomment -%}
+      <h2 class="font-display font-black" style="font-size: clamp(1.25rem, 4vw, 1.75rem); line-height: 1.2; color: #071D40;">
+        {{ section.settings.heading | default: 'Si no funciona, te devolvemos tu dinero.' }}
+      </h2>
+
+      <p class="font-semibold" style="font-size: 14px; margin-top: 8px; color: #00AB43;">
+        {{ section.settings.subtext | default: '30 días. Sin preguntas. Sin complicaciones.' }}
+      </p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lander Guarantee",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Si no funciona, te devolvemos tu dinero."
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "30 días. Sin preguntas. Sin complicaciones."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lander Guarantee"
+    }
+  ]
+}
+{% endschema %}

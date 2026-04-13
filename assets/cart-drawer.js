@@ -49,19 +49,26 @@ var CartDrawer = {
       var t = CartDrawer.t;
       var html = '';
       cart.items.forEach(function (item) {
-        var escapedTitle = item.title.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        var escapedTitle = item.product_title.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         var escapedKey = item.key.replace(/'/g, "\\'");
+        var variantTitle = item.variant_title ? item.variant_title.replace(/</g, '&lt;') : '';
+        var sellingPlan = (item.selling_plan_allocation && item.selling_plan_allocation.selling_plan) ? item.selling_plan_allocation.selling_plan.name.replace(/</g, '&lt;') : '';
 
-        html += '<div class="flex gap-4 p-3 border-b border-border" data-key="' + item.key + '">';
+        html += '<div class="flex gap-3 py-3 px-2 border-b border-border" data-key="' + item.key + '">';
         if (item.image) {
           var imgSrc = item.image.replace(/(\.\w+)(\?|$)/, '_120x120$1$2');
-          html += '<div style="width:64px;height:64px;min-width:64px;max-width:64px;border-radius:8px;overflow:hidden;flex-shrink:0;background:hsl(215 60% 22%)">';
-          html += '<img src="' + imgSrc + '" alt="' + escapedTitle + '" style="width:64px;height:64px;object-fit:cover;display:block" width="64" height="64" loading="eager">';
+          html += '<div style="width:48px;height:48px;min-width:48px;max-width:48px;border-radius:6px;overflow:hidden;flex-shrink:0;background:hsl(215 60% 22%)">';
+          html += '<img src="' + imgSrc + '" alt="' + escapedTitle + '" style="width:48px;height:48px;object-fit:cover;display:block" width="48" height="48" loading="eager">';
           html += '</div>';
         }
         html += '<div class="flex-1 min-w-0">';
-        html += '<h4 class="font-medium text-sm truncate text-foreground">' + escapedTitle + '</h4>';
-        html += '<p class="font-semibold text-sm mt-1 text-foreground">' + Shopify.formatMoney(item.price) + '</p>';
+        // Lead with variant (e.g. "10 Sobres") since it's a single-product store
+        var displayTitle = variantTitle || escapedTitle;
+        html += '<h4 class="font-bold text-sm text-foreground" style="line-height:1.3">' + displayTitle + '</h4>';
+        if (sellingPlan) {
+          html += '<p class="text-xs font-semibold" style="margin-top:1px;color:hsl(149 100% 34%)">' + sellingPlan + '</p>';
+        }
+        html += '<p class="font-semibold text-sm text-foreground" style="margin-top:4px">' + Shopify.formatMoney(item.price) + '</p>';
         html += '</div>';
         html += '<div class="flex flex-col items-end gap-2 flex-shrink-0">';
         html += '<button onclick="CartDrawer.removeItem(\'' + escapedKey + '\')" class="text-muted-foreground hover:text-foreground p-1" aria-label="' + t('removeAria') + ' ' + escapedTitle + '">';

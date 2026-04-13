@@ -37,6 +37,12 @@
       imagesrcset="{{ 'hero-sachet.jpg' | asset_url }} 576w"
       imagesizes="(max-width: 768px) 320px, 576px">
   {%- endif -%}
+  {%- comment -%}Lander hero LCP preload — uses product featured image{%- endcomment -%}
+  {%- if template.suffix == 'lander' and product.featured_image -%}
+    <link rel="preload" as="image" href="{{ product.featured_image | image_url: width: 800 }}" fetchpriority="high"
+      imagesrcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w"
+      imagesizes="(max-width: 768px) 80vw, 400px">
+  {%- endif -%}
 
   {%- comment -%}Fonts — non-render-blocking via media swap{%- endcomment -%}
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;700;800;900&display=swap">
@@ -48,6 +54,9 @@
     Tailwind (7 KiB) loads non-blocking via media swap to avoid render-blocking.
   {%- endcomment -%}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
+  {%- if template.suffix == 'lander' -%}
+    {{ 'lander.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
   <link rel="preload" href="{{ 'tailwind.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>{{ 'tailwind.min.css' | asset_url | stylesheet_tag }}</noscript>
 

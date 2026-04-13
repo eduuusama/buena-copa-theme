@@ -1,0 +1,217 @@
+{%- comment -%}
+  Lander Hero — Above the Fold
+  Matches homepage product-hero style: white bg, dark navy text, product image natural.
+  Mobile-first. Massive headline, social proof, product image, price anchor, CTA, trust bar.
+{%- endcomment -%}
+
+{%- assign product = section.settings.product -%}
+{%- if product == blank -%}
+  {%- assign product = collections.all.products.first -%}
+{%- endif -%}
+
+{%- liquid
+  assign sub_per_serving = 0
+  for group in product.selling_plan_groups
+    if group.selling_plans.size > 0
+      assign sub_plan = group.selling_plans[0]
+      for variant in product.variants
+        for allocation in variant.selling_plan_allocations
+          if allocation.selling_plan.id == sub_plan.id
+            assign sub_variant = variant
+            assign sub_price = allocation.price
+            break
+          endif
+        endfor
+        if sub_variant
+          break
+        endif
+      endfor
+      break
+    endif
+  endfor
+
+  if sub_variant
+    assign sub_title_words = sub_variant.title | split: ' '
+    assign sub_servings = 0
+    for word in sub_title_words
+      assign word_num = word | plus: 0
+      if word_num > 0
+        assign sub_servings = word_num
+        break
+      endif
+    endfor
+    if sub_servings == 0
+      assign sub_servings = 1
+    endif
+    if sub_price > 0 and sub_servings > 0
+      assign sub_per_serving = sub_price | divided_by: sub_servings | divided_by: 100
+    endif
+  endif
+-%}
+
+<section id="lander-hero" class="lander-hero overflow-hidden bg-white" data-lander="meta-acquisition">
+  <div class="container-custom" style="padding-top: 16px; padding-bottom: 0;">
+
+    {%- comment -%}Headline — matches homepage product-hero style{%- endcomment -%}
+    <div class="text-center" style="margin-bottom: 12px;">
+      <h1 class="font-display font-black" style="font-size: clamp(1.75rem, 4.5vw, 2.75rem); line-height: 0.95;">
+        <span class="text-background whitespace-nowrap">{{ section.settings.heading_line_1 | default: 'La fiesta sigue.' }}</span>
+        <br>
+        <span class="text-accent-contrast">{{ section.settings.heading_line_2 | default: 'La cruda no.' }}</span>
+      </h1>
+      <p class="text-background/60 font-semibold" style="font-size: 14px; max-width: 22rem; margin: 8px auto 0; line-height: 1.4;">
+        {{ section.settings.subheading | default: 'Tómalo antes de dormir. Despierta listo para conquistar tu día.' }}
+      </p>
+
+      {%- comment -%}Social proof bar{%- endcomment -%}
+      <div class="flex items-center justify-center gap-1.5 flex-wrap" style="margin-top: 8px;">
+        <div class="flex gap-0.5">
+          {% for s in (1..5) %}
+            {% render 'icon-star', size: 12, fill: '#FFB800', stroke: '#FFB800' %}
+          {% endfor %}
+        </div>
+        <span class="text-background/50" style="font-size: 11px; font-weight: 600; white-space: nowrap;">
+          {{ section.settings.social_proof_text | default: '+10,000 mañanas sin cruda · Garantía 30 días' }}
+        </span>
+      </div>
+    </div>
+
+    {%- comment -%}Product image — uses product gallery images same as homepage carousel{%- endcomment -%}
+    <div class="rounded-2xl overflow-hidden" style="margin: 0 auto; max-width: 500px;">
+      {% if section.settings.hero_image %}
+        <img
+          src="{{ section.settings.hero_image | image_url: width: 1200 }}"
+          srcset="{{ section.settings.hero_image | image_url: width: 400 }} 400w, {{ section.settings.hero_image | image_url: width: 800 }} 800w, {{ section.settings.hero_image | image_url: width: 1200 }} 1200w"
+          sizes="(max-width: 768px) 100vw, 500px"
+          alt="{{ product.title }}"
+          class="w-full h-auto"
+          style="aspect-ratio: 1/1; object-fit: cover;"
+          width="600" height="600"
+          loading="eager"
+          fetchpriority="high"
+        >
+      {% elsif product.featured_image %}
+        <img
+          src="{{ product.featured_image | image_url: width: 1200 }}"
+          srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w, {{ product.featured_image | image_url: width: 1200 }} 1200w"
+          sizes="(max-width: 768px) 100vw, 500px"
+          alt="{{ product.title }}"
+          class="w-full h-auto"
+          style="aspect-ratio: 1/1; object-fit: cover;"
+          width="600" height="600"
+          loading="eager"
+          fetchpriority="high"
+        >
+      {% endif %}
+    </div>
+
+    {%- comment -%}Price anchor{%- endcomment -%}
+    {% if sub_per_serving > 0 %}
+      <div class="text-center" style="margin-top: 10px;">
+        <span class="text-background/50 font-semibold" style="font-size: 13px;">
+          Desde <strong class="text-background">${{ sub_per_serving }} MXN</strong> por toma con suscripción
+        </span>
+      </div>
+    {% endif %}
+
+    {%- comment -%}CTA button — smooth scroll to buy box{%- endcomment -%}
+    <div class="mx-auto" style="max-width: 480px; margin-top: 16px; padding: 0 16px;" id="lander-hero-cta-wrap">
+      <a
+        href="#lander-buy-box"
+        id="lander-hero-cta"
+        class="w-full flex items-center justify-center gap-2 text-white font-bold rounded-xl transition-all"
+        style="background-color: #00AB43; padding: 14px 0; font-size: 16px; text-decoration: none;"
+        onmouseover="this.style.backgroundColor='#009639'"
+        onmouseout="this.style.backgroundColor='#00AB43'"
+        onclick="event.preventDefault(); document.getElementById('lander-subscription-card').scrollIntoView({behavior:'smooth', block:'start'});"
+      >
+        {{ section.settings.cta_text | default: 'Ver planes →' }}
+      </a>
+    </div>
+
+    {%- comment -%}Trust bar{%- endcomment -%}
+    <div class="flex items-center justify-center gap-3 text-background/40" style="padding: 12px 0 16px; font-size: 11px; font-weight: 500;">
+      <span>{{ section.settings.trust_1 | default: 'Envío gratis' }}</span>
+      <span class="text-background/20">·</span>
+      <span>{{ section.settings.trust_2 | default: 'Garantía 30 días' }}</span>
+      <span class="text-background/20">·</span>
+      <span>{{ section.settings.trust_3 | default: 'Sin riesgo' }}</span>
+    </div>
+
+  </div>
+
+</section>
+
+{%- comment -%}Sticky CTA — rendered OUTSIDE the hero section to avoid overflow:hidden clipping{%- endcomment -%}
+{% render 'lander-sticky-cta', product: product, sub_price: sub_price %}
+
+{% schema %}
+{
+  "name": "Lander Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Headline Line 1",
+      "default": "La fiesta sigue."
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Headline Line 2 (green)",
+      "default": "La cruda no."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Tómalo antes de dormir. Despierta listo para conquistar tu día."
+    },
+    {
+      "type": "text",
+      "id": "social_proof_text",
+      "label": "Social Proof Text",
+      "default": "+10,000 mañanas sin cruda · Garantía de 30 días"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Product Hero Image"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Ver planes →"
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Trust Badge 1",
+      "default": "Envío gratis"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Trust Badge 2",
+      "default": "Garantía 30 días"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Trust Badge 3",
+      "default": "Sin riesgo"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lander Hero"
+    }
+  ]
+}
+{% endschema %}
