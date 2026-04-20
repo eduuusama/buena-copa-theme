@@ -25,16 +25,16 @@
 -%}
 
 <!-- ========== 1. HERO ========== -->
-<section class="py-16 md:py-24 lg:py-32 bg-background overflow-hidden">
+<section class="py-16 md:py-16 lg:py-28 bg-background overflow-hidden">
   <div class="container-custom">
     <div class="max-w-3xl mx-auto text-center">
-      <p class="text-accent font-bold text-sm md:text-base tracking-widest uppercase mb-6">
+      <p class="text-accent font-bold text-sm tracking-wider uppercase mb-6">
         {{ hero_subheading }}
       </p>
-      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-black text-foreground leading-[0.95] mb-8">
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-display font-black text-foreground leading-[0.95] mb-8">
         {{ hero_heading }}
       </h1>
-      <p class="text-foreground/70 text-lg md:text-xl lg:text-2xl leading-relaxed font-sans max-w-2xl mx-auto">
+      <p class="text-lg md:text-xl leading-relaxed font-sans max-w-2xl mx-auto" style="color: rgba(255,255,255,0.75);">
         {{ hero_text }}
       </p>
     </div>
@@ -45,18 +45,18 @@
 <section class="section-padding bg-secondary overflow-hidden">
   <div class="container-custom">
     <div class="text-center mb-10 md:mb-14 max-w-3xl mx-auto">
-      <p class="text-accent font-bold text-sm md:text-base tracking-widest uppercase mb-4">
+      <p class="text-accent font-bold text-sm tracking-wider uppercase mb-4">
         {{ causes_subheading }}
       </p>
       <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-foreground mb-4">
         {{ causes_heading }}
       </h2>
-      <p class="text-foreground/70 text-base md:text-lg leading-relaxed font-sans">
+      <p class="text-base leading-relaxed font-sans" style="color: rgba(255,255,255,0.75);">
         {{ causes_text }}
       </p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
       {%- for block in section.blocks -%}
         {%- if block.type == 'cause_card' -%}
           <div class="bg-background/80 backdrop-blur-md border border-white/10 rounded-2xl p-8 flex flex-col gap-5" {{ block.shopify_attributes }}>
@@ -71,6 +71,9 @@
                 {%- when 'flame' -%}
                   <!-- Flame / Inflammation icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                {%- when 'drop' -%}
+                  <!-- Drop / Dehydration icon -->
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
                 {%- else -%}
                   <!-- Default shield icon -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
@@ -93,13 +96,13 @@
 <section class="section-padding bg-background overflow-hidden">
   <div class="container-custom">
     <div class="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
-      <p class="text-accent font-bold text-sm md:text-base tracking-widest uppercase mb-4">
+      <p class="text-accent font-bold text-sm tracking-wider uppercase mb-4">
         {{ ingredients_subheading }}
       </p>
       <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-foreground mb-4">
         {{ ingredients_heading }}
       </h2>
-      <p class="text-foreground/70 text-base md:text-lg leading-relaxed font-sans">
+      <p class="text-base leading-relaxed font-sans" style="color: rgba(255,255,255,0.75);">
         {{ ingredients_text }}
       </p>
     </div>
@@ -149,7 +152,7 @@
 <section class="section-padding bg-background overflow-hidden">
   <div class="container-custom">
     <div class="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
-      <p class="text-accent font-bold text-sm md:text-base tracking-widest uppercase mb-4">
+      <p class="text-accent font-bold text-sm tracking-wider uppercase mb-4">
         {{ usage_subheading }}
       </p>
       <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-foreground">
@@ -161,7 +164,7 @@
       <!-- Vertical connector line (desktop) -->
       <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-accent -translate-x-1/2"></div>
 
-      <div class="space-y-16 md:space-y-24">
+      <div class="cf-steps-list">
         {%- assign step_number = 0 -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'usage_step' -%}
@@ -207,9 +210,9 @@
                         loading="lazy" decoding="async"
                       >
                     {%- else -%}
-                      {%- assign step_images = 'step-01-celebra.png,step-02-capsulas.jpg,step-03-despierta.png' | split: ',' -%}
+                      {%- assign step_images = 'step-01-celebra.png,step-02-capsulas.jpg,step-03-despierta.png,lander-solution-lifestyle.jpg' | split: ',' -%}
                       {%- assign img_index = step_number | minus: 1 -%}
-                      {%- if img_index < 3 -%}
+                      {%- if img_index < 4 -%}
                         <img
                           src="{{ step_images[img_index] | asset_url }}"
                           alt="{{ block.settings.title }}"
@@ -217,6 +220,12 @@
                           width="600" height="450"
                           loading="lazy" decoding="async"
                         >
+                      {%- else -%}
+                        <div class="w-full h-full flex items-center justify-center" style="background-color: hsl(var(--secondary));">
+                          <span class="text-6xl md:text-7xl font-display font-black leading-none" style="color: rgba(0,171,67,0.5);">
+                            0{{ step_number }}
+                          </span>
+                        </div>
                       {%- endif -%}
                     {%- endif -%}
                   </div>
@@ -229,7 +238,7 @@
     </div>
 
     {%- if usage_note != blank -%}
-      <p class="text-foreground/60 text-sm text-center mt-10 max-w-2xl mx-auto italic font-sans">
+      <p class="text-sm text-center mt-10 max-w-2xl mx-auto font-sans" style="color: rgba(255,255,255,0.6); font-style: italic;">
         {{ usage_note }}
       </p>
     {%- endif -%}
@@ -245,7 +254,7 @@
       </h2>
     </div>
 
-    <div class="max-w-3xl mx-auto space-y-3">
+    <div class="max-w-3xl mx-auto flex flex-col gap-3">
       {%- assign faq_index = 0 -%}
       {%- for block in section.blocks -%}
         {%- if block.type == 'faq_item' -%}
@@ -284,12 +293,12 @@
       <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-background mb-4">
         {{ cta_heading }}
       </h2>
-      <p class="text-background/80 text-lg md:text-xl leading-relaxed font-sans mb-8">
+      <p class="text-lg md:text-xl leading-relaxed font-sans mb-8" style="color: rgba(7,29,64,0.85);">
         {{ cta_text }}
       </p>
       <a
         href="{{ cta_button_link | default: '/#comprar' }}"
-        class="inline-flex items-center justify-center px-8 py-4 bg-background text-foreground font-display font-bold text-lg rounded-full hover:bg-background/90 transition-colors"
+        class="inline-flex items-center justify-center px-6 md:px-8 py-4 bg-background text-foreground font-display font-bold text-lg rounded-full transition-colors"
       >
         {{ cta_button_label }}
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -313,6 +322,14 @@
   }
   .cf-faq-item.is-open .cf-faq-chevron {
     transform: rotate(180deg);
+  }
+  .cf-steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+  @media (min-width: 768px) {
+    .cf-steps-list { gap: 6rem; }
   }
   .ingredient-description ul {
     list-style: disc;
@@ -487,7 +504,8 @@
           "options": [
             { "value": "skull", "label": "Skull (Toxin)" },
             { "value": "brain", "label": "Brain" },
-            { "value": "flame", "label": "Flame (Inflammation)" }
+            { "value": "flame", "label": "Flame (Inflammation)" },
+            { "value": "drop", "label": "Drop (Dehydration)" }
           ],
           "default": "skull"
         },
