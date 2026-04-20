@@ -35,7 +35,7 @@
       "type": "lander-steps",
       "settings": {
         "label": "CÓMO FUNCIONA",
-        "heading": "Tres pasos. Cero sacrificios."
+        "heading": "Cuatro pasos. Cero sacrificios."
       },
       "blocks": {
         "step-1": {
@@ -60,13 +60,22 @@
           "type": "step",
           "settings": {
             "number": "3",
+            "title": "Actúa mientras duermes",
+            "description": "Buenacopa procesa el alcohol mientras descansas",
+            "default_icon": "moon"
+          }
+        },
+        "step-4": {
+          "type": "step",
+          "settings": {
+            "number": "4",
             "title": "Despierta y conquista",
             "description": "Tu mañana es tuya",
             "default_icon": "sun"
           }
         }
       },
-      "block_order": ["step-1", "step-2", "step-3"]
+      "block_order": ["step-1", "step-2", "step-3", "step-4"]
     },
     "ingredients": {
       "type": "lander-ingredients",

@@ -148,102 +148,20 @@
   </div>
 </section>
 
-<!-- ========== 4. USAGE INSTRUCTIONS (Timeline layout — matches homepage) ========== -->
-<section class="section-padding bg-background overflow-hidden">
-  <div class="container-custom">
-    <div class="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
-      <p class="text-accent font-bold text-sm tracking-wider uppercase mb-4">
-        {{ usage_subheading }}
-      </p>
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-black text-foreground">
-        {{ usage_heading }}
-      </h2>
-    </div>
-
-    <div class="max-w-5xl mx-auto relative">
-      <!-- Vertical connector line (desktop) -->
-      <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-accent -translate-x-1/2"></div>
-
-      <div class="cf-steps-list">
-        {%- assign step_number = 0 -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'usage_step' -%}
-            {%- assign step_number = step_number | plus: 1 -%}
-            {%- assign image_on_right = true -%}
-            {%- if step_number == 2 or step_number == 4 -%}
-              {%- assign image_on_right = false -%}
-            {%- endif -%}
-
-            <div class="relative" {{ block.shopify_attributes }}>
-              <!-- Center dot -->
-              <div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-accent bg-background z-10 items-center justify-center">
-                <div class="w-1.5 h-1.5 rounded-full bg-accent"></div>
-              </div>
-
-              <div class="flex flex-col gap-8 items-center {% if image_on_right %}md:flex-row{% else %}md:flex-row-reverse{% endif %}">
-                <!-- Text side -->
-                <div class="flex-1 {% if image_on_right %}md:text-right md:pr-16{% else %}md:text-left md:pl-16{% endif %}">
-                  <span class="text-6xl md:text-7xl font-display font-black text-accent/25 leading-none">
-                    0{{ step_number }}
-                  </span>
-                  <h3 class="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-foreground mt-2 mb-3">
-                    {{ block.settings.title }}
-                  </h3>
-                  {%- if block.settings.description != blank -%}
-                    <p class="text-muted-foreground leading-relaxed max-w-md mx-auto md:mx-0">
-                      {{ block.settings.description }}
-                    </p>
-                  {%- endif -%}
-                </div>
-
-                <!-- Image -->
-                <div class="flex-1 w-full">
-                  <div class="aspect-[4/3] rounded-2xl overflow-hidden">
-                    {%- if block.settings.image -%}
-                      <img
-                        src="{{ block.settings.image | image_url: width: 800 }}"
-                        srcset="{{ block.settings.image | image_url: width: 400 }} 400w, {{ block.settings.image | image_url: width: 800 }} 800w"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        alt="{{ block.settings.title }}"
-                        class="w-full h-full object-cover"
-                        width="600" height="450"
-                        loading="lazy" decoding="async"
-                      >
-                    {%- else -%}
-                      {%- assign step_images = 'step-01-celebra.png,step-02-capsulas.jpg,step-03-despierta.png,lander-solution-lifestyle.jpg' | split: ',' -%}
-                      {%- assign img_index = step_number | minus: 1 -%}
-                      {%- if img_index < 4 -%}
-                        <img
-                          src="{{ step_images[img_index] | asset_url }}"
-                          alt="{{ block.settings.title }}"
-                          class="w-full h-full object-cover"
-                          width="600" height="450"
-                          loading="lazy" decoding="async"
-                        >
-                      {%- else -%}
-                        <div class="w-full h-full flex items-center justify-center" style="background-color: hsl(var(--secondary));">
-                          <span class="text-6xl md:text-7xl font-display font-black leading-none" style="color: rgba(0,171,67,0.5);">
-                            0{{ step_number }}
-                          </span>
-                        </div>
-                      {%- endif -%}
-                    {%- endif -%}
-                  </div>
-                </div>
-              </div>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-    </div>
-
-    {%- if usage_note != blank -%}
-      <p class="text-sm text-center mt-10 max-w-2xl mx-auto font-sans" style="color: rgba(255,255,255,0.6); font-style: italic;">
-        {{ usage_note }}
-      </p>
-    {%- endif -%}
-  </div>
-</section>
+<!-- ========== 4. USAGE INSTRUCTIONS (canonical icon-card grid via brand-steps snippet) ========== -->
+{%- comment -%}
+  Renders via snippets/brand-steps.liquid — single source of truth for
+  the step/ritual visual across homepage, lander, and this page. The
+  legacy photo-timeline layout and the `image` field on usage_step
+  blocks are deprecated; icons (Faena SVGs) are now canonical.
+{%- endcomment -%}
+{%- assign usage_step_blocks = section.blocks | where: 'type', 'usage_step' -%}
+{% render 'brand-steps',
+  blocks: usage_step_blocks,
+  label: usage_subheading,
+  heading: usage_heading,
+  footnote: usage_note
+%}
 
 <!-- ========== 5. FAQ ========== -->
 <section id="faq-ciencia" class="section-padding bg-background overflow-hidden">
@@ -559,11 +477,6 @@
       "name": "Usage Step",
       "settings": [
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Step Image"
-        },
-        {
           "type": "text",
           "id": "title",
           "label": "Step Title"
@@ -572,6 +485,29 @@
           "type": "textarea",
           "id": "description",
           "label": "Step Description"
+        },
+        {
+          "type": "select",
+          "id": "default_icon",
+          "label": "Canonical icon",
+          "options": [
+            { "value": "", "label": "Auto (by step order)" },
+            { "value": "world", "label": "Disco / world (Celebrate)" },
+            { "value": "glass", "label": "Capsule / glass (Take)" },
+            { "value": "moon", "label": "Moon (Sleep)" },
+            { "value": "sun", "label": "Sun (Wake up)" }
+          ],
+          "default": ""
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Custom icon (overrides canonical)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Step Image (deprecated — no longer rendered)"
         }
       ]
     },

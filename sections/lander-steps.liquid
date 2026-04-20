@@ -1,94 +1,15 @@
 {%- comment -%}
-  Lander Steps — Canonical 4-step card layout on navy.
-  Each step: green number (top-left), centered icon, centered white title.
+  Lander Steps — renders the canonical 4-step icon-card grid.
+  All step-rendering logic lives in snippets/brand-steps.liquid.
 {%- endcomment -%}
 
-<section class="overflow-hidden" style="padding: 4rem 0; background-color: #0B2A5E;">
-  <div class="container-custom">
-
-    {%- comment -%}Section label{%- endcomment -%}
-    {% if section.settings.label != blank %}
-      <p class="font-bold uppercase tracking-wider text-center" style="font-size: 11px; letter-spacing: 0.12em; margin-bottom: 10px; color: #00A33C;">
-        {{ section.settings.label }}
-      </p>
-    {% endif %}
-
-    <h2 class="font-display font-black text-center" style="font-size: clamp(1.5rem, 5vw, 2.25rem); line-height: 1.15; margin: 0 auto 40px; max-width: 720px; color: #FFFFFF;">
-      {{ section.settings.heading | default: 'Saber cuándo y cómo tomar Buenacopa hace toda la diferencia.' }}
-    </h2>
-
-    {%- comment -%}Step cards{%- endcomment -%}
-    <div class="mx-auto grid" style="max-width: 480px; gap: 16px; grid-template-columns: 1fr;">
-      {%- assign default_icons = 'step-icon-world.svg,step-icon-glass.svg,step-icon-moon.svg,step-icon-sun.svg' | split: ',' -%}
-      {% for block in section.blocks %}
-        {% if block.type == 'step' %}
-          <div
-            class="relative"
-            style="background-color: #001D45; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 28px 20px 26px;"
-            {{ block.shopify_attributes }}
-          >
-            {%- comment -%}Green step number top-left{%- endcomment -%}
-            <span class="font-display font-black" style="position: absolute; top: 14px; left: 20px; font-size: 28px; line-height: 1; color: #00A33C;">
-              {{ block.settings.number | default: forloop.index }}
-            </span>
-
-            {%- comment -%}Centered icon{%- endcomment -%}
-            <div class="flex justify-center" style="margin-top: 8px; margin-bottom: 18px;">
-              {% if block.settings.icon %}
-                <img
-                  src="{{ block.settings.icon | image_url: width: 160 }}"
-                  alt=""
-                  width="80" height="80"
-                  loading="lazy"
-                  aria-hidden="true"
-                  style="height: 80px; width: auto;"
-                >
-              {% else %}
-                {%- assign icon_name = block.settings.default_icon -%}
-                {% if icon_name == blank %}
-                  {%- assign icon_idx = forloop.index | minus: 1 -%}
-                  {% if icon_idx < default_icons.size %}
-                    {%- assign icon_file = default_icons[icon_idx] -%}
-                  {% endif %}
-                {% else %}
-                  {%- assign icon_file = 'step-icon-' | append: icon_name | append: '.svg' -%}
-                {% endif %}
-                {% if icon_file %}
-                  <img
-                    src="{{ icon_file | asset_url }}"
-                    alt=""
-                    width="80" height="80"
-                    loading="lazy"
-                    aria-hidden="true"
-                    style="height: 80px; width: auto;"
-                  >
-                {% endif %}
-              {% endif %}
-            </div>
-
-            {%- comment -%}Title{%- endcomment -%}
-            <h3 class="font-display font-bold text-center" style="font-size: 15px; line-height: 1.3; color: #FFFFFF; margin: 0 auto; max-width: 240px;">
-              {{ block.settings.title }}
-            </h3>
-
-            {%- comment -%}Optional description{%- endcomment -%}
-            {% if block.settings.description != blank %}
-              <p class="text-center" style="font-size: 13px; margin: 6px auto 0; line-height: 1.4; color: rgba(255,255,255,0.6); max-width: 240px;">
-                {{ block.settings.description }}
-              </p>
-            {% endif %}
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-
-    {% if section.settings.footnote != blank %}
-      <p class="text-center mx-auto" style="max-width: 480px; margin-top: 28px; padding: 12px 18px; font-size: 12px; line-height: 1.5; color: rgba(255,255,255,0.55); background-color: rgba(255,255,255,0.04); border-radius: 10px;">
-        {{ section.settings.footnote }}
-      </p>
-    {% endif %}
-  </div>
-</section>
+{%- assign step_blocks = section.blocks | where: 'type', 'step' -%}
+{% render 'brand-steps',
+  blocks: step_blocks,
+  label: section.settings.label,
+  heading: section.settings.heading,
+  footnote: section.settings.footnote
+%}
 
 {% schema %}
 {
@@ -178,8 +99,18 @@
           "type": "step",
           "settings": {
             "number": "3",
+            "title": "Actúa mientras duermes",
+            "description": "Buenacopa procesa el alcohol mientras descansas",
+            "default_icon": "moon"
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "number": "4",
             "title": "Despierta y conquista",
-            "description": "Tu mañana es tuya"
+            "description": "Tu mañana es tuya",
+            "default_icon": "sun"
           }
         }
       ]
