@@ -58,7 +58,19 @@
       <h2 class="font-display font-black text-center" style="font-size: clamp(1.5rem, 5vw, 2.25rem); line-height: 1.15; margin: 0 auto 40px; max-width: 720px; color: #FFFFFF;">{{ heading }}</h2>
     {%- endif -%}
 
-    <div class="mx-auto grid" style="max-width: 480px; gap: 16px; grid-template-columns: 1fr;">
+    {%- comment -%}
+      Grid: stack on mobile (single column, 480px max), horizontal on desktop
+      (one column per block, wider container). Uses --cols CSS var so each
+      instance picks up its own block count without colliding when multiple
+      brand-steps render on the same page.
+    {%- endcomment -%}
+    <style>
+      .brand-steps-grid { display: grid; gap: 16px; grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+      @media (min-width: 768px) {
+        .brand-steps-grid { grid-template-columns: repeat(var(--brand-steps-cols, 4), 1fr); max-width: 1100px; align-items: stretch; }
+      }
+    </style>
+    <div class="brand-steps-grid" style="--brand-steps-cols: {{ blocks.size }};">
       {%- for block in blocks -%}
         <div
           class="relative"
